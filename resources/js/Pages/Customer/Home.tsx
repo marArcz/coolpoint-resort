@@ -1,15 +1,9 @@
 import AvailabilityCheckCard from "@/Components/shared/AvailabilityCheckCard";
 import GalleryImage from "@/Components/shared/GalleryImage";
 import OutlinedButton from "@/Components/shared/OutlinedButton";
-import PrimaryButton from "@/Components/shared/PrimaryButton";
 import HeadingTitle from "@/Components/shared/HeadingTitle";
-import Navbar from "@/Components/ui/Navbar";
-import GuestLayout from "@/Layouts/GuestLayout";
 import { Head } from "@inertiajs/react";
-import React from "react";
-import RootLayout from "@/Layouts/RootLayout";
 import AppLayout from "@/Layouts/AppLayout";
-import { motion } from "framer-motion"
 
 const Welcome = () => {
     return (
@@ -72,7 +66,7 @@ const Welcome = () => {
                     </div>
                 </div>
             </section>
-            <section className="py-36 container-padded">
+            <section className="lg:py-36 py-20 container-padded">
                 <div className="text-center">
                     <p className="text-xl font-light uppercase">
                         Discover Our Rooms
@@ -91,7 +85,7 @@ const Welcome = () => {
                                 alt=""
                             />
                         </div>
-                        <HeadingTitle className="mt-4" dark>
+                        <HeadingTitle className="mt-4">
                             <h2 className="font-serif font-medium text-2xl">
                                 Room #1
                             </h2>
@@ -113,7 +107,7 @@ const Welcome = () => {
                                 alt=""
                             />
                         </div>
-                        <HeadingTitle className="mt-4" dark>
+                        <HeadingTitle className="mt-4">
                             <h2 className="font-serif font-medium text-2xl">
                                 Room #2
                             </h2>
@@ -130,7 +124,7 @@ const Welcome = () => {
                     </div>
                 </div>
             </section>
-            <section className="gallery-section py-32 container-padded">
+            <section className="gallery-section lg:py-36 py-20 container-padded">
                 <div className="text-center">
                     <p className="uppercase text-xl font-light">Explore</p>
                     <h2 className="mt-3 section-title">
@@ -155,8 +149,8 @@ const Welcome = () => {
                         <h2 className="section-title">Contact Us</h2>
 
                         <div className="mt-10">
-                            <p className="font-sans text-3xl">Dasmariñas Cavite</p>
-                            <p className="font-sans text-2xl ">Sittio Niyugan, N.I.A. Rd, Dasmariñas, 4114 Cavite</p>
+                            <p className="font-sans text-2xl text-gray-600">Dasmariñas Cavite</p>
+                            <p className="font-sans text-gray-500 text-xl ">Sittio Niyugan, N.I.A. Rd, Dasmariñas, 4114 Cavite</p>
                         </div>
 
                         <div className="mt-10">

@@ -54,7 +54,7 @@ const AvailabilityCheckCard = () => {
                                 </div>
                             </div>
                             <Popover>
-                                <PopoverTrigger className="btn btn-circle rounded-full transition-all size-9 hover:bg-primary/20 outline-none ring-0 ms-3">
+                                <PopoverTrigger className="flex items-center justify-center rounded-full transition-all size-9 hover:bg-primary/20 outline-none ring-0 ms-3">
                                         <span className="m-icon">
                                             keyboard_arrow_down
                                         </span>
@@ -85,7 +85,7 @@ const AvailabilityCheckCard = () => {
                                 </h2>
 
                                 <Popover>
-                                    <PopoverTrigger className="btn btn-circle rounded-full transition-all size-9 hover:bg-primary/20 outline-none ring-0 ms-3">
+                                    <PopoverTrigger className="flex items-center justify-center rounded-full transition-all size-9 hover:bg-primary/20 outline-none ring-0 ms-3">
                                         <span className="m-icon">
                                             keyboard_arrow_down
                                         </span>
@@ -135,7 +135,7 @@ const AvailabilityCheckCard = () => {
                                 </h2>
 
                                 <Popover>
-                                    <PopoverTrigger className="btn btn-circle rounded-full transition-all size-9 hover:bg-primary/20 outline-none ring-0 ms-3">
+                                    <PopoverTrigger className="flex items-center justify-center rounded-full transition-all size-9 hover:bg-primary/20 outline-none ring-0 ms-3">
                                         <span className="m-icon">
                                             keyboard_arrow_down
                                         </span>

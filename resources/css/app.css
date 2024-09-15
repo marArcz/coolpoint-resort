@@ -50,12 +50,13 @@
     .page-loader{
         @apply fixed w-full h-screen left-0 top-0 z-50 bg-white flex justify-center items-center transition-all animate-in;
     }
+    .btn{
+        @apply px-6 py-4;
+    }
+    .btn-outlined{
+        @apply text-white  relative border after:content-normal after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:bg-primary/70 after:w-full after:h-full after:z-[-1] after:scale-0 hover:after:scale-100 after:transition-all transition-all z-10;
+    }
 
-    .spinner .circle{
-        animation: 1.5s spin ease-out infinite;
-    }
-    .spinner .text{
-    }
 }
 
 @keyframes spin {

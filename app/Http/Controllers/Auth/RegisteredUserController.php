@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Customer/Auth/Register');
     }
 
     /**
@@ -46,6 +46,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('customer.home', absolute: false));
     }
 }

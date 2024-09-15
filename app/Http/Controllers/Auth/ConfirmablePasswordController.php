@@ -17,7 +17,7 @@ class ConfirmablePasswordController extends Controller
      */
     public function show(): Response
     {
-        return Inertia::render('Auth/ConfirmPassword');
+        return Inertia::render('Customer/Auth/ConfirmPassword');
     }
 
     /**
@@ -36,6 +36,6 @@ class ConfirmablePasswordController extends Controller
 
         $request->session()->put('auth.password_confirmed_at', time());
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('customer.home', absolute: false));
     }
 }

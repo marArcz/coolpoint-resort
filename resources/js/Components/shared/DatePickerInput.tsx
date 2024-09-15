@@ -1,26 +1,43 @@
-import React from "react";
+import React, { useState } from 'react'
+import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover'
+import { Calendar } from '../ui/calendar'
+import { DateRange } from 'react-day-picker'
+import { format } from 'date-fns'
+import clsx from 'clsx'
 
 type Props = {
-
+    date: DateRange | undefined;
+    setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>
 }
-const DatePickerInput = () => {
+const DatePickerInput = ({ date, setDate }: Props) => {
+    const [open, setOpen] = useState(false)
     return (
         <>
-            <p className=" uppercase">Check In</p>
-            <div className="flex mt-3 items-end">
-                <h2 className="text-5xl me-2 font-medium">13</h2>
-                <h4 className="text-3xl font-serif font-medium text-nowrap">
-                    / September
-                </h4>
-                <button
-                    className="btn btn-circle rounded-full transition-all size-9 hover:bg-primary/20 outline-none ring-0 ms-3"
-                    type="button"
-                >
-                    <span className="m-icon">keyboard_arrow_down</span>
-                </button>
-            </div>
-        </>
-    );
-};
+            <Popover open={open} onOpenChange={(o) => setOpen(o)}>
+                <PopoverTrigger className="border hover:border-gray-500 active:shadow px-5 py-4 flex w-full items-center">
+                    <input placeholder='Check In - Check Out' value={(date?.from ? format(date.from, "MMM. dd - ") : "") + (date?.to ? format(date.to, "MMM. dd") : "")} type="text" className='w-full text-lg border-0 pointer-events-none px-0' readOnly />
+                    <span
+                        className={clsx('m-icon ms-auto transition-all', {
+                            'rotate-180': open,
+                            'rotate-0': !open
+                        })}
+                    >keyboard_arrow_down</span>
+                </PopoverTrigger>
 
-export default DatePickerInput;
+                <PopoverContent>
+                    <Calendar
+                        initialFocus
+                        fromDate={new Date()}
+                        mode="range"
+                        defaultMonth={date?.from}
+                        selected={date}
+                        onSelect={setDate}
+                        numberOfMonths={1}
+                    />
+                </PopoverContent>
+            </Popover>
+        </>
+    )
+}
+
+export default DatePickerInput

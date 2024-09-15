@@ -1,18 +1,13 @@
 import HeadingTitle from '@/Components/shared/HeadingTitle'
+import HeroSection from '@/Components/shared/HeroSection'
 import OutlinedButton from '@/Components/shared/OutlinedButton'
 import AppLayout from '@/Layouts/AppLayout'
-import React from 'react'
+import { Link } from '@inertiajs/react'
 
 const Rooms = () => {
     return (
         <AppLayout>
-            <section aria-label='hero-section' className='p-5 lg:h-[50vh] h-[30vh] relative flex justify-center items-center'>
-                <div className='absolute top-0 left-0 h-full w-full bg-gray-900/60 z-20'></div>
-                <img src="/images/rooms-hero-image.jpg" alt="" className="z-10 absolute top-0 left-0 h-full object-cover w-full" />
-                <div className="border w-max px-[63px] py-[22px] z-30 bg-gray-600/30 text-white">
-                    <p className='font-serif text-xl lg:text-3xl font-medium'>Rooms</p>
-                </div>
-            </section>
+            <HeroSection title='Rooms' image='/images/rooms-hero-image.jpg' />
             <section className='py-24 container-padded'>
                 <HeadingTitle>
                     <p className='font-serif font-semibold text-2xl'>Family Rooms</p>
@@ -20,7 +15,14 @@ const Rooms = () => {
                 <div className="mt-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
                         <div className=''>
-                            <img src="/images/rooms/room-1.jpg" className='w-full lg:h-[360px] h-[200px] object-cover' alt="" />
+                            <div className='group relative'>
+                                <div className='w-full h-full absolute group-hover:opacity-100 transition-all opacity-0 flex items-center justify-center'>
+                                    <Link href={route('customer.reservations.create')} className='btn-outlined bg-primary/50 btn'>
+                                        Book Now
+                                    </Link>
+                                </div>
+                                <img src="/images/rooms/room-1.jpg" className='w-full lg:h-[360px] h-[200px] object-cover' alt="" />
+                            </div>
                             <div className="mt-4">
                                 <div className="flex items-center">
                                     <HeadingTitle width="w-12" className='me-auto'>
@@ -48,7 +50,14 @@ const Rooms = () => {
                             </div>
                         </div>
                         <div className=''>
-                            <img src="/images/rooms/room-2.jpg" className='w-full lg:h-[360px] h-[200px] object-cover' alt="" />
+                            <div className='group relative'>
+                                <div className='w-full h-full absolute group-hover:opacity-100 transition-all opacity-0 flex items-center justify-center'>
+                                    <Link href={route('customer.reservations.create')} className='btn-outlined bg-primary/50 btn'>
+                                        Book Now
+                                    </Link>
+                                </div>
+                                <img src="/images/rooms/room-2.jpg" className='w-full lg:h-[360px] h-[200px] object-cover' alt="" />
+                            </div>
                             <div className="mt-4">
                                 <div className="flex items-center">
                                     <HeadingTitle width="w-12" className='me-auto'>
@@ -77,6 +86,7 @@ const Rooms = () => {
                         </div>
                     </div>
                 </div>
+
             </section>
         </AppLayout>
     )

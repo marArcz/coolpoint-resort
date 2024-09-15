@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Customer\CustomerHomeController;
+use App\Http\Controllers\Customer\CustomerReservationController;
 use App\Http\Controllers\Customer\CustomerRoomController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -10,6 +11,7 @@ use Inertia\Inertia;
 Route::name('customer.')->group(function(){
     Route::get('/', [CustomerHomeController::class, 'index'])->name('home');
     Route::resource('rooms', CustomerRoomController::class);
+    Route::resource('reservations', CustomerReservationController::class);
 });
 
 Route::get('/dashboard', function () {

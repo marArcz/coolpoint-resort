@@ -23,12 +23,12 @@ const DropdownSelect = ({
     };
 
     return (
-        <div className="relative">
+        <div className="relative w-full">
             <select
                 {...props}
                 onChange={handleOnSelectOption}
                 className={clsx(
-                    "peer border-gray-300 text-[16px] py-[17px] px-5 focus:ring-0 focus:border-gray-500 focus:outline-none focus:shadow-none shadow-sm " +
+                    "peer border-gray-300 w-full text-[16px] py-[17px] px-5 focus:ring-0 active:ring-0 active:border-gray-500 focus:outline-none focus:shadow-none shadow-sm " +
                         className
                 )}
             >
