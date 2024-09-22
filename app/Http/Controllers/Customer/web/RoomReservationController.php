@@ -1,27 +1,30 @@
 <?php
-
-namespace App\Http\Controllers\Customer;
+namespace App\Http\Controllers\Customer\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Room;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class CustomerRoomController extends Controller
+class RoomReservationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('Customer/Rooms');
+        //
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Room $room)
     {
-        //
+        $room->load(['amenities','images']);
+        return Inertia::render('Customer/Reservation',[
+            'room' => $room
+        ]);
     }
 
     /**
@@ -35,7 +38,7 @@ class CustomerRoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Room $room)
     {
         //
     }
@@ -43,7 +46,7 @@ class CustomerRoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Room $room)
     {
         //
     }
@@ -51,7 +54,7 @@ class CustomerRoomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Room $room)
     {
         //
     }
@@ -59,7 +62,7 @@ class CustomerRoomController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Room $room)
     {
         //
     }

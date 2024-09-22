@@ -9,13 +9,26 @@ import { Calendar } from "@/Components/ui/calendar";
 import { DateRange } from "react-day-picker";
 import { addDays, format } from "date-fns";
 
-const AvailabilityCheckCard = () => {
+type Props = {
+    onSubmit?: (
+        selectedDate: DateRange | undefined,
+        adults: number,
+        children: number,
+    ) => void
+}
+const AvailabilityCheckCard = ({ onSubmit }: Props) => {
     const [date, setDate] = React.useState<DateRange | undefined>({
         from: new Date(),
         to: addDays(new Date(), 5),
     });
     const [adults, setAdults] = useState(2);
     const [children, setChildren] = useState(3);
+
+    const handleSubmit = () => {
+        if (onSubmit) {
+            onSubmit(date, adults, children);
+        }
+    }
 
     return (
         <>
@@ -55,9 +68,9 @@ const AvailabilityCheckCard = () => {
                             </div>
                             <Popover>
                                 <PopoverTrigger className="flex items-center justify-center rounded-full transition-all size-9 hover:bg-primary/20 outline-none ring-0 ms-3">
-                                        <span className="m-icon">
-                                            keyboard_arrow_down
-                                        </span>
+                                    <span className="m-icon">
+                                        keyboard_arrow_down
+                                    </span>
                                 </PopoverTrigger>
                                 <PopoverContent
                                     className="w-auto p-0"
@@ -149,7 +162,7 @@ const AvailabilityCheckCard = () => {
                                                     type="button"
                                                     onClick={() =>
                                                         setChildren((v) =>
-                                                            v > 1 ? v - 1 : v
+                                                            v > 0 ? v - 1 : v
                                                         )
                                                     }
                                                 >
@@ -183,6 +196,7 @@ const AvailabilityCheckCard = () => {
                 </div>
                 <div className=" h-full flex justify-center items-center px-12 py-5 lg:w-max w-full">
                     <PrimaryButton
+                        onClick={handleSubmit}
                         className=""
                         disabled={
                             !(

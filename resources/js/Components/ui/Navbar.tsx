@@ -1,64 +1,121 @@
 import { Link, usePage } from "@inertiajs/react";
-import React from "react";
+import React, { useState } from "react";
 import ApplicationLogo from "../shared/ApplicationLogo";
+import { motion, AnimatePresence } from "framer-motion";
+import { Popover, PopoverTrigger } from "./popover";
 
 const Navbar = () => {
     const { auth } = usePage().props
-
+    const [showMobileMenu, setShowMobileMenu] = useState(false)
     return (
-        <nav className="navbar w-full">
-            <div className="container-padded lg:py-7 py-6 h-100 flex justify-between items-center w-full relative">
-                <button className="absolute size-9 rounded-full flex justify-center items-center bg-gray-400/10 hover:bg-gray-400/20 active:bg-gray-400/30 right-6 self-center text-secondary lg:hidden">
-                    {/* menu icon */}
-                    <span className="m-icon">more_horiz</span>
-                </button>
-                <ul className="list-none lg:flex hidden gap-[49px]">
-                    <li>
-                        <Link className=" xl:text-base text-sm font-light" href={route('customer.home')}>
-                            HOME
+        <>
+            <nav className="navbar w-full">
+                <div className="container-padded xl:py-8 lg:py-7 py-6 h-100 flex justify-between items-center w-full relative">
+                    <button onClick={() => setShowMobileMenu(true)} className="absolute size-9 rounded-full flex justify-center items-center bg-gray-400/10 hover:bg-gray-400/20 active:bg-gray-400/30 right-6 self-center text-secondary lg:hidden">
+                        {/* menu icon */}
+                        <span className="m-icon">more_horiz</span>
+                    </button>
+                    <Popover>
+                        <PopoverTrigger className="absolute size-9 rounded-full flex justify-center items-center bg-gray-400/10 hover:bg-gray-400/20 active:bg-gray-400/30 right-6 self-center text-secondary lg:hidden">
+                            {/* menu icon */}
+                            <span className="m-icon">more_horiz</span>
+                        </PopoverTrigger>
+                    </Popover>
+                    <ul className="list-none lg:flex hidden gap-[49px]">
+                        <li>
+                            <Link className=" xl:text-base text-sm font-light" href={route('home')}>
+                                HOME
+                            </Link>
+                        </li>
+                        <li>
+                            <Link className=" xl:text-base text-sm font-light" href="">
+                                ABOUT US
+                            </Link>
+                        </li>
+                        <li>
+                            <Link className=" xl:text-base text-sm font-light" href={route('rooms.index')}>
+                                OUR ROOMS
+                            </Link>
+                        </li>
+                    </ul>
+                    <div className=" flex-grow">
+                        <Link href="/" className="">
+                            <ApplicationLogo className="mx-auto" />
                         </Link>
-                    </li>
-                    <li>
-                        <Link className=" xl:text-base text-sm font-light" href="">
-                            ABOUT US
-                        </Link>
-                    </li>
-                    <li>
-                        <Link className=" xl:text-base text-sm font-light" href={route('customer.rooms.index')}>
-                            OUR ROOMS
-                        </Link>
-                    </li>
-                </ul>
-                <div className=" flex-grow">
-                    <Link href="/" className="">
-                        <ApplicationLogo className="mx-auto" />
-                    </Link>
-                </div>
-                <ul className="list-none lg:flex hidden gap-[49px]">
-                    <li>
-                        <Link className=" xl:text-base text-sm font-light" href="">
-                            CONTACT
-                        </Link>
-                    </li>
-                    <li>
+                    </div>
+                    <ul className="list-none lg:flex hidden gap-[49px]">
+                        <li>
+                            <Link className=" xl:text-base text-sm font-light" href="">
+                                CONTACT
+                            </Link>
+                        </li>
+
                         {auth.user ? (
-                            <Link className="xl:text-base text-sm font-light" href={route("profile.edit")}>
-                                MY ACCOUNT
-                            </Link>
+                            <>
+                                <li>
+
+                                    <Link className="xl:text-base text-sm font-light" href={route("profile.edit")}>
+                                        MY ACCOUNT
+                                    </Link>
+                                </li>
+                            </>
                         ) : (
-                            <Link className=" xl:text-base text-sm font-light" href={route('login')}>
-                                LOG IN
-                            </Link>
+                            <>
+                                <li>
+                                    <Link className=" xl:text-base text-sm font-light" href={route('login')}>
+                                        LOG IN
+                                    </Link>
+                                </li>
+                            </>
                         )}
-                    </li>
-                    <li>
-                        <Link className=" xl:text-base text-sm font-light border border-gray-400 px-[26px] py-[14px] " href={route('customer.rooms.index')}>
-                            RESERVATION
-                        </Link>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+                        <li>
+                            <Link className=" xl:text-base text-sm font-light border border-gray-400 px-[26px] py-[14px] " href={route('reservations.index')}>
+                                RESERVATION
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
+            </nav >
+
+            {/* mobile navbar */}
+            <AnimatePresence>
+                {showMobileMenu && (
+                    <motion.nav
+                        initial={{ height: 0 }}
+                        animate={{ height: "100vh" }}
+                        exit={{ height: 0 }}
+                        className="mobile-nav overflow-hidden flex box-border fixed top-0 left-0 bg-primary text-white animate-in h-screen w-full z-[999]"
+                    >
+                        <div className="h-full box-border w-full relative p-5">
+                            <h2 className="text-2xl font-serif font-semibold">Menu</h2>
+                            <button onClick={() => setShowMobileMenu(false)} className="absolute size-9 top-5 rounded-full flex justify-center items-center bg-gray-200/10 hover:bg-gray-100/20 active:bg-gray-400/30 right-6 self-center hover:text-white text-gray-400">
+                                {/* menu icon */}
+                                <span className="m-icon">close</span>
+                            </button>
+                            <div className="mt-10">
+                                <ul className="list-none flex flex-col gap-10">
+                                    <li>
+                                        <Link className=" xl:text-base text-sm font-light" href={route('home')}>
+                                            HOME
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link className=" xl:text-base text-sm font-light" href="">
+                                            ABOUT US
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link className=" xl:text-base text-sm font-light" href={route('rooms.index')}>
+                                            OUR ROOMS
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </motion.nav>
+                )}
+            </AnimatePresence>
+        </>
     );
 };
 

@@ -1,28 +1,23 @@
 <?php
-
-namespace App\Http\Controllers\Customer;
+namespace App\Http\Controllers\Customer\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Room;
+use App\Models\RoomAmenity;
+use App\Models\RoomImage;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 
-class CustomerReservationController extends Controller implements HasMiddleware
+class CustomerRoomController extends Controller
 {
-
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('auth',only:['store','edit','destroy'])
-        ];
-    }
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $data['rooms'] = Room::with(['amenities','images'])->get();
+
+        return Inertia::render('Customer/Rooms', $data);
     }
 
     /**
@@ -30,7 +25,7 @@ class CustomerReservationController extends Controller implements HasMiddleware
      */
     public function create()
     {
-        return Inertia::render('Customer/Reservation');
+        //
     }
 
     /**
@@ -44,9 +39,10 @@ class CustomerReservationController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Room $room)
     {
-        //
+        $room->load(['amenities','images','reservations']);
+        return Inertia::render('Customer/RoomDetails',compact('room'));
     }
 
     /**

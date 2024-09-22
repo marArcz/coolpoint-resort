@@ -6,11 +6,12 @@ type Props = {
     dark?: boolean
     className?: string,
     children: React.ReactNode
+    reverse?:boolean
 }
-const HeadingTitle = ({ className = '', width = 'w-24', dark = false, children }: Props) => {
+const HeadingTitle = ({ className = '', width = 'lg:w-24', dark = false,reverse=false, children }: Props) => {
     return (
         <div className={`relative flex items-center gap-4 ${className}`}>
-            <div className={clsx(`h-[0.5px] bg-opacity-50 ${width}`, {
+            <div className={clsx(`h-[0.5px] bg-opacity-50 w-16 ${width} ${reverse? 'order-2':''}`, {
                 'bg-black': !dark,
                 'bg-white': dark
             })}>

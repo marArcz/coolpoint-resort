@@ -37,15 +37,13 @@ export default function Login({
     return (
         <AppLayout>
             <Head title="Log in" />
-
-            {status && (
-                <div className="mb-4 font-medium text-sm text-green-600">
-                    {status}
-                </div>
-            )}
-
             <section className="container-padded py-12 bg-gray-50">
                 <div className="lg:w-2/3 mx-auto">
+                    {status && (
+                        <div className="mb-4 font-medium text-sm text-green-600">
+                            {status}
+                        </div>
+                    )}
                     <h2 className="text-3xl uppercase font-serif font-semibold">Login</h2>
                     <p className="mt-3">Enter your email and password to continue</p>
                     <div className="mt-4">

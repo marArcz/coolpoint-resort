@@ -43,7 +43,7 @@ export default forwardRef(function TextInput(
                 type={type}
                 autoComplete="off"
                 className={
-                    "peer border-gray-300 text-[1rem] py-[17px] px-5 focus:ring-0 focus:border-gray-500 focus:outline-none focus:shadow-none shadow-sm " +
+                    "peer text-[1rem] bg-white py-[17px] px-5 focus:ring-0 focus:border-gray-500 focus:outline-none focus:shadow-none border border-gray-200 " +
                     className
                 }
                 ref={localRef}

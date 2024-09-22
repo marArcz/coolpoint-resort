@@ -1,9 +1,9 @@
 import AvailabilityCheckCard from "@/Components/shared/AvailabilityCheckCard";
 import GalleryImage from "@/Components/shared/GalleryImage";
-import OutlinedButton from "@/Components/shared/OutlinedButton";
 import HeadingTitle from "@/Components/shared/HeadingTitle";
 import { Head } from "@inertiajs/react";
 import AppLayout from "@/Layouts/AppLayout";
+import { Link } from "@inertiajs/react";
 
 const Welcome = () => {
     return (
@@ -95,9 +95,7 @@ const Welcome = () => {
                             Arcu etiam libero curae consectetur efficitur nec
                             eros eros. Dui blandit mi nisl mollis cursus.
                         </p>
-                        <OutlinedButton className="mt-4">
-                            Learn More
-                        </OutlinedButton>
+
                     </div>
                     <div className="room-card">
                         <div className="room-image">
@@ -118,10 +116,12 @@ const Welcome = () => {
                             Arcu etiam libero curae consectetur efficitur nec
                             eros eros. Dui blandit mi nisl mollis cursus.
                         </p>
-                        <OutlinedButton className="mt-4">
-                            Learn More
-                        </OutlinedButton>
                     </div>
+                </div>
+                <div className="mt-20 text-center">
+                    <Link href={route('rooms.index')} className=' btn px-12 hover:text-white duration-200 ease-linear text-gray-500 text-lg border hover:bg-primary'>
+                        See all
+                    </Link>
                 </div>
             </section>
             <section className="gallery-section lg:py-36 py-20 container-padded">
