@@ -27,7 +27,7 @@ class RoomImageFactory extends Factory
     {
         return [
             'room_id' => Room::factory(),
-            'uri' => '/storage/images/'  . $this->images[fake()->numberBetween(0,count($this->images) - 1)],
+            'uri' => '/images/rooms/'  . $this->images[fake()->numberBetween(0,count($this->images) - 1)],
         ];
     }
 }

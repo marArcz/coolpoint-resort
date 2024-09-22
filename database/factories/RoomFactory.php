@@ -29,7 +29,7 @@ class RoomFactory extends Factory
             'description' => 'This is only a dummy room for development. Sit arcu odio aenean vitae eu egestas. Gravida commodo non sem diam faucibus justo dolor. Consectetur nunc scelerisque ut enim tristique sed. At leo urna eu quam cursus dolor. In bibendum sit scelerisque mattis cum. Sit arcu odio aenean vitae eu egestas. Gravida commodo non sem diam faucibus justo dolor. Consectetur nunc scelerisque ut enim tristique sed. At leo urna eu quam cursus dolor. In bibendum sit scelerisque mattis cum. Sit arcu odio aenean vitae eu egestas. Gravida commodo non sem diam faucibus justo dolor. Consectetur nunc scelerisque ut enim tristique sed. At leo urna eu quam cursus dolor. In bibendum sit scelerisque mattis cum. Sit arcu odio aenean vitae eu egestas. Gravida commodo non sem diam faucibus justo dolor. Consectetur nunc scelerisque ut enim tristique sed. At leo urna eu quam cursus dolor. In bibendum sit scelerisque mattis cum.',
             'min_people'=> fake()->numberBetween(2, 4),
             'max_people'=> fake()->numberBetween(5, 8),
-            'image'=> '/storage/images/'  . $this->images[fake()->numberBetween(0,count($this->images) - 1)],
+            'image'=> '/images/rooms/'  . $this->images[fake()->numberBetween(0,count($this->images) - 1)],
             'beds'=>fake()->numberBetween(1,4),
             'price'=>fake()->numberBetween(600,2500),
         ];
