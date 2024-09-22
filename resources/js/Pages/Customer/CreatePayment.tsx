@@ -16,7 +16,7 @@ type Props = {
 const CreatePayment = ({ reservation }: Props) => {
     const settings = {
         name: "John Doe",
-        qrcode: "/storage/images/settings/gcash-qr.png",
+        qrcode: "/images/gcash-qr.png",
         phone: "09123456789"
     };
     const resortRate = 10000;

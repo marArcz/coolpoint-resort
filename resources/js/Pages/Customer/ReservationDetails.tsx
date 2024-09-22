@@ -75,12 +75,15 @@ const ReservationDetails = ({ reservation }: Props) => {
                         <Separator orientation='vertical' />
                     </div>
                     {/*  */}
-                    <div className="mt-10">
+                    <div className="mt-16">
                         {reservation.status.toLowerCase() == 'pending' && (
-                            <div className='flex items-center gap-4'>
-                                <PrimaryButtonLink className='w-max' href={route('reservations.confirm', [reservation.id])}>Confirm Reservation</PrimaryButtonLink>
-                                <Link method='delete' href={route('reservations.destroy', [reservation.id])}>Delete Reservation</Link>
-                            </div>
+                            <>
+                                <hr />
+                                <div className='flex items-center gap-4 mt-8'>
+                                    <PrimaryButtonLink className='w-max' href={route('reservations.confirm', [reservation.id])}>Confirm Reservation</PrimaryButtonLink>
+                                    <Link className='text-red-700' method='delete' href={route('reservations.destroy', [reservation.id])}>Delete Reservation</Link>
+                                </div>
+                            </>
                         )}
                     </div>
 

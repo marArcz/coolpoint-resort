@@ -12,6 +12,7 @@ const AppLayout = ({ children }: PropsWithChildren) => {
     useEffect(() => {
         if (flash.message.success) {
             toast({
+                duration:1500,
                 title: "Success",
                 description: flash.message.success,
             })

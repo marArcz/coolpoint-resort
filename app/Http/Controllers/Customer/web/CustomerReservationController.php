@@ -110,9 +110,10 @@ class CustomerReservationController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Reservation $reservation)
     {
-        //
+        $reservation->delete();
+        return redirect()->to(route('reservations.index'))->with('success','Your reservation was successfully deleted!');
     }
 
     // confirm reservation
