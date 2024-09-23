@@ -11,22 +11,26 @@ import { addDays, format } from "date-fns";
 
 type Props = {
     onSubmit?: (
-        selectedDate: DateRange | undefined,
+        selectedDate: DateRange,
         adults: number,
         children: number,
-    ) => void
+    ) => void,
+    defaultDate?: DateRange,
+    defaultAdults?:number
+    defaultChildren?:number
 }
-const AvailabilityCheckCard = ({ onSubmit }: Props) => {
-    const [date, setDate] = React.useState<DateRange | undefined>({
+const AvailabilityCheckCard = ({ onSubmit, defaultDate,defaultAdults,defaultChildren}: Props) => {
+    const defaultSelectedDate = {
         from: new Date(),
         to: addDays(new Date(), 5),
-    });
-    const [adults, setAdults] = useState(2);
-    const [children, setChildren] = useState(3);
+    }
+    const [date, setDate] = React.useState<DateRange | undefined>(defaultDate ?? defaultSelectedDate);
+    const [adults, setAdults] = useState(defaultAdults ?? 2);
+    const [children, setChildren] = useState(defaultChildren ?? 1);
 
     const handleSubmit = () => {
         if (onSubmit) {
-            onSubmit(date, adults, children);
+            onSubmit(date ?? defaultSelectedDate, adults, children);
         }
     }
 

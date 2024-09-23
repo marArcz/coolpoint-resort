@@ -17,7 +17,7 @@ type Props = {
 }
 const Reservations = ({ reservations }: Props) => {
     console.log(reservations)
-    const { data, setData, post, processing, errors, reset } = useForm<ISearchAvailability>({
+    const { data, setData, get, processing, errors, reset } = useForm<ISearchAvailability>({
         date_from: undefined,
         date_to: undefined,
         adults: 1,
@@ -27,7 +27,7 @@ const Reservations = ({ reservations }: Props) => {
     const nights: number = data.date_from && data.date_to ? differenceInDays(addDays(data.date_to, 1), data.date_from) : 0;
 
     const handleSubmit = () => {
-        // post(route('cart.store'));
+        get(route('availability.search'));
     }
 
     return (

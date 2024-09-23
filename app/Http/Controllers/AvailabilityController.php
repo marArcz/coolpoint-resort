@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reservation;
 use App\Models\Room;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class AvailabilityController extends Controller
 {
@@ -13,9 +17,33 @@ class AvailabilityController extends Controller
         $dateTo = $request->date('date_to');
         $adults = $request->integer('adults');
         $children = $request->integer('children');
+        $totalSize = $adults + $children;
 
-        // search for available rooms
-        // $rooms = Room::
+        // check if the entire resort available for booking
+        // find reservations booked on these dates
+        $reservationsCount =
+            DB::table('reservations')->where([
+                ['date_from', '>=', $dateFrom],
+                ['date_from', '<=', $dateTo],
+            ])
+            ->orWhere([
+                ['date_to', '>=', $dateFrom],
+                ['date_to', '<=', $dateTo],
+            ])
+            ->count();
+
+        $isResortAvailable = $reservationsCount > 0;
+
+        // fetch available rooms
+        $rooms = Room::where('max_people', '>=', $totalSize)
+            ->whereDoesntHave('reservations', function (Builder $query) use ($dateFrom, $dateTo) {
+                $query->whereBetween('date_from', [$dateFrom, $dateTo])
+                    ->orWhereBetween('date_to', [$dateFrom, $dateTo])
+                    ->orWhere('date_from', '=', $dateFrom)
+                    ->orWhere('date_to', '=', $dateTo);
+            })->paginate(10);
+
+        return Inertia::render('Customer/SearchAvailability', compact('rooms', 'dateFrom', 'dateTo', 'adults', 'children', 'isResortAvailable'));
     }
     /**
      * Display a listing of the resource.

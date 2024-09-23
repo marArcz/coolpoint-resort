@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\Customer\Web\CustomerHomeController;
 use App\Http\Controllers\Customer\Web\CustomerReservationController;
 use App\Http\Controllers\Customer\Web\CustomerRoomController;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['verifyWhenAuth'])->group(function () {
     Route::get('/', [CustomerHomeController::class, 'index'])->name('home');
     Route::resource('rooms', CustomerRoomController::class);
+    Route::get('availability/search', [AvailabilityController::class,'search'])->name('availability.search');
+    Route::resource('availability', AvailabilityController::class);
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

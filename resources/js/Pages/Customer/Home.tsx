@@ -1,11 +1,22 @@
 import AvailabilityCheckCard from "@/Components/shared/AvailabilityCheckCard";
 import GalleryImage from "@/Components/shared/GalleryImage";
 import HeadingTitle from "@/Components/shared/HeadingTitle";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import AppLayout from "@/Layouts/AppLayout";
 import { Link } from "@inertiajs/react";
+import { DateRange } from "react-day-picker";
 
 const Welcome = () => {
+
+    const handleSearchAvailability = (selectedDate: DateRange, adults: number, children: number) => {
+        router.get(route('availability.search'),{
+            date_from:selectedDate.from,
+            date_to:selectedDate.to,
+            adults,
+            children
+        });
+    }
+
     return (
         <AppLayout>
             <Head title="Home" />
@@ -26,7 +37,7 @@ const Welcome = () => {
             </section>
             {/* availability card */}
             <div className=" z-30 relative w-full container-padded xl:mt-[-150px] xl:mb-[-100px] lg:mt-[-120px] lg:mb-[-120px] mt-[-50px] mb-[-50px]">
-                <AvailabilityCheckCard />
+                <AvailabilityCheckCard onSubmit={handleSearchAvailability} />
             </div>
             {/* about section */}
             <section className="about-section bg-[#F3FCFF]">
