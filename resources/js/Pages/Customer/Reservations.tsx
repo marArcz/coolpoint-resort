@@ -102,7 +102,7 @@ const Reservations = ({ reservations }: Props) => {
             </section>
             <section className="py-16 container-padded">
                 <HeadingTitle reverse>
-                    <h2 className='text-3xl font-serif font-semibold'>Book A Room Now</h2>
+                    <h2 className='text-3xl font-serif font-semibold'>Search for availability</h2>
                 </HeadingTitle>
                 <div className="mt-7 font-light text-lg">
                     <p>Select the dates of your reservations and the number of people to accomodate.</p>
@@ -160,13 +160,13 @@ const Reservations = ({ reservations }: Props) => {
                         </PrimaryButton>
                     </div>
                 </div>
-                <div className="mt-28">
+                {/* <div className="mt-28">
                     <HeadingTitle>
                         <h3 className='text-3xl lg:text-4xl font-semibold font-serif text-primary'>Or book the entire resort</h3>
                     </HeadingTitle>
                     <p className='mt-4 text-xl font-light'>Book the whole resort and experience exclusive luxury! During your stay, our entire resort becomes your personal playground. </p>
                     <OutlineButtonLink className='mt-5 lg:w-max w-full' href='#'>Book Now</OutlineButtonLink>
-                </div>
+                </div> */}
             </section>
         </AppLayout>
     )

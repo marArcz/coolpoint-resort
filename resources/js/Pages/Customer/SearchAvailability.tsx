@@ -56,9 +56,9 @@ const SearchAvailability = ({ rooms, dateFrom = new Date(), dateTo = addDays(new
                         Resort reservation availability ({formatDate(dateFrom, "MMM. dd, yyyy")} - {formatDate(dateTo, "MMM. dd, yyyy")}): <span className='text-primary font-semibold'>{isResortAvailable ? 'Available' : 'Not available'}</span>
                     </p>
                     {isResortAvailable ? (
-                        <Link href='#' className='underline text-lg block font-medium mt-5'>Click here to book entire resort</Link>
+                        <Link href={route('reservations.create',{dateFrom,dateTo,adults,children})} className='underline text-lg block font-medium mt-5'>Click here to book entire resort</Link>
                     ) : (
-                        <Link href='#' className='underline text-lg block mt-5'>See available dates</Link>
+                        <Link href={route('reservations.create')} className='underline text-lg block mt-5'>See available dates</Link>
                     )}
                 </div>
 
@@ -70,10 +70,25 @@ const SearchAvailability = ({ rooms, dateFrom = new Date(), dateTo = addDays(new
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
                                 {
                                     rooms?.data && rooms.data.map((room, index) => (
-                                        <RoomInfoCard room={room} key={room.id} />
+                                        <RoomInfoCard
+                                            href={route('rooms.show', {
+                                                room: room.id,
+                                                date_from:dateFrom,
+                                                date_to:dateTo,
+                                                adults,
+                                                children
+                                            })}
+                                            room={room}
+                                            key={room.id}
+                                            />
                                     ))
                                 }
                             </div>
+                            {
+                                rooms.data?.length == 0 && (
+                                    <p className='text-center text-secondary text-lg'>Sorry no available rooms found.</p>
+                                )
+                            }
                         </div>
                     </>
                 )}

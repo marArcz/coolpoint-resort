@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ReservationConfiguration;
 use App\Models\Room;
 use App\Models\RoomAmenity;
 use App\Models\RoomImage;
@@ -16,11 +17,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
         Room::factory()
             ->count(6)
             ->has(RoomAmenity::factory()->count(4),'amenities')
             ->has(RoomImage::factory()->count(2),'images')
             ->create();
+
+        // seed reservation configuration
+        ReservationConfiguration::create([
+            'gcash_qr_code' => '/images/gcash-qr.png',
+            'gcash_account_no' => '09123456789',
+            'gcash_account_name' => 'John Doe',
+            'resort_rate' => 4000
+        ]);
+        // seed extra amenities
+        $this->call(ExtraAmenitySeeder::class);
     }
 }

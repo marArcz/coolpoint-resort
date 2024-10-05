@@ -27,11 +27,12 @@ export interface IRoomImage {
 }
 
 export interface IAddReservation {
-    room_id: number,
+    room_id?: number,
     date_from: Date | undefined,
     date_to: Date | undefined,
     adults: number,
     children: number,
+    type?:string
 }
 export interface ISearchAvailability {
     date_from: Date | undefined,
@@ -74,6 +75,14 @@ export interface IReservation {
     type: IReservationType,
 }
 
+export interface IReservationConfiguration{
+    id:number,
+    gcash_qr_code:string,
+    gcash_account_no:string,
+    gcash_account_name:string,
+    resort_rate:number
+}
+
 export interface IPaginatedData<T>{
     current_page:number,
     data:T[],
@@ -109,4 +118,11 @@ export interface IPayment{
 export enum IReservationType {
     ROOM = 'room',
     RESORT = 'resort'
+}
+
+
+export interface IExtraAmenity{
+    id:number,
+    name:string,
+    price:number
 }

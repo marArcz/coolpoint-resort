@@ -11,7 +11,7 @@ type Props = {
     className?:string;
     handleChange: (value: number) => void;
 }
-const PopoverNumberInput = ({ name='', label, min = 1, max, value = 1, handleChange,className='' }: Props) => {
+const PopoverNumberInput = ({ name='', label, min = 0, max, value = 1, handleChange,className='' }: Props) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -50,7 +50,7 @@ const PopoverNumberInput = ({ name='', label, min = 1, max, value = 1, handleCha
                                     if (value == max) {
                                         // todo: show popover message
                                     } else {
-                                        handleChange(value + 1)
+                                        handleChange(Number(value) + 1)
                                     }
                                 }
                                 }

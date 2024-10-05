@@ -6,25 +6,21 @@ import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
 import AppLayout from '@/Layouts/AppLayout'
 import { formatToCurrency, getTotalNights } from '@/lib/utils'
-import { IReservation } from '@/types/models'
+import { IReservation, IReservationConfiguration } from '@/types/models'
 import { useForm } from '@inertiajs/react'
 import React, { FormEvent } from 'react'
 
 type Props = {
-    reservation: IReservation
+    reservation: IReservation,
+    configuration:IReservationConfiguration
 }
-const CreatePayment = ({ reservation }: Props) => {
-    const settings = {
-        name: "John Doe",
-        qrcode: "/images/gcash-qr.png",
-        phone: "09123456789"
-    };
+const CreatePayment = ({ reservation,configuration }: Props) => {
     const resortRate = 10000;
-    const totalBill = getTotalNights(reservation.date_from, reservation.date_to) * (reservation.room?.price ?? resortRate);
 
-    const { data, setData, post } = useForm<{ receipt: File | null, amount: number }>({
+    const { data, setData, post } = useForm<{ method:string,receipt: File | null, amount: number }>({
+        method:'gcash',
         receipt: null,
-        amount: totalBill
+        amount: reservation.total
     })
 
     const handleSubmit = (e: FormEvent) => {
@@ -41,10 +37,10 @@ const CreatePayment = ({ reservation }: Props) => {
 
                 <div className="mt-3 grid grid-cols-1 lg:grid-cols-12 gap-14">
                     <div className="col-span-full lg:col-span-3">
-                        <img src={settings.qrcode} className='lg:w-full w-2/4 object-cover' alt="" />
+                        <img src={configuration.gcash_qr_code} className='lg:w-full w-2/4 object-cover' alt="" />
                         <div className="mt-4 px-2">
-                            <p className="font-medium ">Number: {settings.phone}</p>
-                            <p className="font-medium mt-2">Account Name: {settings.name}</p>
+                            <p className="font-medium ">Number: {configuration.gcash_account_no}</p>
+                            <p className="font-medium mt-2">Account Name: {configuration.gcash_account_name}</p>
                         </div>
                     </div>
                     <div className="col-span-full lg:col-span-9">
@@ -58,7 +54,7 @@ const CreatePayment = ({ reservation }: Props) => {
                             </div>
                             <div className="flex items-center justify-between mt-6">
                                 <p className='text-lg font-medium'>Total Bill:</p>
-                                <p className='text-lg font-medium'>{formatToCurrency(totalBill)}</p>
+                                <p className='text-lg font-medium'>{formatToCurrency(data.amount)}</p>
                             </div>
                         </div>
 

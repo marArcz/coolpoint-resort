@@ -19,30 +19,12 @@ class AvailabilityController extends Controller
         $children = $request->integer('children');
         $totalSize = $adults + $children;
 
-        // check if the entire resort available for booking
-        // find reservations booked on these dates
-        $reservationsCount =
-            DB::table('reservations')->where([
-                ['date_from', '>=', $dateFrom],
-                ['date_from', '<=', $dateTo],
-            ])
-            ->orWhere([
-                ['date_to', '>=', $dateFrom],
-                ['date_to', '<=', $dateTo],
-            ])
-            ->count();
-
-        $isResortAvailable = $reservationsCount > 0;
+        $isResortAvailable = ! Reservation::haveReservations($dateFrom,$dateTo);
 
         // fetch available rooms
-        $rooms = Room::where('max_people', '>=', $totalSize)
-            ->whereDoesntHave('reservations', function (Builder $query) use ($dateFrom, $dateTo) {
-                $query->whereBetween('date_from', [$dateFrom, $dateTo])
-                    ->orWhereBetween('date_to', [$dateFrom, $dateTo])
-                    ->orWhere('date_from', '=', $dateFrom)
-                    ->orWhere('date_to', '=', $dateTo);
-            })->paginate(10);
-
+        $rooms = Room::where('max_people', '>=', $totalSize / 2)
+            ->whereNotIn('id',Reservation::scheduledWithin($dateFrom,$dateTo)->select('room_id'))->paginate(10);
+        // dd($rooms);
         return Inertia::render('Customer/SearchAvailability', compact('rooms', 'dateFrom', 'dateTo', 'adults', 'children', 'isResortAvailable'));
     }
     /**

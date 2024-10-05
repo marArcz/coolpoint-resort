@@ -15,7 +15,7 @@ class CustomerRoomController extends Controller
      */
     public function index()
     {
-        $data['rooms'] = Room::with(['amenities','images'])->get();
+        $data['rooms'] = Room::with(['amenities','images'])->paginate(10);
 
         return Inertia::render('Customer/Rooms', $data);
     }
@@ -39,10 +39,15 @@ class CustomerRoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Room $room)
+    public function show(Request $request, Room $room)
     {
         $room->load(['amenities','images','reservations']);
-        return Inertia::render('Customer/RoomDetails',compact('room'));
+        $date_from = $request->query('date_from');
+        $date_to = $request->query('date_to');
+        $adults = $request->query('adults',2);
+        $children = $request->query('chilren',0);
+
+        return Inertia::render('Customer/RoomDetails',compact('room','date_from','date_to','adults','children'));
     }
 
     /**

@@ -5,30 +5,51 @@ import PrimaryButton from '@/Components/shared/PrimaryButton';
 import { Checkbox } from '@/Components/ui/checkbox';
 import { Label } from '@/Components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
+import { toast } from '@/hooks/use-toast';
 import AppLayout from '@/Layouts/AppLayout'
 import { formatToCurrency, getTotalNights } from '@/lib/utils';
-import { IReservation, IReservationType } from '@/types/models'
+import { IExtraAmenity, IReservation, IReservationConfiguration, IReservationType } from '@/types/models'
 import { Link, useForm } from '@inertiajs/react';
 import { differenceInDays, formatDate } from 'date-fns';
-import React, { FormEvent } from 'react'
+import React, { FormEvent, useState } from 'react'
 
 type Props = {
     reservation: IReservation;
+    extraAmenities?: IExtraAmenity[],
+    configuration:IReservationConfiguration
 }
-const ConfirmReservation = ({ reservation }: Props) => {
-    const resortRate = 10000;
+const ConfirmReservation = ({ reservation, extraAmenities = [],configuration }: Props) => {
     const nights: number = getTotalNights(reservation.date_from, reservation.date_to);
-    const { data, setData,post } = useForm<{ adults: number, children: number, payment_method:string,total:number}>({
+    const { data, setData, post } = useForm<{ adults: number, children: number, payment_method: string, total: number, extra_amenities: IExtraAmenity[] }>({
         adults: reservation.adults,
         children: reservation.children,
         payment_method: 'cash',
-        total:nights * (reservation.room?.price ?? resortRate),
+        total: nights * (reservation.room?.price || configuration.resort_rate),
+        extra_amenities: []
     });
-
+    // const [totalBill, setTotalBill] = useState(nights * (reservation.room?.price ?? resortRate));
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        post(route("reservations.checkout",[reservation.id]));
+        post(route("reservations.checkout", [reservation.id]));
+    }
+
+    function handleCheckedChange(amenity: IExtraAmenity, checked: string | boolean): void {
+        console.log(amenity)
+        let amenities = data.extra_amenities.slice();
+        let total = data.total
+        if (checked == true) {
+            amenities = [
+                ...data.extra_amenities,
+                amenity
+            ];
+            total += amenity.price;
+        } else {
+            amenities = data.extra_amenities.filter(a => a.id != amenity.id);
+            total -= amenity.price;
+        }
+        setData('extra_amenities', amenities)
+        setData('total', total)
     }
 
     return (
@@ -101,12 +122,29 @@ const ConfirmReservation = ({ reservation }: Props) => {
                         </div>
                         {/* payment */}
                         <div className='flex-grow'>
-                            <h3 className='font-serif font-medium text-2xl'>Price Breakdown</h3>
-                            <div className="mt-8">
+                            {extraAmenities && extraAmenities.length > 0 && (
+                                <>
+                                    <h3 className='font-serif font-semibold text-2xl'>Choose Additional Services</h3>
+                                    <div className="mt-3 mb-5">
+                                        {extraAmenities.map((extraAmenity) => (
+                                            <div key={extraAmenity.id} className="flex justify-between items-center mb-2">
+                                                <div className="flex items-center gap-3">
+                                                    <Checkbox onCheckedChange={(checked) => handleCheckedChange(extraAmenity, checked)} value={extraAmenity.id} id={`extra-amenity-${extraAmenity.id}`} />
+                                                    <label htmlFor={`extra-amenity-${extraAmenity.id}`} className='text-lg'>{extraAmenity.name}</label>
+                                                </div>
+                                                <span className='text-lg'>{formatToCurrency(extraAmenity.price)}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <hr className="my-3" />
+                                </>
+                            )}
+                            <h3 className='font-serif font-semibold text-2xl'>Price Breakdown</h3>
+                            <div className="mt-2">
                                 {reservation.room ? (
                                     <>
                                         <div className="mb-4 flex items-center flex-wrap">
-                                            <p className='text-xl font-serif font-medium me-auto'>Room rate per night</p>
+                                            <p className='text-xl font-serif font-medium me-auto'>Room's rate per night</p>
                                             <p className='text-lg'>{formatToCurrency(reservation.room.price)}</p>
                                         </div>
                                         <div className="mb-4 flex items-center flex-wrap">
@@ -115,18 +153,31 @@ const ConfirmReservation = ({ reservation }: Props) => {
                                         </div>
                                         <hr className="my-4" />
                                         <div className="mb-4 flex items-center flex-wrap">
-                                            <p className='text-xl font-serif font-medium me-auto'>Total</p>
-                                            <p className='text-lg'>{formatToCurrency(nights * reservation.room.price)} </p>
+                                            <p className='text-xl text-tertiary font-serif font-semibold me-auto'>Total</p>
+                                            <p className='text-xl text-tertiary font-semibold'>{formatToCurrency(data.total)} </p>
                                         </div>
                                     </>
                                 ) : (
-                                    <div></div>
+                                    <>
+                                        <div className="mb-4 flex items-center flex-wrap">
+                                            <p className='text-xl font-serif font-medium me-auto'>Resort's reservation rate</p>
+                                            <p className='text-lg'>{formatToCurrency(configuration.resort_rate)}</p>
+                                        </div>
+                                        <div className="mb-4 flex items-center flex-wrap">
+                                            <p className='text-xl font-serif font-medium me-auto'>Stay</p>
+                                            <p className='text-lg'>{nights} nights</p>
+                                        </div>
+                                        <hr className="my-4" />
+                                        <div className="mb-4 flex items-center flex-wrap">
+                                            <p className='text-xl text-tertiary font-serif font-semibold me-auto'>Total</p>
+                                            <p className='text-xl text-tertiary font-semibold'>{formatToCurrency(data.total)} </p>
+                                        </div>
+                                    </>
                                 )}
                             </div>
                             {/* payment method */}
                             <div className="mt-10">
                                 <h4 className='font-serif font-medium text-2xl'>Payment Method</h4>
-
                                 <div className="mt-8">
                                     <RadioGroup required defaultValue={data.payment_method} onValueChange={(v) => setData('payment_method', v)}>
                                         <div className="flex items-center mb-8 space-x-4">
@@ -144,7 +195,7 @@ const ConfirmReservation = ({ reservation }: Props) => {
                                     </div>
                                     <div className="mt-10 flex flex-wrap gap-5 items-center">
                                         <PrimaryButton type='submit'>Confirm reservation</PrimaryButton>
-                                        <Link className='w-max border py-4 px-4 hover:bg-gray-300' method='delete' href={route('reservations.destroy', [reservation.id])}>Cancel reservation</Link>
+                                        <Link as='button' className='w-max border py-4 px-4 hover:bg-gray-300' method='delete' href={route('reservations.destroy', [reservation.id])}>Cancel reservation</Link>
                                     </div>
                                 </div>
                             </div>

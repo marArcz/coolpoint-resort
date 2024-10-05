@@ -17,9 +17,10 @@ type Props = {
     ) => void,
     defaultDate?: DateRange,
     defaultAdults?:number
-    defaultChildren?:number
+    defaultChildren?:number,
+    submitButtonText?:string
 }
-const AvailabilityCheckCard = ({ onSubmit, defaultDate,defaultAdults,defaultChildren}: Props) => {
+const AvailabilityCheckCard = ({ onSubmit, defaultDate,defaultAdults,defaultChildren,submitButtonText='Search Availability'}: Props) => {
     const defaultSelectedDate = {
         from: new Date(),
         to: addDays(new Date(), 5),
@@ -210,7 +211,7 @@ const AvailabilityCheckCard = ({ onSubmit, defaultDate,defaultAdults,defaultChil
                             )
                         }
                     >
-                        Check Availability
+                        {submitButtonText}
                     </PrimaryButton>
                 </div>
             </div>

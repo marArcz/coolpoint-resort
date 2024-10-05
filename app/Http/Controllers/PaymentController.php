@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use App\Models\Reservation;
+use App\Models\ReservationConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -23,7 +24,8 @@ class PaymentController extends Controller
      */
     public function create(Reservation $reservation)
     {
-        return Inertia::render('Customer/CreatePayment',compact('reservation'));
+        $configuration = ReservationConfiguration::all()[0];
+        return Inertia::render('Customer/CreatePayment', compact('reservation','configuration'));
     }
 
     /**
@@ -32,22 +34,47 @@ class PaymentController extends Controller
     public function store(Request $request, Reservation $reservation)
     {
         $request->validate([
-            'receipt' => 'required|file',
+            'method' => 'required',
             'amount' => 'required'
         ]);
 
         $amount = $request->integer('amount');
-        $receipt = $request->file("receipt")->store('payments');
+        $method = $request->string('method', 'cash');
 
-        $reservation->payment()->create([
-            'method'=>'gcash',
-            'amount'=> $amount,
-            'payment_no' => "P" . $reservation->reservation_no,
-            'status' => 'Completed',
-            'receipt' => $receipt
-        ]);
+        // update payment method
+        $reservation->payment_method = $method;
+        $reservation->save();
 
-        return redirect()->to(route('reservations.show',[$reservation->id]))->with('success','Thank you for your payment. Your transaction has been completed.');
+        // delete payment if exist
+        $reservation->payment()->delete();
+        // proceed to payment creation
+        if ($method == 'gcash') {
+            $request->validate([
+                'receipt' => 'required|file',
+            ]);
+            // create payment
+            $receipt = $request->file("receipt")->store('payments');
+            $reservation->payment()->create([
+                'method' => 'gcash',
+                'amount' => $amount,
+                'payment_no' => "P" . $reservation->reservation_no,
+                'status' => 'Completed',
+                'receipt' => $receipt
+            ]);
+
+            return redirect()->to(route('reservations.show', [$reservation->id]))->with('success', 'Thank you for your payment. Your transaction has been completed.');
+        }else{
+             // create payment
+            $reservation->payment()->create([
+                'method' => 'cash',
+                'amount' => $amount,
+                'payment_no' => "P" . $reservation->reservation_no,
+                'status' => 'On Hold',
+            ]);
+
+            return redirect()->to(route('reservations.show', [$reservation->id]))->with('success', 'Thank you. Your payment will be put on hold and will be processed on your arrival.');
+        }
+
     }
 
     /**

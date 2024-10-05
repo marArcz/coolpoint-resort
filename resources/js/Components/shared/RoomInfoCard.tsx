@@ -6,14 +6,15 @@ import HeadingTitle from './HeadingTitle'
 import { formatToCurrency } from '@/lib/utils'
 
 type Props = {
-    room: IRoom
+    room: IRoom,
+    href?:string
 }
-const RoomInfoCard = ({ room }: Props) => {
+const RoomInfoCard = ({ room,href }: Props) => {
     return (
         <div className='room-card'>
             <div className='group relative'>
                 <div className='w-full h-full absolute group-hover:opacity-100 transition-all opacity-0 flex items-center justify-center'>
-                    <Link href={route('rooms.show', [room.id])} className='btn-outlined bg-primary/50 btn'>
+                    <Link href={href ?? route('rooms.show', [room.id])} className='btn-outlined bg-primary/50 btn'>
                         View Details
                     </Link>
                 </div>

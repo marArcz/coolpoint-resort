@@ -15,20 +15,27 @@ import { addDays, differenceInCalendarDays, differenceInDays, format } from 'dat
 import React, { useState } from 'react'
 import { ActiveModifiers, DateRange, DayModifiers } from 'react-day-picker'
 
-const Reservation = ({ room }: { room: IRoomWithReservations }) => {
+type Props = {
+    room: IRoomWithReservations,
+    date_from: Date | undefined,
+    date_to: Date | undefined,
+    adults?: number,
+    children?: number,
+}
+const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Props) => {
 
     const [mainImage, setMainImage] = useState(room.image);
     const { data, setData, post, processing, errors, reset } = useForm<IAddReservation>({
         room_id: room.id,
-        date_from: undefined,
-        date_to: undefined,
-        adults: 1,
-        children: 0,
+        date_from,
+        date_to,
+        adults,
+        children,
     })
     const nights: number = getTotalNights(data.date_from, data.date_to);
 
     const modifiers = {
-        booked: room.reservations.map((reservation) => ({
+        booked: room.reservations.filter((reservation) => reservation.status == 'confirmed').map((reservation) => ({
             from: new Date(reservation.date_from),
             to: new Date(reservation.date_to)
         }))
@@ -39,10 +46,11 @@ const Reservation = ({ room }: { room: IRoomWithReservations }) => {
     }
 
     function handleOnSelectDate(range: DateRange | undefined, selectedDay: Date, activeModifiers: ActiveModifiers): void {
-        setData('date_from', range?.from ?? undefined)
-        if (range?.from == data.date_from) {
-            setData('date_to', range?.to ?? undefined)
-        }
+        setData({
+            ...data,
+            date_to: range?.to,
+            date_from: range?.from
+        })
     }
 
     return (
@@ -138,8 +146,8 @@ const Reservation = ({ room }: { room: IRoomWithReservations }) => {
                                 }}
                                 onSelect={handleOnSelectDate}
                                 fromDate={new Date()}
-                                onDayClick={(date, dateModifiers) =>{
-                                    if(dateModifiers.booked){
+                                onDayClick={(date, dateModifiers) => {
+                                    if (dateModifiers.booked) {
                                         // to do
                                         alert('Date is booked')
                                     }

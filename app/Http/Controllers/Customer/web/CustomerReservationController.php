@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Customer\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\ExtraAmenity;
 use App\Models\Reservation;
+use App\Models\ReservationConfiguration;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -27,10 +29,10 @@ class CustomerReservationController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         $user = $request->user();
-        $reservations = Reservation::where('status','!=','Cancelled')
-            ->where('status','!=','Completed')
-            ->where('user_id','=',$user->id)
-            ->orderBy('id','desc')
+        $reservations = Reservation::where('status', '!=', 'Cancelled')
+            ->where('status', '!=', 'Completed')
+            ->where('user_id', '=', $user->id)
+            ->orderBy('id', 'desc')
             ->paginate(5);
 
         return Inertia::render('Customer/Reservations', compact('reservations'));
@@ -39,9 +41,14 @@ class CustomerReservationController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return Inertia::render('Customer/CreateReservation');
+        $dateFrom = $request->query('dateFrom');
+        $dateTo = $request->query('dateTo');
+        $adults = $request->query('adults', 2);
+        $children = $request->query('children', 0);
+        $reservations = Reservation::where('status', '=', 'Confirmed')->orderBy('date_from', 'asc')->get();
+        return Inertia::render('Customer/CreateReservation', compact('reservations', 'dateFrom', 'dateTo', 'adults', 'children'));
     }
 
     /**
@@ -50,22 +57,22 @@ class CustomerReservationController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $user = $request->user();
-        $type = $request->input('type', 'room');
+        $type = $request->string('type', 'room');
         $reservation_no = Reservation::newReservationNo();
         $resortRate = 10000; // to be stored on db and be configured by admin
         $nights = Carbon::parse($request->date('date_from'))->diffInDays($request->date('date_to'));
         $total = 0;
 
-        if($type == 'room'){
+        if ($type == 'room') {
             $room = Room::find($request->input('room_id'));
             $total = $room->price * $nights;
-        }else{
+        } else {
             $total = $nights * $resortRate;
         }
 
         $newReservation = new Reservation([
-            'adults' => $request->input('adults'),
-            'children' => $request->input('children'),
+            'adults' => $request->integer('adults'),
+            'children' => $request->integer('children'),
             'total' => $total,
             'date_from' => $request->date('date_from'),
             'date_to' => $request->date('date_to'),
@@ -80,7 +87,7 @@ class CustomerReservationController extends Controller implements HasMiddleware
 
         $newReservation->save();
 
-        return redirect()->to(route('reservations.confirm', [$newReservation->id]))->with('success', 'Successfully saved reservation');
+        return redirect()->to(route('reservations.confirm', [$newReservation->id]));
     }
 
     /**
@@ -113,13 +120,16 @@ class CustomerReservationController extends Controller implements HasMiddleware
     public function destroy(Reservation $reservation)
     {
         $reservation->delete();
-        return redirect()->to(route('reservations.index'))->with('success','Your reservation was successfully deleted!');
+        return redirect()->to(route('reservations.index'))->with('success', 'Your reservation was successfully deleted!');
     }
 
     // confirm reservation
     public function confirm(Reservation $reservation)
     {
-        return Inertia::render('Customer/ConfirmReservation', compact('reservation'));
+        $configuration = ReservationConfiguration::all()[0];
+
+        $extraAmenities = ExtraAmenity::where('is_available', '=', true)->get();
+        return Inertia::render('Customer/ConfirmReservation', compact('reservation', 'extraAmenities', 'configuration'));
     }
     // checkout reservation
     public function checkout(Request $request, Reservation $reservation)
@@ -128,24 +138,35 @@ class CustomerReservationController extends Controller implements HasMiddleware
         $children = $request->integer('children');
         $payment_method = $request->string('payment_method');
         $total = $request->integer('total');
+        $extraAmenities = $request->collect('extra_amenities');
 
+        $reservation->total = $total;
         $reservation->adults = $adults;
         $reservation->children = $children;
         $reservation->payment_method = $payment_method;
         $reservation->status = "Confirmed";
-
         $reservation->save();
 
+        $reservation->addOns()->delete();
+        $extraAmenities->each(function ($extraAmenity) use ($reservation) {
+            $reservation->addOns()->create([
+                'amenity' => $extraAmenity->name,
+                'quantity' => 1,
+                'price'  => $extraAmenity->price,
+                'amenity_id' => $extraAmenity->id
+            ]);
+        });
+        $reservation->payment()->delete();
         // add payment
         if ($payment_method == 'cash') {
             $reservation->payment()->create([
-                "method"=>"cash",
+                "method" => "cash",
                 "payment_no" => "P" . $reservation->reservation_no,
                 "amount" => $total,
-                'status'=>'On Hold'
+                'status' => 'On Hold'
             ]);
-            return redirect(route('reservations.show',[$reservation->id]))->with('success','We are pleased to inform you that your reservation request has been received.');
-        }else{
+            return redirect(route('reservations.show', [$reservation->id]))->with('success', 'We are pleased to inform you that your reservation request has been received.');
+        } else {
             return redirect(route('reservations.payment.create', [$reservation->id]));
         }
     }
@@ -155,6 +176,6 @@ class CustomerReservationController extends Controller implements HasMiddleware
         $reservation->status = "Cancelled";
         $reservation->save();
 
-        return redirect()->back()->with("success","Your reservation is successfully cancelled");
+        return redirect()->back()->with("success", "Your reservation is successfully cancelled");
     }
 }
