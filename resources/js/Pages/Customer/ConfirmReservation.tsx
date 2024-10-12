@@ -3,12 +3,13 @@ import OutlineButtonLink from '@/Components/shared/OutlineButtonLink';
 import PopoverNumberInput from '@/Components/shared/PopoverNumberInput';
 import PrimaryButton from '@/Components/shared/PrimaryButton';
 import { Checkbox } from '@/Components/ui/checkbox';
+import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
 import { toast } from '@/hooks/use-toast';
-import AppLayout from '@/Layouts/AppLayout'
+import AppLayout from '@/Layouts/CustomerLayout'
 import { formatToCurrency, getTotalNights } from '@/lib/utils';
-import { IExtraAmenity, IReservation, IReservationConfiguration, IReservationType } from '@/types/models'
+import { IExtraAmenity, INewReservationAddOn, IReservation, IReservationConfiguration, IReservationType } from '@/types/models'
 import { Link, useForm } from '@inertiajs/react';
 import { differenceInDays, formatDate } from 'date-fns';
 import React, { FormEvent, useState } from 'react'
@@ -16,16 +17,19 @@ import React, { FormEvent, useState } from 'react'
 type Props = {
     reservation: IReservation;
     extraAmenities?: IExtraAmenity[],
-    configuration:IReservationConfiguration
+    configuration: IReservationConfiguration
 }
-const ConfirmReservation = ({ reservation, extraAmenities = [],configuration }: Props) => {
+const ConfirmReservation = ({ reservation, extraAmenities = [], configuration }: Props) => {
+    const [addOns, setAddOns] = useState<INewReservationAddOn[]>(extraAmenities.map((amenity) => ({ amenity_id: amenity.id, quantity: 1, amenity })))
     const nights: number = getTotalNights(reservation.date_from, reservation.date_to);
-    const { data, setData, post } = useForm<{ adults: number, children: number, payment_method: string, total: number, extra_amenities: IExtraAmenity[] }>({
+    const initialBill = nights * (reservation.room?.price || configuration.resort_rate);
+
+    const { data, setData, post } = useForm<{ adults: number, children: number, payment_method: string, total: number, add_ons: INewReservationAddOn[] }>({
         adults: reservation.adults,
         children: reservation.children,
         payment_method: 'cash',
-        total: nights * (reservation.room?.price || configuration.resort_rate),
-        extra_amenities: []
+        total: initialBill,
+        add_ons: []
     });
     // const [totalBill, setTotalBill] = useState(nights * (reservation.room?.price ?? resortRate));
 
@@ -34,22 +38,49 @@ const ConfirmReservation = ({ reservation, extraAmenities = [],configuration }: 
         post(route("reservations.checkout", [reservation.id]));
     }
 
-    function handleCheckedChange(amenity: IExtraAmenity, checked: string | boolean): void {
-        console.log(amenity)
-        let amenities = data.extra_amenities.slice();
-        let total = data.total
-        if (checked == true) {
-            amenities = [
-                ...data.extra_amenities,
-                amenity
-            ];
-            total += amenity.price;
+    function handleCheckedChange(addOn: INewReservationAddOn, checked: string | boolean): void {
+        let selectedAddons = data.add_ons.slice();
+        if (checked == true || checked == 'true') {
+            selectedAddons.push({ ...addOn })
         } else {
-            amenities = data.extra_amenities.filter(a => a.id != amenity.id);
-            total -= amenity.price;
+            selectedAddons = data.add_ons.filter(a => a.amenity_id != addOn.amenity_id);
         }
-        setData('extra_amenities', amenities)
-        setData('total', total)
+        setData(data => ({
+            ...data,
+            add_ons: selectedAddons,
+            total: computeTotal(selectedAddons)
+        }))
+
+    }
+
+    function handleAddOnChange(id: number, quantity: number): void {
+        let selectedAddons = data.add_ons.map(extraAmenity => extraAmenity.amenity_id == id ? ({ ...extraAmenity, quantity }) : extraAmenity)
+        setData(data => ({
+            ...data,
+            add_ons: selectedAddons,
+            total: computeTotal(selectedAddons)
+        }))
+        setAddOns(addOns => addOns.map(addOn => addOn.amenity_id == id ? ({ ...addOn, quantity }) : addOn))
+    }
+
+    function computeTotal(addOns: INewReservationAddOn[]): number {
+        let total = initialBill;
+        for (let addOn of addOns) {
+            if (addOn.amenity) {
+                total += addOn.quantity * addOn.amenity.price
+            }
+        }
+
+        return total
+    }
+
+    function isSelected(id: number) {
+        console.log('add_ons: ', data.add_ons)
+        for (let addOn of data.add_ons) {
+            if (id == addOn.amenity_id) return true;
+        }
+
+        return false;
     }
 
     return (
@@ -126,13 +157,22 @@ const ConfirmReservation = ({ reservation, extraAmenities = [],configuration }: 
                                 <>
                                     <h3 className='font-serif font-semibold text-2xl'>Choose Additional Services</h3>
                                     <div className="mt-3 mb-5">
-                                        {extraAmenities.map((extraAmenity) => (
-                                            <div key={extraAmenity.id} className="flex justify-between items-center mb-2">
-                                                <div className="flex items-center gap-3">
-                                                    <Checkbox onCheckedChange={(checked) => handleCheckedChange(extraAmenity, checked)} value={extraAmenity.id} id={`extra-amenity-${extraAmenity.id}`} />
-                                                    <label htmlFor={`extra-amenity-${extraAmenity.id}`} className='text-lg'>{extraAmenity.name}</label>
-                                                </div>
-                                                <span className='text-lg'>{formatToCurrency(extraAmenity.price)}</span>
+                                        {addOns.map((addOn) => (
+                                            <div key={addOn.amenity_id}>
+                                                {addOn.amenity ? (
+                                                    <div key={addOn.amenity.id} className="flex justify-between items-center mb-2 flex-wrap">
+                                                        <div className="flex  items-center gap-3 flex-1">
+                                                            <Checkbox onCheckedChange={(checked) => handleCheckedChange(addOn, checked)} value={addOn.amenity.id} id={`extra-amenity-${addOn.amenity.id}`} />
+                                                            <label htmlFor={`extra-amenity-${addOn.amenity.id}`} className='text-lg'>{addOn.amenity.name}</label>
+                                                            <span className='text-lg ms-2'>({formatToCurrency(addOn.amenity.price)})</span>
+                                                        </div>
+                                                        {/* <span className='text-lg'>{formatToCurrency(extraAmenity.price)}</span> */}
+                                                        <div className='flex items-center gap-2'>
+                                                            <span className='m-icon text-sm'>close</span>
+                                                            <Input min={1} type='number' disabled={!isSelected(addOn.amenity.id)} defaultValue={1} onChange={e => handleAddOnChange(addOn.amenity_id, Number(e.target.value))} className='w-28 disabled:font-light font-bold' />
+                                                        </div>
+                                                    </div>
+                                                ) : null}
                                             </div>
                                         ))}
                                     </div>

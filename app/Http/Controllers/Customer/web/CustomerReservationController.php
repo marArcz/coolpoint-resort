@@ -95,7 +95,9 @@ class CustomerReservationController extends Controller implements HasMiddleware
      */
     public function show(Reservation $reservation)
     {
-        return Inertia::render("Customer/ReservationDetails", compact('reservation'));
+        $reservation->load(['addOns']);
+        $configuration = ReservationConfiguration::all()[0];
+        return Inertia::render("Customer/ReservationDetails", compact('reservation','configuration'));
     }
 
     /**
@@ -138,7 +140,7 @@ class CustomerReservationController extends Controller implements HasMiddleware
         $children = $request->integer('children');
         $payment_method = $request->string('payment_method');
         $total = $request->integer('total');
-        $extraAmenities = $request->collect('extra_amenities');
+        $addOns = $request->collect('add_ons');
 
         $reservation->total = $total;
         $reservation->adults = $adults;
@@ -147,13 +149,14 @@ class CustomerReservationController extends Controller implements HasMiddleware
         $reservation->status = "Confirmed";
         $reservation->save();
 
+        // save add ons
         $reservation->addOns()->delete();
-        $extraAmenities->each(function ($extraAmenity) use ($reservation) {
+        $addOns->each(function ($addOn) use ($reservation) {
             $reservation->addOns()->create([
-                'amenity' => $extraAmenity->name,
-                'quantity' => 1,
-                'price'  => $extraAmenity->price,
-                'amenity_id' => $extraAmenity->id
+                'amenity' => $addOn->name,
+                'quantity' => $addOn->quantity ?? 1,
+                'price'  => $addOn->price,
+                'amenity_id' => $addOn->id
             ]);
         });
         $reservation->payment()->delete();

@@ -2,7 +2,7 @@ import AvailabilityCheckCard from "@/Components/shared/AvailabilityCheckCard";
 import GalleryImage from "@/Components/shared/GalleryImage";
 import HeadingTitle from "@/Components/shared/HeadingTitle";
 import { Head, router } from "@inertiajs/react";
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/CustomerLayout";
 import { Link } from "@inertiajs/react";
 import { DateRange } from "react-day-picker";
 

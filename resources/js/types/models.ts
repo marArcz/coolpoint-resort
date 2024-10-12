@@ -1,3 +1,9 @@
+export interface IUser{
+    id:number,
+    name:string,
+    email:string,
+    photo:string,
+}
 export interface IRoom {
     id: number,
     name: string,
@@ -12,8 +18,8 @@ export interface IRoom {
     images: IRoomImage[],
 }
 
-export interface IRoomWithReservations extends IRoom{
-    reservations:IReservation[]
+export interface IRoomWithReservations extends IRoom {
+    reservations: IReservation[]
 }
 
 export interface IRoomAmenity {
@@ -32,7 +38,7 @@ export interface IAddReservation {
     date_to: Date | undefined,
     adults: number,
     children: number,
-    type?:string
+    type?: string
 }
 export interface ISearchAvailability {
     date_from: Date | undefined,
@@ -57,6 +63,11 @@ export interface ICartItem {
     cart_id: number,
     room: IRoom
 }
+export const IReservationStatus = {
+    CONFIRMED : 'Confirmed',
+    PENDING : 'Pending',
+    CANCELLED:'Cancelled'
+}
 
 export interface IReservation {
     id: number,
@@ -68,51 +79,53 @@ export interface IReservation {
     room_id: number,
     room?: IRoom | null,
     user_id: number,
+    user:IUser,
     status: string,
     total: number,
-    payment_method:string,
-    payment?:IPayment,
+    payment_method: string,
+    payment?: IPayment,
     type: IReservationType,
+    addOns?:IReservationAddOn[]
 }
 
-export interface IReservationConfiguration{
-    id:number,
-    gcash_qr_code:string,
-    gcash_account_no:string,
-    gcash_account_name:string,
-    resort_rate:number
+export interface IReservationConfiguration {
+    id: number,
+    gcash_qr_code: string,
+    gcash_account_no: string,
+    gcash_account_name: string,
+    resort_rate: number
 }
 
-export interface IPaginatedData<T>{
-    current_page:number,
-    data:T[],
-    first_page_url?:string,
-    last_page_url?:string,
-    next_page_url?:string,
-    prev_page_url?:string,
-    path:string,
-    from:number,
-    last_page:number
-    per_page:number
-    to:number
-    total:number
-    links:IPaginationLink[],
+export interface IPaginatedData<T> {
+    current_page: number,
+    data: T[],
+    first_page_url?: string,
+    last_page_url?: string,
+    next_page_url?: string,
+    prev_page_url?: string,
+    path: string,
+    from: number,
+    last_page: number
+    per_page: number
+    to: number
+    total: number
+    links: IPaginationLink[],
 }
 
-export interface IPaginationLink{
-    active:boolean,
-    label:string,
-    url:string
+export interface IPaginationLink {
+    active: boolean,
+    label: string,
+    url: string
 }
 
-export interface IPayment{
-    id:number;
-    method:"cash"|"gcash";
-    payment_no:string;
-    status:string;
-    receipt:string;
-    reservation_id:number;
-    created_at:string
+export interface IPayment {
+    id: number;
+    method: "cash" | "gcash";
+    payment_no: string;
+    status: string;
+    receipt: string;
+    reservation_id: number;
+    created_at: string
 }
 
 export enum IReservationType {
@@ -121,8 +134,48 @@ export enum IReservationType {
 }
 
 
-export interface IExtraAmenity{
-    id:number,
-    name:string,
-    price:number
+export interface IExtraAmenity {
+    id: number,
+    name: string,
+    price: number
+}
+export interface IReservationAddOn {
+    id: number,
+    quantity: number,
+    price: number
+    amenity_id: number
+    reservation_id: number
+    amenity?:IExtraAmenity
+}
+export interface INewReservationAddOn {
+    quantity: number,
+    amenity_id: number
+    amenity?:IExtraAmenity
+}
+
+export interface INavbarTitle { icon: string, title: string };
+
+export interface INavLink {
+    label?: string
+    icon?: string
+    href?: string
+    key?: string[]
+}
+export interface INavLinkMenu {
+    label: string
+    icon: string
+    menu: INavLink[]
+}
+
+export interface IAddRoomPost {
+    main_photo: File | null
+    additional_photos: File[]
+    name:string
+    min_people:number | string
+    max_people:number | string
+    price:number | string
+    double_decks:number | string
+    beds:number | string
+    description:string
+    amenities:string[]
 }

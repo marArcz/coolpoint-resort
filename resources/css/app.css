@@ -9,23 +9,28 @@
     }
 }
 .hero-section {
-    background: linear-gradient(0deg,rgba(37, 37, 37, 0.7),rgba(37, 37, 37, 0.7)), url('/images/hero-image.jpg');
+    background: linear-gradient(
+            0deg,
+            rgba(37, 37, 37, 0.7),
+            rgba(37, 37, 37, 0.7)
+        ),
+        url("/images/hero-image.jpg");
     background-size: cover;
     background-position: center;
     /* background-attachment: fixed; */
     @apply xl:h-[83vh] lg:h-[85vh] h-[70vh];
 }
 
-.room-image{
+.room-image {
     @apply relative;
 }
 
-.section-title{
+.section-title {
     @apply font-serif font-medium lg:text-5xl text-3xl;
 }
 
-.room-image::after{
-    content:" ";
+.room-image::after {
+    content: " ";
     position: absolute;
     top: 50%;
     left: 50%;
@@ -41,40 +46,66 @@
         @apply xl:px-[8.125rem] md:px-[5rem] px-5;
     }
     .m-icon {
-        font-family: 'Material Symbols Outlined' !important;
+        font-family: "Material Symbols Outlined" !important;
         font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-        font-size: 1.5rem;
-        line-height:normal;
+        line-height: normal;
+        @apply xl:text-2xl md:text-xl;
+    }
+    .m-icon.filled {
+        font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
     }
 
-    .page-loader{
-        @apply fixed w-full h-screen left-0 top-0 z-50 bg-white flex justify-center items-center transition-all animate-in;
+    .page-loader {
+        @apply fixed w-full h-screen left-0 top-0 z-[9999] bg-white flex justify-center items-center transition-all animate-in;
     }
-    .btn{
+    .btn {
         @apply px-6 py-4;
     }
-    .btn-outlined{
+    .btn-outlined {
         @apply text-white  relative border after:content-normal after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:bg-primary/70 after:w-full after:h-full after:z-[-1] after:scale-0 hover:after:scale-100 after:transition-all transition-all z-10;
     }
-    .mobile-nav{
+    .mobile-nav {
         @apply animate-in;
     }
 }
 
 @keyframes spin {
-    from{
+    from {
         transform: rotate(0deg);
         opacity: 0.7;
     }
-    to{
+    to {
         transform: rotate(360deg);
         opacity: 1;
     }
 }
 
+/* customize scrollbar */
+
+/* width */
+::-webkit-scrollbar {
+    @apply md:w-[10px] w-[5px] h-2;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 transition-all;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/60;
+}
+
+/* customize scrollbar --end */
 
 @layer base {
-  :root {
+    :root {
         --background: 0 0% 100%;
         --foreground: 240 10% 3.9%;
         --card: 0 0% 100%;
@@ -100,7 +131,7 @@
         --chart-5: 27 87% 67%;
         --radius: 0.5rem;
     }
-  .dark {
+    .dark {
         --background: 240 10% 3.9%;
         --foreground: 0 0% 98%;
         --card: 240 10% 3.9%;
@@ -129,10 +160,10 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
+    * {
+        @apply border-border;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground;
     }
 }

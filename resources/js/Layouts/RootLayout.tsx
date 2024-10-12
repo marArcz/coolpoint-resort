@@ -21,7 +21,6 @@ const RootLayout = ({ children }: PropsWithChildren) => {
 
     return (
         <>
-
             <div className={clsx("page-loader transition-all animate-out animate-in",
                 {
                     "hidden": !showLoadingIndicator,

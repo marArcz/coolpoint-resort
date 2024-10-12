@@ -2,7 +2,7 @@ import AvailabilityCheckCard from '@/Components/shared/AvailabilityCheckCard';
 import HeadingTitle from '@/Components/shared/HeadingTitle';
 import RoomBookingCard from '@/Components/shared/RoomBookingCard';
 import RoomInfoCard from '@/Components/shared/RoomInfoCard';
-import AppLayout from '@/Layouts/AppLayout'
+import AppLayout from '@/Layouts/CustomerLayout'
 import { IPaginatedData, IRoom } from '@/types/models'
 import { Link, router } from '@inertiajs/react';
 import { addDays, formatDate } from 'date-fns';

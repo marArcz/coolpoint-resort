@@ -7,7 +7,7 @@ import PrimaryButton from "@/Components/shared/PrimaryButton";
 import TextInput from "@/Components/shared/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import DropdownSelect from "@/Components/shared/DropdownSelect";
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from "@/Layouts/CustomerLayout";
 
 export default function Login({
     status,

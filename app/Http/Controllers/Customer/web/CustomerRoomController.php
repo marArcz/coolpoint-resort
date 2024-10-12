@@ -15,9 +15,8 @@ class CustomerRoomController extends Controller
      */
     public function index()
     {
-        $data['rooms'] = Room::with(['amenities','images'])->paginate(10);
-
-        return Inertia::render('Customer/Rooms', $data);
+        $rooms = Room::with(['amenities','images'])->paginate(10);
+        return Inertia::render('Customer/Rooms', compact('rooms'));
     }
 
     /**

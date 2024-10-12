@@ -4,17 +4,18 @@ import OutlineButtonLink from '@/Components/shared/OutlineButtonLink'
 import OutlinedButton from '@/Components/shared/OutlinedButton'
 import PrimaryButtonLink from '@/Components/shared/PrimaryButtonLink'
 import { Separator } from '@/Components/ui/separator'
-import AppLayout from '@/Layouts/AppLayout'
+import AppLayout from '@/Layouts/CustomerLayout'
 import { formatToCurrency, getTotalNights } from '@/lib/utils'
-import { IReservation } from '@/types/models'
+import { IReservation, IReservationConfiguration } from '@/types/models'
 import { Link, router, usePage } from '@inertiajs/react'
 import { differenceInDays, formatDate } from 'date-fns'
 import React from 'react'
 
 type Props = {
     reservation: IReservation;
+    configuration:IReservationConfiguration
 }
-const ReservationDetails = ({ reservation }: Props) => {
+const ReservationDetails = ({ reservation,configuration }: Props) => {
     const { flash } = usePage().props
 
     const payOnArrival = () => {
@@ -33,7 +34,7 @@ const ReservationDetails = ({ reservation }: Props) => {
                 title='Reservation Details'
                 image='/images/reservation-hero-image.jpg'
             />
-            <section className=" py-14 container-padded">
+            <section className=" py-12 container-padded">
                 {/* display success message */}
                 {flash.message.success && (
                     <HeadingTitle className='mb-20'>
@@ -41,8 +42,8 @@ const ReservationDetails = ({ reservation }: Props) => {
                     </HeadingTitle>
                 )}
                 <div className="">
-                    <h4 className='font-serif text-3xl lg:text-4xl font-medium'>Reservation Details</h4>
-                    <div className="mt-5 lg:mt-10 grid grid-cols-2 lg:grid-cols-3 gap-y-3">
+                    {/* <h4 className='font-serif text-xl lg:text-2xl text-primary font-semibold'>Reservation Details</h4> */}
+                    <div className="mt-2 lg:mt-2 grid grid-cols-2 lg:grid-cols-3 gap-y-8">
                         <div className="col-span-1">
                             <p className='text-lg font-light'>Reservation No</p>
                             <p className='text-lg font-medium'>#{reservation.reservation_no}</p>
@@ -55,8 +56,6 @@ const ReservationDetails = ({ reservation }: Props) => {
                             <p className='text-lg font-light'>Status</p>
                             <p className='text-lg font-medium'>{reservation.status}</p>
                         </div>
-                    </div>
-                    <div className="lg:mt-20 mt-10 grid grid-cols-2 lg:grid-cols-4 gap-y-3">
                         <div className="col-span-1">
                             <p className='text-lg font-light'>Check In</p>
                             <p className='text-lg font-medium'>{formatDate(new Date(reservation.date_from), "MMMM dd, yyyy")}</p>
@@ -65,18 +64,54 @@ const ReservationDetails = ({ reservation }: Props) => {
                             <p className='text-lg font-light'>Check Out</p>
                             <p className='text-lg font-medium'>{formatDate(new Date(reservation.date_to), "MMMM dd, yyyy")}</p>
                         </div>
-                        {reservation.room && (
-                            <>
-                                <div className="col-span-1">
-                                    <p className='text-lg font-light'>Room</p>
-                                    <Link href={route('rooms.show', [reservation.room.id])} className='text-lg underline text-secondary font-medium'>{reservation.room.name}</Link>
-                                </div>
-                            </>
-                        )}
                         <div className="col-span-1">
                             <p className='text-lg font-light'>Total</p>
                             <p className='text-lg font-medium'>{formatToCurrency(reservation.total)}</p>
                         </div>
+                    </div>
+                    <div>
+                        <h4 className='font-serif text-xl lg:text-2xl text-primary lg:mt-14 mt-10 font-semibold'>Price Breakdown</h4>
+                        <div className="lg:mt-5 mt-5 grid lg:grid-cols-4 grid-cols-2 lg:gap-y-0 gap-y-4">
+                            <div className="col-span-1">
+                                <div className='text-base lg:text-lg border px-4 py-3 font-medium'>Rate</div>
+                            </div>
+                            <div className="col-span-3 text-end">
+                                <div className='text-base lg:text-lg border px-4 py-3 font-medium capitalize'>
+                                    {formatToCurrency(reservation.type == 'room' ? reservation.room?.price ?? 0 : configuration.resort_rate)}
+                                </div>
+                            </div>
+                        </div>
+                        <div className=" grid lg:grid-cols-4 grid-cols-2 lg:gap-y-0 gap-y-4">
+                            <div className="col-span-1">
+                                <div className='text-base lg:text-lg border px-4 py-3 font-medium'>Stay</div>
+                            </div>
+                            <div className="col-span-3 text-end">
+                                <div className='text-base lg:text-lg border px-4 py-3 font-medium capitalize'>
+                                    {getTotalNights(reservation.date_from, reservation.date_to)} nights
+                                </div>
+                            </div>
+                        </div>
+                        {reservation.addOns && reservation.addOns.length > 0 && (
+                            <div className=" grid lg:grid-cols-4 grid-cols-2 lg:gap-y-0 gap-y-4">
+                                <div className="col-span-full">
+                                    <div className='text-base border px-4 py-3 text-gray-600 capitalize'>
+                                        Extra Amenities
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {reservation.addOns && reservation.addOns.map((addOn => (
+                            <div key={addOn.id} className=" grid lg:grid-cols-4 grid-cols-2 lg:gap-y-0 gap-y-4">
+                                <div className="col-span-1">
+                                    <div className='text-base lg:text-lg border px-4 py-3 font-medium'>{addOn.amenity?.name}</div>
+                                </div>
+                                <div className="col-span-3 text-end">
+                                    <div className='text-base lg:text-lg border px-4 py-3 font-medium capitalize'>
+                                        {formatToCurrency(addOn.price)} x {addOn.quantity}
+                                    </div>
+                                </div>
+                            </div>
+                        )))}
                     </div>
                     {/*  */}
                     {reservation.status.toLowerCase() == 'pending' && (
@@ -88,59 +123,48 @@ const ReservationDetails = ({ reservation }: Props) => {
                             </div>
                         </div>
                     )}
-                    {/* payment details */}
-                    <h4 className='font-serif text-3xl lg:text-4xl lg:mt-24 mt-14 font-medium'>Payment Details</h4>
-                    {
-                        reservation.payment ? (
-                            <div className="lg:mt-10 mt-5 grid grid-cols-2 gap-y-5">
-                                <div className="">
-                                    <p className='text-lg font-light'>Payment No</p>
-                                    <p className='text-lg font-medium'>#{reservation.payment.payment_no}</p>
-                                </div>
-                                <div className="">
-                                    <p className='text-lg font-light'>Date</p>
-                                    <p className='text-lg font-medium capitalize'>{formatDate(new Date(reservation.payment.created_at), "MMMM dd, yyyy")}</p>
-                                </div>
-                                <div className="">
-                                    <p className='text-lg font-light'>Payment Method</p>
-                                    <p className='text-lg font-medium capitalize'>{reservation.payment_method == 'cash' ? 'Pay on arrival' : reservation.payment_method}</p>
-                                </div>
-                                <div className="">
-                                    <p className='text-lg font-light'>Status</p>
-                                    <p className='text-lg font-medium'>{reservation.payment.status}</p>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <p className='mt-2'>No payment has been made yet.</p>
-
-                                <div className="mt-4 flex gap-3 items-center">
-                                    <OutlineButtonLink className='w-max' href={route('reservations.payment.create', [reservation.id])}>Pay with GCash</OutlineButtonLink>
-                                    <p className="my-1">Or</p>
-                                    <OutlinedButton className='w-max' onClick={payOnArrival}>Pay on arrival</OutlinedButton>
-                                </div>
-                            </>
-
-                        )
-                    }
-                    <div className="mt-20">
+                    <div className="mt-5">
                         {/* confirmed */}
                         {reservation.status.toLowerCase() == 'confirmed' && (
                             <>
-                                <div className=''>
+                                {/* payment details */}
+                                <h4 className='font-serif text-xl lg:text-2xl text-primary lg:mt-14 mt-10 font-semibold'>Payment Details</h4>
+                                {
+                                    reservation.payment ? (
+                                        <div className="lg:mt-5 mt-5 grid lg:grid-cols-4 grid-cols-2 lg:gap-y-0 gap-y-4">
+                                            <div className="">
+                                                <div className='lg:text-base text-sm border px-4 lg:py-3 py-2 font-regular text-gray-500'>Payment No</div>
+                                                <div className='text-base lg:text-lg border px-4 py-3 font-medium'>#{reservation.payment.payment_no}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className='lg:text-base text-sm border px-4 lg:py-3 py-2 font-regular text-gray-500'>Date</div>
+                                                <div className='text-base lg:text-lg border px-4 py-3 font-medium capitalize'>{formatDate(new Date(reservation.payment.created_at), "MMMM dd, yyyy")}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className='lg:text-base text-sm border px-4 lg:py-3 py-2 font-regular text-gray-500'>Payment Method</div>
+                                                <div className='text-base lg:text-lg border px-4 py-3 font-medium capitalize'>{reservation.payment_method == 'cash' ? 'Pay on arrival' : reservation.payment_method}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className='lg:text-base text-sm border px-4 lg:py-3 py-2 font-regular text-gray-500'>Status</div>
+                                                <div className='text-base lg:text-lg border px-4 py-3 font-medium'>{reservation.payment.status}</div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <p className='mt-2'>No payment has been made yet.</p>
+
+                                            <div className="mt-4 flex gap-3 items-center">
+                                                <OutlineButtonLink className='w-max' href={route('reservations.payment.create', [reservation.id])}>Pay with GCash</OutlineButtonLink>
+                                                <p className="my-1">Or</p>
+                                                <OutlinedButton className='w-max' onClick={payOnArrival}>Pay on arrival</OutlinedButton>
+                                            </div>
+                                        </>
+
+                                    )
+                                }
+                                <div className='mt-20'>
                                     <Link method='put' href={route('reservations.cancel', [reservation.id])} className='border border-red-200 py-5 px-7 hover:bg-red-100 bg-transparent transition-all text-lg text-red-700'>Cancel Reservation</Link>
                                 </div>
-                                {/* {differenceInDays(new Date(reservation.date_from), new Date()) > 3 ? (
-                                    <div className=''>
-                                        <Link method='put' href={route('reservations.cancel', [reservation.id])} className='border border-red-200 py-5 px-7 hover:bg-red-100 bg-transparent transition-all text-lg text-red-700'>Cancel Reservation</Link>
-                                    </div>
-                                ) : (
-                                    <div className=''>
-                                        <hr className='mb-7' />
-                                        <p className='mb-7 text-lg'>Confirmed reservations can only be cancelled 3 days before the date of reservation</p>
-                                        <button className='border py-3 px-5 bg-transparent transition-all text-lg text-gray-600'>Cancel Reservation</button>
-                                    </div>
-                                )} */}
                             </>
                         )}
 

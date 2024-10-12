@@ -25,7 +25,7 @@ class PaymentController extends Controller
     public function create(Reservation $reservation)
     {
         $configuration = ReservationConfiguration::all()[0];
-        return Inertia::render('Customer/CreatePayment', compact('reservation','configuration'));
+        return Inertia::render('Customer/CreatePayment', compact('reservation', 'configuration'));
     }
 
     /**
@@ -63,8 +63,8 @@ class PaymentController extends Controller
             ]);
 
             return redirect()->to(route('reservations.show', [$reservation->id]))->with('success', 'Thank you for your payment. Your transaction has been completed.');
-        }else{
-             // create payment
+        } else {
+            // create payment
             $reservation->payment()->create([
                 'method' => 'cash',
                 'amount' => $amount,
@@ -74,7 +74,6 @@ class PaymentController extends Controller
 
             return redirect()->to(route('reservations.show', [$reservation->id]))->with('success', 'Thank you. Your payment will be put on hold and will be processed on your arrival.');
         }
-
     }
 
     /**
@@ -98,7 +97,18 @@ class PaymentController extends Controller
      */
     public function update(Request $request, Payment $payment)
     {
-        //
+        $validated =  $request->validate([
+            'method' => ['required'],
+            'amount' => ['required'],
+            'status' => ['required'],
+            'receipt' => ['required'],
+            'notes' => ['required']
+        ]);
+
+        $payment->update($validated);
+        $payment->save();
+
+        return redirect()->back()->with('success', 'Successfully updated!');
     }
 
     /**

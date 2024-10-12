@@ -1,5 +1,5 @@
 import HeadingTitle from '@/Components/shared/HeadingTitle'
-import AppLayout from '@/Layouts/AppLayout'
+import AppLayout from '@/Layouts/CustomerLayout'
 
 const CreateResortReservation = () => {
   return (

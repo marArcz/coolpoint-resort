@@ -2,7 +2,7 @@ import { Link, usePage } from "@inertiajs/react";
 import React, { useState } from "react";
 import ApplicationLogo from "../shared/ApplicationLogo";
 import { motion, AnimatePresence } from "framer-motion";
-import { Popover, PopoverTrigger } from "./popover";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
 const Navbar = () => {
     const { auth } = usePage().props
@@ -15,12 +15,6 @@ const Navbar = () => {
                         {/* menu icon */}
                         <span className="m-icon">more_horiz</span>
                     </button>
-                    <Popover>
-                        <PopoverTrigger className="absolute size-9 rounded-full flex justify-center items-center bg-gray-400/10 hover:bg-gray-400/20 active:bg-gray-400/30 right-6 self-center text-secondary lg:hidden">
-                            {/* menu icon */}
-                            <span className="m-icon">more_horiz</span>
-                        </PopoverTrigger>
-                    </Popover>
                     <ul className="list-none lg:flex hidden gap-[49px]">
                         <li>
                             <Link className=" xl:text-base text-sm font-light" href={route('home')}>
@@ -53,10 +47,32 @@ const Navbar = () => {
                         {auth.user ? (
                             <>
                                 <li>
-
-                                    <Link className="xl:text-base text-sm font-light" href={route("profile.edit")}>
+                                    {/* <Link className="xl:text-base text-sm font-light" href={route("profile.edit")}>
                                         MY ACCOUNT
-                                    </Link>
+                                    </Link> */}
+                                    <Popover>
+                                        <PopoverTrigger className="xl:text-base text-sm font-light">
+                                            MY ACCOUNT
+                                        </PopoverTrigger>
+                                        <PopoverContent align="end" sideOffset={20}>
+                                            <div className="text-center">
+                                                <img src={auth.user.photo || '/images/account.jpg'} width={70} height={70} className="rounded-full object-cover object-top border mx-auto"/>
+                                                <p className="mt-3 ">{auth.user.name}</p>
+                                            </div>
+                                            <ul className="list-none flex flex-col gap-5 mt-4">
+                                                <li>
+                                                    <Link className="xl:text-base text-sm font-light" href={route("profile.edit")}>
+                                                        Profile
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link role="button" className="xl:text-base text-sm font-light" method="post" href={route("logout")}>
+                                                        Log Out
+                                                    </Link>
+                                                </li>
+                                            </ul>
+                                        </PopoverContent>
+                                    </Popover>
                                 </li>
                             </>
                         ) : (

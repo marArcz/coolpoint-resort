@@ -12,6 +12,7 @@ export default forwardRef(function TextInput(
         floatingLabel = false,
         type = "text",
         className = "",
+        containerClassName = "",
         isFocused = false,
         placeholder = "",
         id,
@@ -19,6 +20,7 @@ export default forwardRef(function TextInput(
     }: InputHTMLAttributes<HTMLInputElement> & {
         isFocused?: boolean;
         floatingLabel?: boolean;
+        containerClassName?:string;
     },
     ref
 ) {
@@ -35,7 +37,7 @@ export default forwardRef(function TextInput(
     }, []);
 
     return (
-        <div className="bg-inherit relative">
+        <div className={`bg-inherit relative ${containerClassName}`}>
             <input
                 {...props}
                 placeholder={floatingLabel ? "":placeholder}
@@ -43,7 +45,7 @@ export default forwardRef(function TextInput(
                 type={type}
                 autoComplete="off"
                 className={
-                    "peer text-[1rem] bg-white py-[17px] px-5 focus:ring-0 focus:border-gray-500 focus:outline-none focus:shadow-none border border-gray-200 " +
+                    "peer text-[1rem] bg-white py-[14px] px-5 focus:ring-0 focus:border-gray-500 focus:outline-none focus:shadow-none border border-gray-200 " +
                     className
                 }
                 ref={localRef}

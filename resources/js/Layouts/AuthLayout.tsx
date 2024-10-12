@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react'
-import AppLayout from './AppLayout'
+import AppLayout from './CustomerLayout'
 
 const AuthLayout = ({ children }: PropsWithChildren) => {
     return (

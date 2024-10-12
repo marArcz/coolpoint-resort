@@ -5,7 +5,7 @@ import InputLabel from '@/Components/shared/InputLabel';
 import PrimaryButton from '@/Components/shared/PrimaryButton';
 import TextInput from '@/Components/shared/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
-import AppLayout from '@/Layouts/AppLayout';
+import AppLayout from '@/Layouts/CustomerLayout';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({

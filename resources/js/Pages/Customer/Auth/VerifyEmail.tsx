@@ -2,7 +2,7 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import PrimaryButton from '@/Components/shared/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
-import AppLayout from '@/Layouts/AppLayout';
+import AppLayout from '@/Layouts/CustomerLayout';
 
 export default function VerifyEmail({ status }: { status?: string }) {
     const { post, processing } = useForm({});

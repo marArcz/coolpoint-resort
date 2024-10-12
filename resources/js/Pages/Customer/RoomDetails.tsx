@@ -5,8 +5,8 @@ import PopoverNumberInput from '@/Components/shared/PopoverNumberInput'
 import PrimaryButton from '@/Components/shared/PrimaryButton'
 import TextInput from '@/Components/shared/TextInput'
 import { Calendar } from '@/Components/ui/calendar'
-import AppLayout from '@/Layouts/AppLayout'
-import { formatToCurrency, getTotalNights } from '@/lib/utils'
+import AppLayout from '@/Layouts/CustomerLayout'
+import { asset, formatToCurrency, getTotalNights } from '@/lib/utils'
 import { PageProps } from '@/types'
 import { IAddReservation, IRoom, IRoomWithReservations } from '@/types/models'
 import { router, useForm, usePage } from '@inertiajs/react'
@@ -55,7 +55,7 @@ const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Pro
 
     return (
         <AppLayout>
-            <HeroSection title='Reservation' image='/images/reservation-hero-image.jpg' />
+            <HeroSection title='Room Details' image={asset(room.image)} />
             <section className="py-16 container-padded bg-gray-50">
                 <div className="flex flex-col lg:flex-row gap-9 lg:justify-between lg:items-center">
                     <div>
@@ -78,26 +78,26 @@ const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Pro
                     </div>
                 </div>
                 <div className="mt-8">
-                    <img src={mainImage} className='object-cover object-center w-full h-[80vh]' alt="" />
+                    <img src={asset(mainImage)} className='object-cover  object-center w-full rounded-lg md:h-[80vh] h-[60vh]' alt="" />
                 </div>
                 {
                     room.images && (
                         <div className="flex mt-3 overflow-x-auto overflow-y-hidden gap-4 h-max">
                             <img
-                                src={room.image}
+                                src={asset(room.image)}
                                 onClick={() => setMainImage(room.image)}
                                 alt=""
-                                className={clsx('object-cover transition-all border fade-in-5 animate-in object-center size-28 cursor-pointer hover:opacity-80', {
+                                className={clsx('rounded-lg object-cover transition-all border fade-in-5 animate-in object-center size-24 cursor-pointer hover:opacity-80', {
                                     'border-primary/80 opacity-80': room.image == mainImage
                                 })}
                             />
                             {room.images.map((image) => (
                                 <img
                                     key={image.id}
-                                    src={image.uri}
+                                    src={asset(image.uri)}
                                     onClick={() => setMainImage(image.uri)}
                                     alt={room.name + " image"}
-                                    className={clsx('object-cover transition-all object-center border size-28 cursor-pointer hover:opacity-80', {
+                                    className={clsx('rounded-lg object-cover transition-all object-center border size-24 cursor-pointer hover:opacity-80', {
                                         'border-primary/80 opacity-80': image.uri == mainImage
                                     })}
                                 />

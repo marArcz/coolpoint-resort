@@ -15,7 +15,7 @@ class Reservation extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $with = ['room', 'payment'];
+    protected $with = ['room', 'payment','addOns'];
 
     protected $fillable = [
         'date_from',
@@ -70,6 +70,10 @@ class Reservation extends Model
             });
     }
 
+    public function user():BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);

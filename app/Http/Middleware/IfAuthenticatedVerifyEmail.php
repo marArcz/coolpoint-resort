@@ -14,9 +14,9 @@ class IfAuthenticatedVerifyEmail
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $role='customer'): Response
     {
-        if(Auth::guard('customer')->check()){
+        if(Auth::check($role) && $request->user()->hasRole($role)){
             if($request->user()->hasVerifiedEmail()){
                 return $next($request);
             }else{

@@ -17,8 +17,8 @@ const PopoverNumberInput = ({ name='', label, min = 0, max, value = 1, handleCha
     return (
         <div className={className}>
             <Popover open={open} onOpenChange={(o) => setOpen(o)}>
-                <PopoverTrigger className="border bg-white hover:border-gray-500 active:shadow px-5 py-3 flex w-full items-center justify-between">
-                    <label className=' pointer-events-none'>{label}</label>
+                <PopoverTrigger className="border bg-white hover:border-gray-500 active:shadow px-5 py-2 flex w-full items-center justify-between">
+                    <label className='xl:text-base text-sm pointer-events-none text-nowrap'>{label}</label>
                     <div className="flex items-center">
                         <input type="text" value={value} className='w-full text-lg text-end border-0 pointer-events-none' readOnly />
                         <span
@@ -31,8 +31,8 @@ const PopoverNumberInput = ({ name='', label, min = 0, max, value = 1, handleCha
                         </span>
                     </div>
                 </PopoverTrigger>
-                <PopoverContent align='end'>
-                    <div className="flex items-center justify-between">
+                <PopoverContent align='end' className='w-max'>
+                    <div className="flex gap-5 items-center justify-between">
                         <p className="">{label}</p>
                         <div className="flex gap-3 items-center">
                             <button
@@ -42,7 +42,7 @@ const PopoverNumberInput = ({ name='', label, min = 0, max, value = 1, handleCha
                             >
                                 <span className="m-icon text-base">remove</span>
                             </button>
-                            <p className="m-0">{value}</p>
+                            <p className="m-0 xl:text-base text-xs">{value}</p>
                             <button
                                 className="rounded-full hover:bg-primary/20 size-8"
                                 type="button"

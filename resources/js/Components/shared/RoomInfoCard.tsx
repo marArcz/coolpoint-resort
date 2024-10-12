@@ -3,7 +3,7 @@ import React from 'react'
 import OutlinedButton from './OutlinedButton'
 import { Link } from '@inertiajs/react'
 import HeadingTitle from './HeadingTitle'
-import { formatToCurrency } from '@/lib/utils'
+import { asset, formatToCurrency } from '@/lib/utils'
 
 type Props = {
     room: IRoom,
@@ -18,7 +18,7 @@ const RoomInfoCard = ({ room,href }: Props) => {
                         View Details
                     </Link>
                 </div>
-                <img src={room.image ?? ''} className='w-full lg:h-[360px] h-[200px] object-cover' alt="" />
+                <img src={asset(room.image) ?? ''} className='w-full lg:h-[360px] h-[200px] object-cover' alt="" />
             </div>
             <div className="mt-4">
                 <div className="flex items-center">
