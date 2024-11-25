@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PaymentIsUpdated;
+use App\Events\ReservationUpdated;
 use App\Models\Payment;
 use App\Models\Reservation;
 use App\Models\ReservationConfiguration;
+use App\Models\User;
+use App\Notifications\PaymentReceivedNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -24,7 +29,7 @@ class PaymentController extends Controller
      */
     public function create(Reservation $reservation)
     {
-        $configuration = ReservationConfiguration::all()[0];
+        $configuration = ReservationConfiguration::firstOrFail();
         return Inertia::render('Customer/CreatePayment', compact('reservation', 'configuration'));
     }
 
@@ -35,44 +40,45 @@ class PaymentController extends Controller
     {
         $request->validate([
             'method' => 'required',
-            'amount' => 'required'
+            'amount' => 'required',
+            'type' => 'required',
         ]);
 
         $amount = $request->integer('amount');
-        $method = $request->string('method', 'cash');
+        $method = $request->string('method');
+        $type = $request->string('type');
+        $is_refundable = $request->boolean('is_refundable');
 
         // update payment method
         $reservation->payment_method = $method;
         $reservation->save();
 
-        // delete payment if exist
-        $reservation->payment()->delete();
+        // delete existing payments
+        Payment::where('reservation_id', '=', $reservation->id)->delete();
         // proceed to payment creation
-        if ($method == 'gcash') {
-            $request->validate([
-                'receipt' => 'required|file',
-            ]);
-            // create payment
-            $receipt = $request->file("receipt")->store('payments');
-            $reservation->payment()->create([
-                'method' => 'gcash',
-                'amount' => $amount,
-                'payment_no' => "P" . $reservation->reservation_no,
-                'status' => 'Completed',
-                'receipt' => $receipt
-            ]);
+        $request->validate([
+            'receipt' => 'required|file',
+        ]);
+        // create payment
+        $receipt = $request->file("receipt")->store('payments');
+        $payment = $reservation->payment()->create([
+            'method' => $method,
+            'type' => $type,
+            'amount' => $amount,
+            'payment_no' => "P" . $reservation->reservation_no,
+            'status' => 'Completed',
+            'receipt' => $receipt,
+            'is_refundable' => $is_refundable,
+        ]);
 
+        // create notifications
+        $admins = User::whereHasRole('admin')->get(); // get admins
+        Notification::sendNow($admins, new PaymentReceivedNotification($payment));
+
+        if ($method == 'gcash') {
             return redirect()->to(route('reservations.show', [$reservation->id]))->with('success', 'Thank you for your payment. Your transaction has been completed.');
         } else {
-            // create payment
-            $reservation->payment()->create([
-                'method' => 'cash',
-                'amount' => $amount,
-                'payment_no' => "P" . $reservation->reservation_no,
-                'status' => 'On Hold',
-            ]);
-
-            return redirect()->to(route('reservations.show', [$reservation->id]))->with('success', 'Thank you. Your payment will be put on hold and will be processed on your arrival.');
+            return redirect()->to(route('reservations.show', [$reservation->id]))->with('success', 'Thank you. The remaining balance will be put on hold and will be processed on your arrival.');
         }
     }
 
@@ -101,12 +107,30 @@ class PaymentController extends Controller
             'method' => ['required'],
             'amount' => ['required'],
             'status' => ['required'],
+            'notes' => ['nullable'],
             'receipt' => ['required'],
-            'notes' => ['required']
+            'type' => ['required'],
+            'is_refundable' => ['required'],
+            'is_refunded' => ['required'],
         ]);
 
         $payment->update($validated);
+
+        if ($request->hasFile('image')) {
+            $payment->proof_of_refund = $request->file('image')->store('refunds');
+        }
+
         $payment->save();
+
+        // send notification
+        $reservation = Reservation::find($payment->reservation_id);
+        if ($reservation) {
+            event(new ReservationUpdated($reservation));
+        }
+
+        if($payment->wasChanged('status')){
+            event(new PaymentIsUpdated($payment));
+        }
 
         return redirect()->back()->with('success', 'Successfully updated!');
     }

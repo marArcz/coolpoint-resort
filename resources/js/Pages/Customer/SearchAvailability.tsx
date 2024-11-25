@@ -21,7 +21,7 @@ type Props = {
 const SearchAvailability = ({ rooms, dateFrom = new Date(), dateTo = addDays(new Date, 3), adults = 3, children = 1, isResortAvailable = false }: Props) => {
 
     const handleSearchAvailability = (selectedDate: DateRange, adults: number, children: number) => {
-        router.get(route('availability.search'), {
+        router.get(route('availability.index'), {
             date_from: selectedDate.from,
             date_to: selectedDate.to,
             adults,
@@ -33,8 +33,8 @@ const SearchAvailability = ({ rooms, dateFrom = new Date(), dateTo = addDays(new
         <AppLayout>
             <section className='py-12 container-padded'>
                 <HeadingTitle reverse>
-                    <h3 className='text-4xl font-serif font-semibold'>
-                        <span className='m-icon text-3xl me-3'>search</span>
+                    <h3 className='lg:text-4xl md:text-3xl text-2xl font-serif font-semibold'>
+                        <span className='m-icon md:text-3xl text-2xl me-3'>search</span>
                         <span>Search Availability</span>
                     </h3>
                 </HeadingTitle>
@@ -56,9 +56,9 @@ const SearchAvailability = ({ rooms, dateFrom = new Date(), dateTo = addDays(new
                         Resort reservation availability ({formatDate(dateFrom, "MMM. dd, yyyy")} - {formatDate(dateTo, "MMM. dd, yyyy")}): <span className='text-primary font-semibold'>{isResortAvailable ? 'Available' : 'Not available'}</span>
                     </p>
                     {isResortAvailable ? (
-                        <Link href={route('reservations.create',{dateFrom,dateTo,adults,children})} className='underline text-lg block font-medium mt-5'>Click here to book entire resort</Link>
+                        <Link href={route('resort_reservation',{dateFrom,dateTo,adults,children})} className='underline text-lg block font-medium mt-5'>Click here to book entire resort</Link>
                     ) : (
-                        <Link href={route('reservations.create')} className='underline text-lg block mt-5'>See available dates</Link>
+                        <Link href={route('resort_reservation')} className='underline text-lg block mt-5'>See available dates</Link>
                     )}
                 </div>
 

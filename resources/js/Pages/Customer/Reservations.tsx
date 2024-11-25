@@ -27,7 +27,7 @@ const Reservations = ({ reservations }: Props) => {
     const nights: number = data.date_from && data.date_to ? differenceInDays(addDays(data.date_to, 1), data.date_from) : 0;
 
     const handleSubmit = () => {
-        get(route('availability.search'));
+        get(route('availability.index'));
     }
 
     return (
@@ -69,12 +69,12 @@ const Reservations = ({ reservations }: Props) => {
                                                             <span>Pending for confirmation</span>
                                                         </p>
                                                     ) : (
-                                                        <p>{reservation.status}</p>
+                                                        <p className={`font-medium ${reservation.status == 'Approved'?'text-green-700':'text-gray-600'}`}>{reservation.status}</p>
                                                     )}
                                                 </div>
                                                 <div className='px-6 py-2 lg:py-4 col-span-2 lg:col-span-1 text-lg capitalize'>
                                                     <p className='text-primary font-medium mb-2 block lg:hidden text-sm'>Payment Method</p>
-                                                    <p>{reservation.payment_method ?? "-"}</p>
+                                                    <p>{reservation.payment_method || "-"}</p>
                                                 </div>
                                                 <div className='px-6 py-4 col-span-2 lg:col-span-1 text-left'>
                                                 <p className='text-primary font-medium mb-2 block lg:hidden text-sm'>Payment Status</p>

@@ -56,4 +56,11 @@ class User extends Authenticatable implements MustVerifyEmail, LaratrustUser
     {
         return $this->hasMany(Reservation::class);
     }
+
+    public function receivesBroadcastNotificationsOn(): string
+    {
+        // $role = $this->hasRole('admin') ? 'admin' : 'customer';
+
+        return ($this->hasRole('admin') ? 'admins.' : 'customers.') . $this->id;
+    }
 }

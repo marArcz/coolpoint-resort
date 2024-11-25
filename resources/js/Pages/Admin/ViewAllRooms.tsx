@@ -22,7 +22,6 @@ type Props = {
     rooms: IPaginatedData<IRoom>
 }
 const ViewAllRooms = ({ rooms }: Props) => {
-    console.log(rooms)
     return (
         <AdminLayout
             navbarIcon='bed'
@@ -75,7 +74,7 @@ const ViewAllRooms = ({ rooms }: Props) => {
                                     </TableCell>
                                     <TableCell>
                                         <DropdownMenu>
-                                            <DropdownMenuTrigger>
+                                            <DropdownMenuTrigger asChild>
                                                 <Button variant="ghost" className="h-8 w-8 p-0">
                                                     <span className="sr-only">Open menu</span>
                                                     <MoreHorizontal className="h-4 w-4" />
@@ -90,7 +89,7 @@ const ViewAllRooms = ({ rooms }: Props) => {
                                                     </Link>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem>
-                                                    <Link href={route('admin.rooms.update', [room.id])}>
+                                                    <Link href={route('admin.rooms.edit', [room.id])}>
                                                         Edit Room
                                                     </Link>
                                                 </DropdownMenuItem>

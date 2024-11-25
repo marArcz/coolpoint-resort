@@ -1,18 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\ReservationConfiguration;
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class ReservationConfigurationController extends Controller
+class AdminCustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $customers = User::whereHasRole('customer')
+            ->paginate(10)->withQueryString();
+
+        return Inertia::render('Admin/Customers', compact('customers'));
     }
 
     /**
@@ -34,7 +39,7 @@ class ReservationConfigurationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ReservationConfiguration $reservationConfiguration)
+    public function show(User $user)
     {
         //
     }
@@ -42,7 +47,7 @@ class ReservationConfigurationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ReservationConfiguration $reservationConfiguration)
+    public function edit(User $user)
     {
         //
     }
@@ -50,7 +55,7 @@ class ReservationConfigurationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ReservationConfiguration $reservationConfiguration)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -58,7 +63,7 @@ class ReservationConfigurationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ReservationConfiguration $reservationConfiguration)
+    public function destroy(User $user)
     {
         //
     }

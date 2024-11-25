@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ExtraAmenity;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ExtraAmenityController extends Controller
 {
@@ -12,7 +13,9 @@ class ExtraAmenityController extends Controller
      */
     public function index()
     {
-        //
+        $extraAmenities = ExtraAmenity::paginate(10);
+
+        return Inertia::render('Admin/ExtraAmenities', compact('extraAmenities'));
     }
 
     /**
@@ -20,7 +23,7 @@ class ExtraAmenityController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/AddExtraAmenity');
     }
 
     /**
@@ -28,7 +31,14 @@ class ExtraAmenityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'string|required',
+            'price' => 'required|numeric',
+        ]);
+        $amenity = new ExtraAmenity($request->only(['name', 'price']));
+        $amenity->saveOrFail();
+
+        return redirect()->to(route('admin.extra_amenities.index'))->with('success', 'Successfully added new amenity');
     }
 
     /**
@@ -44,7 +54,7 @@ class ExtraAmenityController extends Controller
      */
     public function edit(ExtraAmenity $extraAmenity)
     {
-        //
+        return Inertia::render('Admin/EditExtraAmenity', compact('extraAmenity'));
     }
 
     /**
@@ -52,7 +62,13 @@ class ExtraAmenityController extends Controller
      */
     public function update(Request $request, ExtraAmenity $extraAmenity)
     {
-        //
+        $request->validate([
+            'name' => 'string|required',
+            'price' => 'required|numeric',
+        ]);
+        $extraAmenity->updateOrFail($request->only(['name','price']));
+        return redirect()->to(route('admin.extra_amenities.index'))->with('success', 'Successfully updated amenity');
+
     }
 
     /**
@@ -60,6 +76,7 @@ class ExtraAmenityController extends Controller
      */
     public function destroy(ExtraAmenity $extraAmenity)
     {
-        //
+        $extraAmenity->delete();
+        return redirect()->to(route('admin.extra_amenities.index'))->with('success', 'Successfully deleted amenity');
     }
 }

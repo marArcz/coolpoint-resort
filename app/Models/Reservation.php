@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\NewReservationCreated;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,8 +16,7 @@ class Reservation extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $with = ['room', 'payment','addOns'];
-
+    protected $appends = ['isPaid'];
     protected $fillable = [
         'date_from',
         'date_to',
@@ -25,6 +25,7 @@ class Reservation extends Model
         'room_id',
         'user_id',
         'status',
+        'reason',
         'total',
         'reservation_no',
         'payment_method',
@@ -44,7 +45,7 @@ class Reservation extends Model
     public static function haveReservations(Carbon $dateStart, Carbon $dateEnd): bool
     {
         // Query to fetch reservations that overlap with the given date range
-        $reservationsCount = Reservation::where('status', '=', 'Confirmed')
+        $reservationsCount = Reservation::where('status', '=', 'Approved')
             ->where(function ($query) use ($dateStart, $dateEnd) {
                 $query->whereBetween('date_from', [$dateStart, $dateEnd])
                     ->orWhereBetween('date_to', [$dateStart, $dateEnd])
@@ -56,10 +57,11 @@ class Reservation extends Model
 
         return $reservationsCount > 0;
     }
+
     public static function scheduledWithin(Carbon $dateStart, Carbon $dateEnd)
     {
         // Query to fetch reservations that overlap with the given date range
-        return Reservation::where('status', '=', 'Confirmed')
+        return Reservation::where('status', '=', 'Approved')
             ->where(function ($query) use ($dateStart, $dateEnd) {
                 $query->whereBetween('date_from', [$dateStart, $dateEnd])
                     ->orWhereBetween('date_to', [$dateStart, $dateEnd])
@@ -87,5 +89,14 @@ class Reservation extends Model
     public function addOns():HasMany
     {
         return $this->hasMany(ReservationAddOn::class);
+    }
+
+    public function cancellationRequest(): HasOne{
+        return $this->hasOne(CancellationRequest::class);
+    }
+
+    public function getIsPaidAttribute():bool
+    {
+        return $this->payment()->where('status', '=', 'Confirmed')->exists();
     }
 }

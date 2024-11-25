@@ -42,7 +42,7 @@ class AdminRoomController extends Controller
             'additional_photos' => ['required'],
         ]);
 
-        $roomData['image'] = 'storage/' . $request->file('main_photo')->store('rooms');
+        $roomData['image'] = '/storage/' . $request->file('main_photo')->store('rooms');
         $roomData['name'] = $request->input('name');
         $roomData['min_people'] = $request->integer('min_people');
         $roomData['max_people'] = $request->integer('max_people');
@@ -67,7 +67,7 @@ class AdminRoomController extends Controller
                 $additionalPhotos = $request->file('additional_photos');
                 foreach ($additionalPhotos as $photo) {
                     // Save or process each file
-                    $path = 'storage/' . $photo->store('rooms');
+                    $path = '/storage/' . $photo->store('rooms');
                     $newRoom->images()->create([
                         'uri' => $path
                     ]);
@@ -83,7 +83,7 @@ class AdminRoomController extends Controller
      */
     public function show(Room $room)
     {
-        $room->load(['amenities','images']);
+        $room->load(['amenities','images','reservations']);
         return Inertia::render('Admin/RoomDetails', compact('room'));
     }
 
@@ -92,7 +92,8 @@ class AdminRoomController extends Controller
      */
     public function edit(Room $room)
     {
-        //
+        $room->load(['images']);
+        return Inertia::render('Admin/EditRoom',compact('room'));
     }
 
     /**
@@ -100,7 +101,15 @@ class AdminRoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
-        //
+        if($request->hasFile('photo')){
+            $photo = '/storage/' . $request->file('photo')->store('rooms');
+            $room->image = $photo;
+            $room->save();
+        }
+
+        $room->update($request->except(['id']));
+
+        return redirect()->back()->with('success','Successfully saved changes!');
     }
 
     /**

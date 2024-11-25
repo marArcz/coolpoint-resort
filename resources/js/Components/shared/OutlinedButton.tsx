@@ -5,7 +5,7 @@ export default function OutlinedButton({ className = '', bg="bg-primary", disabl
         <button
             {...props}
             className={
-                `w-full text-center justify-center border py-3 px-5 block hover:${bg} hover:text-white transition-all  ${
+                `w-full text-center justify-center border py-3 px-5 block transition-all  ${
                     disabled && 'opacity-25'
                 } ` + className
             }

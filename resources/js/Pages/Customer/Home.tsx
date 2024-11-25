@@ -9,7 +9,7 @@ import { DateRange } from "react-day-picker";
 const Welcome = () => {
 
     const handleSearchAvailability = (selectedDate: DateRange, adults: number, children: number) => {
-        router.get(route('availability.search'),{
+        router.get(route('availability.index'),{
             date_from:selectedDate.from,
             date_to:selectedDate.to,
             adults,
@@ -36,7 +36,7 @@ const Welcome = () => {
                 <img src="/images/image-overlay.png" className="absolute bottom-0 w-full" alt="" />
             </section>
             {/* availability card */}
-            <div className=" z-30 relative w-full container-padded xl:mt-[-150px] xl:mb-[-100px] lg:mt-[-120px] lg:mb-[-120px] mt-[-50px] mb-[-50px]">
+            <div className=" z-30 relative w-full container-padded xl:mt-[-150px] xl:mb-[-100px] lg:mt-[-120px] lg:mb-[-120px] mt-[-70px] mb-[-50px]">
                 <AvailabilityCheckCard onSubmit={handleSearchAvailability} />
             </div>
             {/* about section */}

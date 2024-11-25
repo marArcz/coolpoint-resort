@@ -18,7 +18,7 @@
     background-size: cover;
     background-position: center;
     /* background-attachment: fixed; */
-    @apply xl:h-[83vh] lg:h-[85vh] h-[70vh];
+    @apply xl:h-[83vh] lg:h-[85vh] h-[60vh];
 }
 
 .room-image {
@@ -66,6 +66,28 @@
     }
     .mobile-nav {
         @apply animate-in;
+    }
+    /* reservation status badge styles */
+    .reservation-status-badge{
+        @apply bg-gray-200 text-gray-600 px-2 py-1 text-sm rounded-md font-normal;
+    }
+    .reservation-status-badge.approved{
+        @apply bg-gray-600/20 text-gray-600;
+    }
+    .reservation-status-badge.approved.paid{
+        @apply bg-green-700/20 text-green-700;
+    }
+    .reservation-status-badge.pending{
+        @apply bg-amber-600/20 text-amber-600;
+    }
+    .reservation-status-badge.declined{
+        @apply bg-secondary/40 text-secondary;
+    }
+    .reservation-status-badge.cancelled{
+        @apply bg-red-600/20 text-red-600;
+    }
+    .reservation-status-badge.completed{
+        @apply bg-green-700/50 text-green-900;
     }
 }
 

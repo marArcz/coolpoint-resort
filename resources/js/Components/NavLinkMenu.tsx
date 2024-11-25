@@ -30,8 +30,8 @@ const NavLinkMenu = ({ data: { icon, label, menu = [] }, activeKey = '' }: { dat
                     <span className='xl:text-base text-sm'>{label}</span>
                 </div>
                 <span className={clsx('m-icon transition-all', {
-                    'rotate-180': showMenu
-                })}>keyboard_arrow_down</span>
+                    'rotate-90': showMenu
+                })}>keyboard_arrow_right</span>
             </button>
             {showMenu && (
                 <ul className='flex flex-col ps-3 mt-4 gap-4'>

@@ -8,11 +8,11 @@ import { Calendar } from '@/Components/ui/calendar'
 import AppLayout from '@/Layouts/CustomerLayout'
 import { asset, formatToCurrency, getTotalNights } from '@/lib/utils'
 import { PageProps } from '@/types'
-import { IAddReservation, IRoom, IRoomWithReservations } from '@/types/models'
+import { IAddReservation, IReservationStatus, IRoom, IRoomWithReservations } from '@/types/models'
 import { router, useForm, usePage } from '@inertiajs/react'
 import clsx from 'clsx'
 import { addDays, differenceInCalendarDays, differenceInDays, format } from 'date-fns'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ActiveModifiers, DateRange, DayModifiers } from 'react-day-picker'
 
 type Props = {
@@ -25,32 +25,97 @@ type Props = {
 const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Props) => {
 
     const [mainImage, setMainImage] = useState(room.image);
-    const { data, setData, post, processing, errors, reset } = useForm<IAddReservation>({
+    const [bookedDates, setBookedDates] = useState<DateRange[]>([])
+    const { data, setData, get, processing, errors, reset } = useForm<IAddReservation>({
         room_id: room.id,
         date_from,
         date_to,
         adults,
         children,
+        type: 'room'
     })
-    const nights: number = getTotalNights(data.date_from, data.date_to);
 
-    const modifiers = {
-        booked: room.reservations.filter((reservation) => reservation.status == 'confirmed').map((reservation) => ({
+    useEffect(() => {
+        // load booked dates
+        const dates = room.reservations.filter(r => r.status == 'Approved').map((reservation) => ({
             from: new Date(reservation.date_from),
             to: new Date(reservation.date_to)
         }))
-    }
+
+        setBookedDates(dates);
+    }, []);
+
+    const [minDate, setMinDate] = useState(new Date())
+    const [maxDate, setMaxDate] = useState<Date | undefined>(undefined)
+
+    const nights: number = getTotalNights(data.date_from, data.date_to);
 
     const handleSubmit = () => {
-        post(route('reservations.store'));
+        get(route('reservations.create'));
+    }
+    function isDateAvailable(date: Date) {
+        for (let bookedDate of bookedDates) {
+            if (bookedDate?.from?.toDateString() == date.toDateString() || bookedDate?.to?.toDateString() == date.toDateString()) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    function handleOnSelectDate(range: DateRange | undefined, selectedDay: Date, activeModifiers: ActiveModifiers): void {
+    useEffect(() => {
+        setCalendarDateRange({ from: data.date_from, to: data.date_to, }, data.date_from)
+    }, [])
+
+    function setCalendarDateRange(range: DateRange | undefined, selectedDay?: Date): void {
+
+        // adjust date range of selectable date
+        if (range) {
+            if (selectedDay) {
+                let start = new Date(selectedDay);
+
+                // find where to start
+                while (differenceInDays(new Date(start), new Date()) >= 1) {
+                    console.log('start')
+                    if (!isDateAvailable(start)) {
+                        console.log('break on start')
+                        break; // Exit if date is not available
+                    }
+                    start.setDate(start.getDate() - 1)
+                }
+
+                setMinDate(start);
+
+                // find where to end
+                let end = new Date(selectedDay);
+
+                while (differenceInDays(new Date(end), data.date_from ?? selectedDay) <= 20) {
+                    if (!isDateAvailable(end)) {
+                        break; // Exit if date is not available
+                    }
+                    end.setDate(end.getDate() + 1);
+                }
+
+                setMaxDate(end);
+            }
+        }
+        else {
+            console.log('has no range')
+            setMinDate(new Date());
+            setMaxDate(undefined)
+        }
+
+        // update selected dates
         setData({
             ...data,
             date_to: range?.to,
             date_from: range?.from
         })
+    }
+
+    function resetCalendar(): void {
+        setData({ ...data, date_from: undefined, date_to: undefined });
+        setMinDate(new Date())
+        setMaxDate(undefined)
     }
 
     return (
@@ -140,20 +205,17 @@ const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Pro
                             <Calendar
                                 mode="range"
                                 numberOfMonths={2}
-                                selected={{
-                                    to: data.date_to,
-                                    from: data.date_from,
+                                selected={{ from: data.date_from, to: data.date_to }}
+                                onSelect={setCalendarDateRange}
+                                modifiers={{
+                                    booked: bookedDates
                                 }}
-                                onSelect={handleOnSelectDate}
-                                fromDate={new Date()}
-                                onDayClick={(date, dateModifiers) => {
-                                    if (dateModifiers.booked) {
-                                        // to do
-                                        alert('Date is booked')
-                                    }
+                                disabled={bookedDates}
+                                fromDate={minDate}
+                                toDate={maxDate}
+                                modifiersClassNames={{
+                                    booked: " text-red-700 bg-red-100 font-semibold"
                                 }}
-                                modifiers={modifiers}
-                                disabled={modifiers.booked}
                                 className="rounded-md border w-max m-auto bg-white"
                             />
                             <div className="mt-3 justify-center hidden lg:flex">
@@ -172,7 +234,7 @@ const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Pro
                                     </label>
                                     {data.date_from && data.date_to && (
                                         <div className="flex items-center">
-                                            <input type="text" value={nights} className='w-full text-end border-0 pointer-events-none' readOnly />
+                                            <input type="text" value={nights} className='w-full text-end border-0 pointer-events-none bg-transparent' readOnly />
                                             <span>{nights > 1 ? "Nights" : "Night"}</span>
                                         </div>
                                     )}
@@ -183,15 +245,17 @@ const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Pro
                                     <label className=' pointer-events-none flex'>
                                         <span>Rate / night</span>
                                     </label>
-                                    <div className="flex items-center gap-2">
-                                        <span className='text-gray-600'>{formatToCurrency(room.price)}</span>
+                                    <div className="flex items-center gap-2 flex-col">
+                                        <div className="flex gap-2">
+                                            <span className='text-gray-600'>{formatToCurrency(room.price)}</span>
+                                            <span className='text-gray-600'>x {nights}</span>
+                                        </div>
                                         {data.date_from && data.date_to && (
-                                            <>
-                                                <span className='text-gray-600'>x {nights}</span>
+                                            <div>
                                                 <span>
                                                     ({formatToCurrency(room.price * nights)})
                                                 </span>
-                                            </>
+                                            </div>
                                         )}
                                     </div>
                                 </div>

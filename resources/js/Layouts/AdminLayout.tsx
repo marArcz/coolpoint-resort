@@ -3,18 +3,26 @@ import AdminSidemenu from "@/Components/AdminSidemenu";
 import { Toaster } from "@/Components/ui/toaster";
 import AdminProvider from "@/context/AdminContext";
 import { useToast } from "@/hooks/use-toast";
-import { Link, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import React, { PropsWithChildren, useEffect } from "react";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/Components/ui/dropdown-menu"
-import { Button } from "@/Components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/Components/ui/dialog"
+import { echo } from "@/echo";
+import { useAdminNotificationsStore, usePendingReservationsStore } from "@/lib/stores";
+import { INotification, INotificationData, IReservation } from "@/types/models";
+import { ToastAction } from "@/components/ui/toast";
+import { adminMenu } from "@/lib/constants";
+import { asset, cn, isINavLink } from "@/lib/utils";
+import NavLinkMenu from "@/Components/NavLinkMenu";
+import NavLink from "@/Components/NavLink";
+import { Avatar, AvatarFallback } from "@/Components/ui/avatar";
+import { AvatarImage } from "@radix-ui/react-avatar";
 
 type Props = {
     navbarTitle: string | React.ReactNode
@@ -22,10 +30,11 @@ type Props = {
 }
 
 const AdminLayout = ({ navbarTitle = '', navbarIcon = '', children }: PropsWithChildren<Props>) => {
-    const { auth } = usePage().props
-
-    const { flash } = usePage().props;
+    const { auth, flash, currentRoute } = usePage().props;
     const { toast } = useToast()
+    const { fetchAll: fetchNotifications, add: addNotification } = useAdminNotificationsStore();
+
+    const fetchReservations = usePendingReservationsStore(s => s.fetchAll);
 
     useEffect(() => {
         if (flash.message.success) {
@@ -41,7 +50,55 @@ const AdminLayout = ({ navbarTitle = '', navbarIcon = '', children }: PropsWithC
                 description: flash.message.error,
             })
         }
-    }, [])
+    }, [flash]);
+
+    useEffect(() => {
+        fetchNotifications().catch(e => {
+            console.error('Error: ', e);
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: "Cannot fetch notifications"
+            })
+        })
+        // listen for realtime updates
+        if (auth.user) {
+            const user = auth.user;
+            echo.private(`admins.${user.id}`)
+                .notification(function (notification: INotification) {
+                    console.log('received: ', notification)
+                    addNotification(notification);
+                    toast({
+                        title: notification.title || 'New Reservation',
+                        description: notification.description || 'A new reservation has been booked',
+                        action: (
+                            <ToastAction
+                                altText="Open"
+                                onClick={() => {
+                                    router.visit(route('admin.notifications.show', [notification.id]))
+                                }}
+                            >
+                                Open
+                            </ToastAction>
+                        ),
+                    })
+                    if (notification.type == 'new-reservation') {
+                        fetchReservations();
+                    }
+                })
+                .subscribed(function () {
+                    console.log('subscribed to channel')
+                })
+                .error((error: any) => {
+                    console.error('Error: ', error);
+                    toast({
+                        variant: "destructive",
+                        title: "Uh oh! Something went wrong.",
+                        description: "Cannot fetch real time updates"
+                    })
+                })
+        }
+    }, []);
 
     return (
         <AdminProvider>
@@ -58,42 +115,6 @@ const AdminLayout = ({ navbarTitle = '', navbarIcon = '', children }: PropsWithC
                             {children}
                         </div>
                     </div>
-                    <ul className="min-h-20 bg-primary items-center px-8 md:hidden flex w-full justify-between">
-                        <li className={`border-b-2 border-white h-full flex justify-center items-center`}>
-                            <Link href={route('admin.dashboard')} className="text-white flex items-center flex-col ">
-                                <span className="m-icon text-xl">home</span>
-                                <span className="font-light text-sm">Dashboard</span>
-                            </Link>
-                        </li>
-                        <li className=" border-white h-full flex justify-center items-center">
-                            <Link href={route('admin.rooms.index')} className="text-white flex items-center flex-col ">
-                                <span className="m-icon text-xl">bed</span>
-                                <span className="font-light text-sm">Rooms</span>
-                            </Link>
-                        </li>
-                        <li className=" border-white h-full flex justify-center items-center">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger>
-                                    <Button variant="ghost" className="h-8 w-8 p-0 text-white">
-                                        <span className="sr-only">Open menu</span>
-                                        <MoreHorizontal className="h-4 w-4" />
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                    <DropdownMenuLabel>Menu</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>
-                                        <Link href={route('admin.reservations.index')}>
-                                            Reservations
-                                        </Link>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                            {/* <Link href="#" className="text-white flex items-center flex-col ">
-                                <span className="m-icon ">more_horiz</span>
-                            </Link> */}
-                        </li>
-                    </ul>
                 </div>
                 <Toaster />
             </main>

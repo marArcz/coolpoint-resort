@@ -11,9 +11,18 @@ class ApiReservationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reservations = Reservation::all();
+        $month = $request->query('month', '');
+        $type = $request->query('type', '');
+        $status = $request->query('status', '');
+
+        $reservations = Reservation::with(['user'])
+            ->whereMonth('date_from', $month == '' ? '!=' : '=', $month)
+            ->where('type', $type == '' ? '!=' : '=', $type)
+            ->where('status', $status == '' ? '!=' : '=', $status)
+            ->orderBy('date_from')
+            ->get();
         return response()->json($reservations);
     }
 
@@ -29,6 +38,7 @@ class ApiReservationController extends Controller
      */
     public function show(Reservation $reservation)
     {
+        $reservation->load(['room','payment','user','addOns','cancellationRequest']);
         return response()->json($reservation);
     }
 

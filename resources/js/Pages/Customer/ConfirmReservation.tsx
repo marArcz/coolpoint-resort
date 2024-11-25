@@ -1,4 +1,4 @@
-import HeadingTitle from '@/Components/shared/HeadingTitle';
+    import HeadingTitle from '@/Components/shared/HeadingTitle';
 import OutlineButtonLink from '@/Components/shared/OutlineButtonLink';
 import PopoverNumberInput from '@/Components/shared/PopoverNumberInput';
 import PrimaryButton from '@/Components/shared/PrimaryButton';
@@ -220,13 +220,21 @@ const ConfirmReservation = ({ reservation, extraAmenities = [], configuration }:
                                 <h4 className='font-serif font-medium text-2xl'>Payment Method</h4>
                                 <div className="mt-8">
                                     <RadioGroup required defaultValue={data.payment_method} onValueChange={(v) => setData('payment_method', v)}>
-                                        <div className="flex items-center mb-8 space-x-4">
-                                            <RadioGroupItem value="cash" id="cash" />
-                                            <Label className='text-lg' htmlFor="cash">Pay on arrival</Label>
+                                        <div className="flex mb-8 space-x-4">
+                                            <RadioGroupItem className='mt-2' value="cash" id="cash" />
+                                            <div className=''>
+                                                <label className='text-lg' htmlFor="cash">Pay on arrival</label>
+                                                <p className='text-secondary font-medium mt-2'>Pay down payment of 30% via GCash and pay the rest on arrival</p>
+                                                <p className='text-gray-800 font-medium mt-2'>* Down payment is non-refundable</p>
+                                            </div>
                                         </div>
-                                        <div className="flex items-center mb-3 space-x-4">
-                                            <RadioGroupItem value="gcash" id="gcash" />
-                                            <Label className='text-lg' htmlFor="gcash">GCash</Label>
+                                        <div className="flex mb-3 space-x-4">
+                                            <RadioGroupItem className='mt-2' value="gcash" id="gcash" />
+                                            <div>
+                                                <Label className='text-lg' htmlFor="gcash">GCash</Label>
+                                                <p className='text-secondary font-medium mt-2'>Pay full payment via Gcash</p>
+                                                <p className='text-gray-800 font-medium mt-2'>* 100% refundable</p>
+                                            </div>
                                         </div>
                                     </RadioGroup>
                                     <div className="mt-10 flex items-center gap-3">

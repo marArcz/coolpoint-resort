@@ -1,7 +1,7 @@
 import AdminLayout from '@/Layouts/AdminLayout'
 import { useForm } from '@inertiajs/react'
 import React, { ChangeEvent, FormEvent, useRef, MouseEvent, useState, MouseEventHandler } from 'react'
-import { IAddRoomPost } from '@/types/models'
+import { IAddRoom } from '@/types/models'
 import { Input } from '@/Components/ui/input'
 import TextInput from '@/Components/shared/TextInput'
 import { Textarea } from '@/Components/ui/textarea'
@@ -14,7 +14,7 @@ const AddNewRoom = () => {
     const additionalPhotosInputRef = useRef<HTMLInputElement | null>(null);
     const [amenity, setAmenity] = useState('')
 
-    const { data, setData, post, errors, processing } = useForm<IAddRoomPost>({
+    const { data, setData, post, errors, processing } = useForm<IAddRoom>({
         main_photo: null,
         additional_photos: [],
         name: '',

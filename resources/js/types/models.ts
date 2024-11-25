@@ -1,8 +1,8 @@
-export interface IUser{
-    id:number,
-    name:string,
-    email:string,
-    photo:string,
+export interface IUser {
+    id: number,
+    name: string,
+    email: string,
+    photo: string,
 }
 export interface IRoom {
     id: number,
@@ -16,6 +16,7 @@ export interface IRoom {
     amenities: IRoomAmenity[],
     image: string,
     images: IRoomImage[],
+    reservations: IReservation[] | null
 }
 
 export interface IRoomWithReservations extends IRoom {
@@ -64,9 +65,14 @@ export interface ICartItem {
     room: IRoom
 }
 export const IReservationStatus = {
-    CONFIRMED : 'Confirmed',
-    PENDING : 'Pending',
-    CANCELLED:'Cancelled'
+    CONFIRMED: 'Confirmed',
+    PENDING: 'Pending',
+    CANCELLED: 'Cancelled',
+    APPROVED: 'Approved',
+    APPROVED_PAID: 'Approved - Paid',
+    DECLINED: 'Declined',
+    COMPLETED: 'Completed',
+    NO_SHOW: 'No-Show',
 }
 
 export interface IReservation {
@@ -79,18 +85,37 @@ export interface IReservation {
     room_id: number,
     room?: IRoom | null,
     user_id: number,
-    user:IUser,
+    user: IUser,
     status: string,
     total: number,
-    payment_method: string,
+    payment_method: 'cash' | 'gcash',
+    isPaid:boolean;
     payment?: IPayment,
     type: IReservationType,
-    addOns?:IReservationAddOn[]
+    add_ons?: IReservationAddOn[],
+    cancellation_request?: ICancellationRequest
+}
+export interface ICancellationRequest {
+    id: number,
+    gcash_account_name: string,
+    gcash_number: string,
+    // refunded:boolean,
+    reason: string,
+    status: string,
+    reservation_id: number
+    created_at: Date
+    updated_at: Date
 }
 
 export interface IReservationConfiguration {
     id: number,
     gcash_qr_code: string,
+    gcash_account_no: string,
+    gcash_account_name: string,
+    resort_rate: number
+}
+export interface IUpdateReservationConfiguration {
+    gcash_qr_code: File | null,
     gcash_account_no: string,
     gcash_account_name: string,
     resort_rate: number
@@ -111,6 +136,14 @@ export interface IPaginatedData<T> {
     total: number
     links: IPaginationLink[],
 }
+export interface ICursorPaginatedData<T> {
+    data: T[],
+    next_cursor: string,
+    path: string,
+    per_page: number,
+    prev_cursor?: string
+    prev_page_url?: string
+}
 
 export interface IPaginationLink {
     active: boolean,
@@ -122,9 +155,30 @@ export interface IPayment {
     id: number;
     method: "cash" | "gcash";
     payment_no: string;
+    amount: number;
     status: string;
     receipt: string;
+    proof_of_refund: string;
     reservation_id: number;
+    type: 'full' | 'downpayment';
+    is_refundable: boolean;
+    is_refunded: boolean;
+    notes:string;
+    created_at: string
+}
+export interface IUpdatePayment {
+    id: number;
+    method: "cash" | "gcash";
+    payment_no: string;
+    amount: number;
+    status: string;
+    receipt: string;
+    proof_of_refund: string;
+    image?: File | null;
+    reservation_id: number;
+    type: 'full' | 'downpayment';
+    is_refundable: boolean;
+    is_refunded: boolean;
     created_at: string
 }
 
@@ -145,12 +199,12 @@ export interface IReservationAddOn {
     price: number
     amenity_id: number
     reservation_id: number
-    amenity?:IExtraAmenity
+    amenity?: IExtraAmenity
 }
 export interface INewReservationAddOn {
     quantity: number,
     amenity_id: number
-    amenity?:IExtraAmenity
+    amenity?: IExtraAmenity
 }
 
 export interface INavbarTitle { icon: string, title: string };
@@ -167,15 +221,60 @@ export interface INavLinkMenu {
     menu: INavLink[]
 }
 
-export interface IAddRoomPost {
+export interface IAddRoom {
     main_photo: File | null
     additional_photos: File[]
-    name:string
-    min_people:number | string
-    max_people:number | string
-    price:number | string
-    double_decks:number | string
-    beds:number | string
-    description:string
-    amenities:string[]
+    name: string
+    min_people: number | string
+    max_people: number | string
+    price: number | string
+    double_decks: number | string
+    beds: number | string
+    description: string
+    amenities: string[]
+}
+export interface IEditRoom {
+    main_photo: File | null
+    additional_photos: File[]
+    name: string
+    min_people: number | string
+    max_people: number | string
+    price: number | string
+    double_decks: number | string
+    beds: number | string
+    description: string
+    amenities: string[]
+}
+
+export interface INotification{
+    id: string;
+    type: string;
+    data: unknown;
+    read_at: Date;
+    created_at: Date;
+    title?: string;
+    description?: string;
+}
+
+export type INotificationData<T extends {}> = T & {
+    title: string;
+    description: string;
+    type?: string;
+
+};
+export interface IRevenueStatisticItem{
+    revenue:number;
+    reservations:number;
+    strMonth:string;
+    month:string;
+}
+export interface IRevenueData{
+    revenue:number;
+    statistics:IRevenueStatisticItem[]
+}
+
+export interface IUpdateProfile{
+    photo:File | null;
+    name:string;
+    // email:string;
 }

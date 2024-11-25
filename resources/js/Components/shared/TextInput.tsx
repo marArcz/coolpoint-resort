@@ -54,11 +54,11 @@ export default forwardRef(function TextInput(
                 <label
                     htmlFor={id}
                     className={clsx(
-                        "absolute bg-white start-5 transition-all text-gray-500 pointer-events-none",
+                        "absolute bg-white start-5 transition-all p-0 text-gray-500 pointer-events-none",
                         {
                             "text-sm text-gray-500 top-0 px-1 translate-y-[-50%]":
                                 props.value !== "",
-                            "top-1/2 translate-y-[-50%] peer-focus:top-0 peer-focus:px-1 peer-focus:text-sm":
+                            "top-[50%] translate-y-[-50%] peer-focus:top-0 peer-focus:px-1 peer-focus:text-sm":
                                 props.value == "",
                         }
                     )}

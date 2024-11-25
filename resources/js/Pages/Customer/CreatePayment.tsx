@@ -5,22 +5,23 @@ import { Checkbox } from '@/Components/ui/checkbox'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
 import AppLayout from '@/Layouts/CustomerLayout'
-import { formatToCurrency, getTotalNights } from '@/lib/utils'
+import { asset, formatToCurrency, getTotalNights } from '@/lib/utils'
 import { IReservation, IReservationConfiguration } from '@/types/models'
 import { useForm } from '@inertiajs/react'
 import React, { FormEvent } from 'react'
 
 type Props = {
     reservation: IReservation,
-    configuration:IReservationConfiguration
+    configuration: IReservationConfiguration
 }
-const CreatePayment = ({ reservation,configuration }: Props) => {
-    const resortRate = 10000;
-
-    const { data, setData, post } = useForm<{ method:string,receipt: File | null, amount: number }>({
-        method:'gcash',
+const CreatePayment = ({ reservation, configuration }: Props) => {
+    const downPayment = 0.3
+    const { data, setData, post } = useForm<{ method: string,type: string, receipt: File | null, amount: number, is_refundable:boolean }>({
+        method: 'gcash',
+        type: reservation.payment_method == 'cash' ? 'downpayment':'full',
+        is_refundable: reservation.payment_method == 'gcash',
         receipt: null,
-        amount: reservation.total
+        amount: reservation.payment_method == 'cash' ? reservation.total * downPayment : reservation.total
     })
 
     const handleSubmit = (e: FormEvent) => {
@@ -37,7 +38,7 @@ const CreatePayment = ({ reservation,configuration }: Props) => {
 
                 <div className="mt-3 grid grid-cols-1 lg:grid-cols-12 gap-14">
                     <div className="col-span-full lg:col-span-3">
-                        <img src={configuration.gcash_qr_code} className='lg:w-full w-2/4 object-cover' alt="" />
+                        <img src={asset(configuration.gcash_qr_code)} className='lg:w-full w-2/4 object-cover' alt="" />
                         <div className="mt-4 px-2">
                             <p className="font-medium ">Number: {configuration.gcash_account_no}</p>
                             <p className="font-medium mt-2">Account Name: {configuration.gcash_account_name}</p>
@@ -48,23 +49,44 @@ const CreatePayment = ({ reservation,configuration }: Props) => {
                         <p className='mt-3'>Open your GCash app and scan the qr code or enter the phone number to pay. Make sure to send the exact amount equal to the total bill of your reservation.</p>
                         <hr className="my-3" />
                         <div className="p-5 bg-white border">
-                            <div className="flex items-center justify-between">
-                                <p className='text-lg font-medium'>Reservation No:</p>
-                                <p className='text-lg font-medium'>#{reservation.reservation_no}</p>
+                            {reservation.payment_method == 'gcash' ? (
+                                <div className=' bg-gray-200 p-4 rounded-lg'>
+                                    <HeadingTitle className='mb-2' reverse>
+                                        <p className=' font-medium text-primary'>You are paying the total bill via Gcash.</p>
+                                    </HeadingTitle>
+                                    <div className="flex items-center justify-between">
+                                        <p className='text-lg font-medium'>Amount to pay:</p>
+                                        <p className='text-lg font-medium bg-gray-700 py-1 px-3 rounded-lg text-white'>{formatToCurrency(data.amount)}</p>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className=' bg-gray-200 p-4 rounded-lg'>
+                                    <HeadingTitle className='mb-2' reverse>
+                                        <p className=' font-medium text-primary'>Pay 30% downpayment via gcash and pay the rest on your arrival.</p>
+                                    </HeadingTitle>
+                                    <div className="flex items-center justify-between">
+                                        <p className='text-lg font-medium'>Amount to pay:</p>
+                                        <p className='text-lg font-medium bg-gray-700 py-1 px-3 rounded-lg text-white'>{formatToCurrency(data.amount)}</p>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="flex items-center justify-between mt-4">
+                                <p className='text-base font-normal'>Reservation No:</p>
+                                <p className='text-base font-normal'>#{reservation.reservation_no}</p>
                             </div>
-                            <div className="flex items-center justify-between mt-6">
-                                <p className='text-lg font-medium'>Total Bill:</p>
-                                <p className='text-lg font-medium'>{formatToCurrency(data.amount)}</p>
+                            <div className="flex items-center justify-between mt-3">
+                                <p className='text-base font-normal'>Total Bill:</p>
+                                <p className='text-base font-normal'>{formatToCurrency(reservation.total)}</p>
                             </div>
                         </div>
 
                         <div className="mt-6">
                             <form onSubmit={handleSubmit}>
                                 <Label className='text-base' htmlFor='receipt'>Upload the payment receipt or a screenshot as proof of your payment.</Label>
-                                <Input id="receipt" type="file" className='mt-3' onChange={e => setData('receipt', e.target.files?.item(0) ?? null)} />
+                                <Input accept='image/*' id="receipt" type="file" className='mt-3' onChange={e => setData('receipt', e.target.files?.item(0) ?? null)} />
 
                                 <div className="mt-14 flex items-center gap-2">
-                                    <Checkbox required id="checkbox-confirm"/>
+                                    <Checkbox required id="checkbox-confirm" />
                                     <Label htmlFor='checkbox-confirm' className='text-base text-secondary'>I affirm the validity of the attached proof of payment and that I have paid the correct amount.</Label>
                                 </div>
 

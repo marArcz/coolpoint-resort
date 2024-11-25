@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import RootLayout from './Layouts/RootLayout';
+import axios from 'axios';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

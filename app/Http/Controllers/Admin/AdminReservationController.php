@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\ReservationStatusUpdated;
+use App\Events\ReservationUpdated;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
@@ -12,10 +15,31 @@ class AdminReservationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reservations = Reservation::all();
-        return Inertia::render('Admin/Reservations',compact('reservations'));
+        $year = $request->query('year', '');
+        $month = $request->query('month', '');
+        $type = $request->query('type', '');
+        $status = $request->query('status', '');
+
+        $years = Reservation::select(DB::raw('YEAR(date_from) as year'))
+            ->groupBy(DB::raw('YEAR(date_from)'))->get()->map(fn($y) => $y->year);
+
+        $reservations = Reservation::with(['user', 'cancellationRequest'])
+            ->whereYear('date_from', $year == '' ? '!=' : '=', $year)
+            ->whereMonth('date_from', $month == '' ? '!=' : '=', $month)
+            ->where('type', $type == '' ? '!=' : '=', $type)
+            ->where('status', $status == '' ? '!=' : '=', $status)
+            ->orderByDesc('id')
+            ->paginate(10)->withQueryString();
+
+        return Inertia::render('Admin/Reservations', compact('reservations', 'year', 'month', 'type', 'status', 'years'));
+    }
+
+    public function reservationsCalendar(Request $request)
+    {
+        $reservations = Reservation::with(['room'])->where('status', '!=', 'Cancelled')->get();
+        return Inertia::render('Admin/ReservationsCalendar', compact('reservations'));
     }
 
     /**
@@ -39,7 +63,7 @@ class AdminReservationController extends Controller
      */
     public function show(Reservation $reservation)
     {
-        $reservation->load(['user']);
+        $reservation->load(['user', 'cancellationRequest', 'room', 'payment', 'addOns']);
         return Inertia::render('Admin/ManageReservation', compact('reservation'));
     }
 
@@ -56,23 +80,13 @@ class AdminReservationController extends Controller
      */
     public function update(Request $request, Reservation $reservation)
     {
-        $validated =  $request->validate([
-            'date_from' => ['required'],
-            'date_to' => ['required'],
-            'adults' => ['required'],
-            'children' => ['required'],
-            'user_id' => ['required'],
-            'status' => ['required'],
-            'total' => ['required'],
-            'reservation_no' => ['required'],
-            'payment_method' => ['required'],
-            'type' => ['required'],
-        ]);
+        $reservation->update($request->except('id'));
 
-        $reservation->update($validated);
-        $reservation->save();
+        if ($reservation->wasChanged('status')) {
+            event(new ReservationUpdated($reservation));
+        }
 
-        return redirect()->back()->with('success','Successfully updated!');
+        return redirect()->back()->with('success', 'Successfully updated!');
     }
 
     /**

@@ -3,9 +3,9 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import listPlugin from '@fullcalendar/list';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs"
-import { useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import axios from 'axios'
-import { IReservation, IReservationStatus } from '@/types/models'
+import { ICursorPaginatedData, IPaginatedData, IReservation, IReservationStatus } from '@/types/models'
 import { Button } from '@/Components/ui/button'
 import clsx from 'clsx'
 import { EventClickArg } from '@fullcalendar/core/index.js'
@@ -23,204 +23,203 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu"
-import { Link } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { MoreHorizontal } from 'lucide-react';
+import CustomSelect from '@/Components/CustomSelect';
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@/Components/ui/collapsible"
+import ReservationsTable from '@/Components/ReservationsTable';
 
 type Props = {
-    reservations: IReservation[]
+    reservations: IPaginatedData<IReservation>;
+    month?: number | string;
+    type?: string;
+    status?: string;
+    years?: string[]
+    year?: number | string;
 }
 
-const Reservations = ({ reservations: reservationList }: Props) => {
-    const [reservations, setReservations] = useState<IReservation[]>(reservationList);
+const Reservations = ({ reservations, month = '', type = '', status = '', year = '', years = [] }: Props) => {
+    const hasFilter = (): boolean => (month != '' || type != '' || status != '' || year != '');
+
     const [selectedReservation, setSelectedReservation] = useState<IReservation | null>(null);
     const [showDetailsModal, setShowDetailsModal] = useState(false)
-    const [showDrawer, setShowDrawer] = useState(false)
-
-
-    const fetchReservations = () => {
-        axios.get<IReservation[]>(route('api.reservations.index'), { withCredentials: true })
-            .then(res => {
-                console.log(res.data);
-                setReservations(res.data);
-            })
-    }
-
-    function handleEventClick(arg: EventClickArg): void {
-        let reservationDetails = arg.event._def.extendedProps as IReservation;
-        setSelectedReservation(reservationDetails);
-        setShowDetailsModal(true)
-    }
+    const [fetchingReservations, setFetchingReservations] = useState<boolean>(false)
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const [showFilterControl, setShowFilterControl] = useState(hasFilter())
+    const { data, setData, get } = useForm({
+        month,
+        type,
+        status,
+        year
+    })
 
     function handleCloseModal(): void {
         setShowDetailsModal(false);
         setSelectedReservation(null);
     }
 
+    const handleFilterFormSubmit = (e: FormEvent) => {
+        e.preventDefault()
+        get(route('admin.reservations.index'))
+    }
+
+
     return (
         <AdminLayout
             navbarIcon='book'
             navbarTitle='Reservations'
         >
-            <section className='py-5'>
-                <Tabs defaultValue="table" className="w-full">
-                    <TabsList>
-                        <TabsTrigger value="table">Table</TabsTrigger>
-                        <TabsTrigger value="calendar">Calendar</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="table">
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>ID</TableHead>
-                                    <TableHead>Customer</TableHead>
-                                    <TableHead>Type</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead className='text-nowrap'>Check In - Check Out</TableHead>
-                                    <TableHead className='hidden md:block'>Total</TableHead>
-                                    <TableHead></TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {reservations && reservations.map((reservation) => (
-                                    <TableRow key={reservation.id}>
-                                        <TableCell>#{reservation.reservation_no}</TableCell>
-                                        <TableCell className='capitalize'>
-                                            <img src="" alt="" />
-                                        </TableCell>
-                                        <TableCell className='capitalize'>{reservation.type}</TableCell>
-                                        <TableCell className='capitalize'>{reservation.status}</TableCell>
-                                        <TableCell className='capitalize'>{formatDate(reservation.date_from, 'MMM dd')} - {formatDate(reservation.date_to, 'MMM dd')}</TableCell>
-                                        <TableCell className='hidden md:block capitalize'>{formatToCurrency(reservation.total)}</TableCell>
-                                        <TableCell>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger>
-                                                    <Button variant="ghost" className="h-8 w-8 p-0">
-                                                        <span className="sr-only">Open menu</span>
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent>
-                                                    <DropdownMenuLabel>Action</DropdownMenuLabel>
-                                                    <DropdownMenuSeparator />
-                                                    <DropdownMenuItem>
-                                                        <Link href={route('admin.reservations.show', [reservation.id])}>
-                                                            View Details
-                                                        </Link>
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TabsContent>
-                    <TabsContent value="calendar">
-                        <div className="py-5">
-                            <FullCalendar
-                                plugins={[dayGridPlugin, listPlugin]}
-                                initialView="dayGridMonth"
-                                weekends={true}
-                                events={reservations.map((reservation) => {
-                                    let title = reservation.type == 'room' ? reservation.room?.name + ' reservation' : 'Resort Reservation'
-                                    return {
-                                        title,
-                                        start: reservation.date_from,
-                                        end: reservation.date_to,
-                                        backgroundColor: "#223332",
-                                        borderColor: "#223332",
-                                        className: 'px-3 py-1 rounded-lg cursor-pointer',
-                                        extendedProps: {
-                                            ...reservation
-                                        },
-                                    };
-                                })}
-                                eventClick={handleEventClick}
-                            />
+            <section className='py-5 h-full lg:overflow-hidden lg:flex lg:flex-col'>
+                {hasFilter() && (
+                    <div className="border p-4 mb-2 bg-secondary rounded-lg text-white">
+                        <p className='text-sm text-gray-400'>Active Filter</p>
+                        <div className="mt-2 flex gap-4">
+                            {year != '' && (
+                                <div>
+                                    <p>Year: <span className='capitalize'>{year}</span></p>
+                                </div>
+                            )}
+                            {month != '' && (
+                                <div>
+                                    <p>Month: <span>{months[Number(month) - 1]}</span></p>
+                                </div>
+                            )}
+                            {type != '' && (
+                                <div>
+                                    <p>Type: <span className='capitalize'>{type}</span></p>
+                                </div>
+                            )}
+                            {status != '' && (
+                                <div>
+                                    <p>Status: <span className='capitalize'>{status}</span></p>
+                                </div>
+                            )}
                         </div>
-                    </TabsContent>
-                </Tabs>
-                {/* modal */}
-                <div onClick={handleCloseModal} className={clsx('modal transition-all absolute w-full h-screen box-border z-[8888] bg-gray-900/40 top-0 left-0 flex justify-center items-center', {
-                    'hidden': !showDetailsModal
-                })}>
-                    <div className="bg-white xl:w-2/4 xl:h-3/4 w-full h-full xl:rounded-lg rounded-none p-6 border-t-4 border-t-primary animate-in animate-out flex flex-col">
-                        {selectedReservation && (
-                            <>
-                                <div className='flex-1'>
-                                    <div className='flex justify-between items-center'>
-                                        <h4 className='text-gray-500 text-nowrap'>Reservation Details</h4>
-                                        <Button onClick={handleCloseModal} variant="ghost" className='float-right size-8 p-0 rounded-full'>
-                                            <span className='m-icon text-lg text-gray-500'>close</span>
-                                        </Button>
-                                    </div>
-                                    <div className="mt-5">
-                                        <div className='flex justify-between'>
-                                            <div>
-                                                <div className="">
-                                                    <p className=' text-sm'>Reservation No</p>
-                                                    <p className='text-xl mt-1 text-secondary font-medium'>#{selectedReservation.reservation_no}</p>
-                                                </div>
-                                                <div className="mt-5">
-                                                    <p className=' text-sm'>Reservation Type</p>
-                                                    <p className='text-xl mt-1 text-secondary font-medium capitalize'>{selectedReservation.type}</p>
-                                                </div>
-                                                <div className="mt-5">
-                                                    <p className=' text-sm'>Total</p>
-                                                    <p className='text-xl mt-1 text-secondary font-medium capitalize'>{formatToCurrency(selectedReservation.total)}</p>
-                                                </div>
-                                                <div className="mt-5">
-                                                    <p className='text-sm font-normal'>Check In - Check Out</p>
-                                                    <div className="flex mt-2 items-end">
-                                                        <div className="flex items-end">
-                                                            <h2 className="xl:text-4xl md:text-3xl text-2xl me-2 font-medium">
-                                                                {formatDate(selectedReservation.date_from ?? "", "dd")}
-                                                            </h2>
-                                                            <h4 className="lg:text-2xl md:text-xl text-lg font-serif font-medium text-nowrap">
-                                                                /
-                                                                {formatDate(selectedReservation.date_from ?? "", "MMMM")}
-                                                            </h4>
-                                                        </div>
-                                                        <div className="lg:mx-4 mx-1 lg:block hidden">
-                                                            <span className="m-icon text-primary">
-                                                                remove
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex items-end">
-                                                            <h2 className="xl:text-4xl md:text-3xl text-2xl me-2 font-medium">
-                                                                {formatDate(selectedReservation.date_to ?? "", "dd")}
-                                                            </h2>
-                                                            <h4 className="lg:text-2xl md:text-xl text-lg font-serif font-medium text-nowrap">
-                                                                /
-                                                                {formatDate(selectedReservation.date_to ?? "", "MMMM")}
-                                                            </h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <p className={clsx('py-2 px-3 text-sm rounded-lg flex items-center', {
-                                                    'bg-gray-300 text-gray-700': selectedReservation.status == IReservationStatus.PENDING,
-                                                    'bg-primary text-white': selectedReservation.status == IReservationStatus.CONFIRMED,
-                                                    'bg-red-700 text-white': selectedReservation.status == IReservationStatus.CANCELLED,
-                                                })}>
-                                                    <span>{selectedReservation.status}</span>
-                                                    {selectedReservation.status == IReservationStatus.CONFIRMED && (
-                                                        <span className='m-icon filled text-sm ms-2'>check_circle</span>
-                                                    )}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='text-end flex gap-3 items-center'>
-                                    <OutlinedButton onClick={handleCloseModal} bg='bg-secondary/55' className=' rounded-lg'>Close</OutlinedButton>
-                                    <PrimaryButtonLink href={route('admin.reservations.show', [selectedReservation.id])} bg='bg-secondary' className='w-full rounded-lg text-center justify-center'>Manage</PrimaryButtonLink>
-                                </div>
-                            </>
-                        )}
                     </div>
-                </div>
+                )}
+                <Collapsible open={showFilterControl} onOpenChange={(o) => setShowFilterControl(o)} className='py-2 w-full'>
+                    <CollapsibleTrigger className={clsx('px-4 py-1 transition-all flex gap-2 items-center rounded-xl', {
+                        'bg-primary/70 text-white': showFilterControl,
+                        'bg-transparent text-primary': !showFilterControl,
+                    })}>
+                        <span className='m-icon'>filter_list</span>
+                        <span>Filter</span>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className='py-3'>
+                        <form onSubmit={handleFilterFormSubmit}>
+                            <div className="grid xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-2  w-full gap-2 items-center pb-3">
+                                <div className="">
+                                    <CustomSelect
+                                        id='year'
+                                        active={year != ''}
+                                        label='Year'
+                                        value={data.year}
+                                        onChange={e => setData('year', e.target.value)}
+                                    >
+                                        <option value="">Any</option>
+                                        {years && years.map((year, index) => (
+                                            <option key={index} value={year}>{year}</option>
+                                        ))}
+                                        {years && years.length == 0 && (
+                                            <option value={new Date().getFullYear()} selected>{new Date().getFullYear()}</option>
+                                        )}
+                                    </CustomSelect>
+                                </div>
+                                <div className="">
+                                    <CustomSelect
+                                        id='month'
+                                        active={month != ''}
+                                        label='Month'
+                                        value={data.month}
+                                        onChange={e => setData('month', e.target.value)}
+                                    >
+                                        <option value="">Any</option>
+                                        {months.map((month, index) => (
+                                            <option key={index} value={index + 1}>{month}</option>
+                                        ))}
+                                    </CustomSelect>
+                                </div>
+                                <div className="">
+                                    <CustomSelect
+                                        id='type'
+                                        active={type != ''}
+                                        label='Type'
+                                        value={data.type}
+                                        onChange={e => setData('type', e.target.value)}
+                                    >
+                                        <option value="">Any</option>
+                                        <option value="room">Room</option>
+                                        <option value="resort">Resort</option>
+                                    </CustomSelect>
+                                </div>
+                                <div className="">
+                                    <CustomSelect
+                                        id='status'
+                                        active={status != ''}
+                                        label='Status'
+                                        value={data.status}
+                                        onChange={e => setData('status', e.target.value)}
+                                    >
+                                        <option value="">Any</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                        <option value="Cancelled">Cancelled</option>
+                                    </CustomSelect>
+                                </div>
+                                <div className=''>
+                                    <div className="flex gap-1">
+                                        <Link href={route('admin.reservations.index')} className='rounded-md text-gray-800 text-center bg-gray-300 font-medium py-2 px-10 border-gray-800 flex-1'>
+                                            Clear
+                                        </Link>
+                                        <button type='submit' className='rounded-md bg-primary text-white font-medium py-2 px-10 border-gray-800 flex-1'>
+                                            Filter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </CollapsibleContent>
+                </Collapsible>
+
+                {/* table */}
+                <ReservationsTable reservations={reservations} />
+
+                {/* pagination controls */}
+                {reservations && reservations.total > reservations.per_page && (
+                    <div className="justify-center gap-3 flex pt-5">
+                        <Link disabled={reservations.prev_page_url == null} href={reservations.prev_page_url ?? ''} className={clsx('rounded-xl hover:bg-primary size-10 text-white flex justify-center items-center', {
+                            'bg-primary/40 pointer-events-none': reservations.prev_page_url == null,
+                            'bg-primary/90': reservations.prev_page_url != null
+                        })} >
+                            <span className="m-icon text-sm ">chevron_left</span>
+                        </Link>
+                        <div className="flex gap-2">
+                            {reservations.links.length > 4 && reservations.links.map((link, index) => {
+                                if ((index >= reservations.current_page - 2 && index <= reservations.current_page + 2) && (index != 0 && index != reservations.links.length - 1)) {
+                                    return (
+                                        <Link key={index} disabled={link.url == null || link.active} href={link.url ?? ''} className={clsx('rounded-xl size-10 flex justify-center items-center', {
+                                            'bg-secondary/40 text-primary pointer-events-none border-b-2 border-b-primary': link.url == null || link.active,
+                                            'bg-secondary text-white': link.url != null || !link.active,
+                                        })} >
+                                            <span className="text-sm" dangerouslySetInnerHTML={{ __html: link.label }} />
+                                        </Link>
+                                    )
+                                }
+                                return null
+                            })}
+                        </div>
+                        <Link disabled={reservations.next_page_url == null} href={reservations.next_page_url ?? ''} className={clsx('rounded-xl hover:bg-primary size-10 text-white flex justify-center items-center', {
+                            'bg-primary/40 pointer-events-none': reservations.next_page_url == null,
+                            'bg-primary/90': reservations.next_page_url != null
+                        })} >
+                            <span className="m-icon text-sm">chevron_right</span>
+                        </Link>
+                    </div>
+                )}
             </section>
         </AdminLayout>
     )

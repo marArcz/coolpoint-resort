@@ -1,5 +1,5 @@
 import Footer from "@/Components/ui/Footer";
-import Navbar from "@/Components/ui/Navbar";
+import Navbar from "@/Components/Navbar";
 import React, { PropsWithChildren, ReactNode } from "react";
 
 const GuestLayout = ({ children }: PropsWithChildren) => {
