@@ -41,9 +41,9 @@ const ManageReservation = ({ reservation }: Props) => {
     });
     function handleRejectPayment(e: FormEvent): void {
         e.preventDefault();
-        if (reservation.payment) {
-            router.put(route('admin.payments.update', [reservation.payment.id]), {
-                ...reservation.payment,
+        if (reservation.payments?.[0]) {
+            router.put(route('admin.payments.update', [reservation.payments[0].id]), {
+                ...reservation.payments[0],
                 status: "Rejected",
                 notes: reason
             });
@@ -51,9 +51,9 @@ const ManageReservation = ({ reservation }: Props) => {
     }
 
     function handleConfirmPayment(): void {
-        if (reservation.payment) {
-            router.put(route('admin.payments.update', [reservation.payment.id]), {
-                ...reservation.payment,
+        if (reservation.payments?.[0]) {
+            router.put(route('admin.payments.update', [reservation.payments[0].id]), {
+                ...reservation.payments[0],
                 status: "Confirmed",
                 notes: 'Valid'
             });
@@ -95,7 +95,7 @@ const ManageReservation = ({ reservation }: Props) => {
                     <span className="m-icon">arrow_back</span>
                     <span>Reservations</span>
                 </button>
-                {reservation.status != IReservationStatus.CANCELLED && reservation.payment && reservation.payment.status == 'Completed' ? (
+                {reservation.status != IReservationStatus.CANCELLED && reservation.payments?.[0] && reservation.payments[0].status == 'Completed' ? (
                     <>
                         <div className={`bg-amber-700/20 px-4 py-3 rounded-lg mt-2`}>
                             <p className="font-medium text-amber-700 flex items-center gap-2 md:text-base text-sm">
@@ -106,8 +106,8 @@ const ManageReservation = ({ reservation }: Props) => {
                         <div className="flex mt-3 p-6 bg-gray-100 rounded-lg items-center gap-3">
                             <div>
                                 <p>Attached proof of payment</p>
-                                <ImageDialog imageUrl={`/files/${reservation.payment.receipt}`} className='mt-4'>
-                                    <img src={`/files/${reservation.payment.receipt}`} className='object-cover h-[250px] rounded-md' alt="" />
+                                <ImageDialog imageUrl={`/files/${reservation.payments[0].receipt}`} className='mt-4'>
+                                    <img src={`/files/${reservation.payments[0].receipt}`} className='object-cover h-[250px] rounded-md' alt="" />
                                 </ImageDialog>
                             </div>
                             <div className='bg-gray-50 border h-max rounded-lg w-max p-5'>
@@ -157,28 +157,28 @@ const ManageReservation = ({ reservation }: Props) => {
                 {reservation.cancellation_request && reservation.status == IReservationStatus.CANCELLED && (
                     <div className=" mt-3 mb-10">
                         <div className="mt-4">
-                            {reservation.payment && reservation.isPaid ? (
+                            {reservation.payments?.[0] && reservation.isPaid ? (
                                 <>
                                     <p className="font-semibold text-secondary ">Payment Refund Status</p>
                                     <div className="mt-2 p-5 bg-secondary rounded-lg">
                                         <div className='grid grid-cols-2 lg:grid-cols-4 gap-y-5 items-center'>
                                             <div>
-                                                <p className="text-white">{reservation.payment.type == 'full' ? 'Full Payment' : 'Down Payment'}</p>
+                                                <p className="text-white">{reservation.payments[0].type == 'full' ? 'Full Payment' : 'Down Payment'}</p>
                                                 <p className='text-gray-300'>Type</p>
                                             </div>
                                             <div>
-                                                <p className="text-white">{formatToCurrency(reservation.payment.amount)}</p>
+                                                <p className="text-white">{formatToCurrency(reservation.payments[0].amount)}</p>
                                                 <p className='text-gray-300'>Amount</p>
                                             </div>
                                             <div>
-                                                <p className="border text-white p-3 border-dashed w-max ">{reservation.payment.is_refundable ? 'REFUNDABLE' : 'NON-REFUNDABLE'}</p>
+                                                <p className="border text-white p-3 border-dashed w-max ">{reservation.payments[0].is_refundable ? 'REFUNDABLE' : 'NON-REFUNDABLE'}</p>
                                             </div>
-                                            {reservation.payment.is_refundable == true && (
+                                            {reservation.payments[0].is_refundable == true && (
                                                 <div>
-                                                    <p className="text-white uppercase">{reservation.payment.is_refunded ? 'Refunded' : 'Pending'}</p>
-                                                    {reservation.payment.is_refunded && (
+                                                    <p className="text-white uppercase">{reservation.payments[0].is_refunded ? 'Refunded' : 'Pending'}</p>
+                                                    {reservation.payments[0].is_refunded && (
                                                         <ImageDialog
-                                                            imageUrl={`/files/${reservation.payment.proof_of_refund}`}
+                                                            imageUrl={`/files/${reservation.payments[0].proof_of_refund}`}
                                                             dialogTitle='Attached proof of refund'
                                                             className='text-gray-300 underline underline-offset-4 text-base'
                                                         >
@@ -188,8 +188,8 @@ const ManageReservation = ({ reservation }: Props) => {
                                                 </div>
                                             )}
                                         </div>
-                                        {reservation.payment.is_refundable && !reservation.payment.is_refunded && (
-                                            <ProcessRefundDialog payment={reservation.payment} cancellationRequest={reservation.cancellation_request} />
+                                        {reservation.payments[0].is_refundable && !reservation.payments[0].is_refunded && (
+                                            <ProcessRefundDialog payment={reservation.payments[0]} cancellationRequest={reservation.cancellation_request} />
                                         )}
                                     </div>
 
@@ -212,25 +212,25 @@ const ManageReservation = ({ reservation }: Props) => {
                             <p className="mt-1 text-secondary">{reservation.cancellation_request.reason}</p>
                         </div>
                         <div className="mt-4">
-                            {reservation.isPaid && reservation.payment && (
+                            {reservation.isPaid && reservation.payments?.[0] && (
                                 <>
                                     <p className="font-semibold text-white">Payment Refund</p>
                                     <div className="mt-4 p-5 bg-secondary rounded-lg ">
                                         <div className="grid grid-cols-2 lg:grid-cols-4 items-center">
                                             <div>
-                                                <p className="text-white">{reservation.payment.type == 'full' ? 'Full Payment' : 'Down Payment'}</p>
+                                                <p className="text-white">{reservation.payments[0].type == 'full' ? 'Full Payment' : 'Down Payment'}</p>
                                                 <p className='text-gray-300'>Type</p>
                                             </div>
                                             <div>
-                                                <p className="text-white">{formatToCurrency(reservation.payment.amount)}</p>
+                                                <p className="text-white">{formatToCurrency(reservation.payments[0].amount)}</p>
                                                 <p className='text-gray-300'>Amount</p>
                                             </div>
                                             <div>
-                                                <p className="border text-white p-3 border-dashed w-max ">{reservation.payment.is_refundable ? 'REFUNDABLE' : 'NON-REFUNDABLE'}</p>
+                                                <p className="border text-white p-3 border-dashed w-max ">{reservation.payments[0].is_refundable ? 'REFUNDABLE' : 'NON-REFUNDABLE'}</p>
                                             </div>
-                                            {reservation.payment.is_refundable == true && (
+                                            {reservation.payments[0].is_refundable == true && (
                                                 <div>
-                                                    <p className="text-white uppercase">{reservation.payment.is_refunded ? 'Refunded' : 'Pending'}</p>
+                                                    <p className="text-white uppercase">{reservation.payments[0].is_refunded ? 'Refunded' : 'Pending'}</p>
                                                 </div>
                                             )}
                                         </div>
@@ -307,13 +307,19 @@ const ManageReservation = ({ reservation }: Props) => {
                         <p className='mb-1 text-sm'>Status</p>
                         <Dialog>
                             <DialogTrigger>
-                                <div className={`reservation-status-badge ${reservation.status.toLowerCase()} ${reservation.isPaid ? 'paid' : ''}`}>
+                                <div className={`reservation-status-badge ${reservation.status.toLowerCase()} ${reservation.isPaid && reservation.payments?.[0]?.type == 'full' ? 'paid' : ''}`}>
                                     {reservation.status == IReservationStatus.APPROVED ? (
                                         reservation.isPaid ? (
-                                            <>
-                                                <span>Approved - Paid</span>
-                                                <span className='m-icon filled text-xs ms-2'>check_circle</span>
-                                            </>
+                                            (reservation.payments?.[0]?.type == 'downpayment' ? (
+                                                <>
+                                                    <span>Approved - Payment On Hold</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span>Approved - Paid</span>
+                                                    <span className='m-icon filled text-xs ms-2'>check_circle</span>
+                                                </>
+                                            ))
                                         ) : (
                                             <>
                                                 <span>Approved - Unpaid</span>
@@ -434,7 +440,7 @@ const ManageReservation = ({ reservation }: Props) => {
                 )}
                 <div className="mt-8">
                     <p className='text-lg font-semibold text-gray-800'>Payment Details</p>
-                    {reservation.payment ? (
+                    {reservation.payments?.[0] ? (
                         <div>
                             <Table className='mt-3'>
                                 <TableHeader>
@@ -448,12 +454,12 @@ const ManageReservation = ({ reservation }: Props) => {
                                 <TableBody>
                                     <TableRow>
                                         <TableCell className='border text-base font-medium'>#{reservation.reservation_no}</TableCell>
-                                        <TableCell className='border text-base font-medium capitalize'>{reservation.payment.method == 'cash' ? 'Pay on arrival' : reservation.payment_method}</TableCell>
+                                        <TableCell className='border text-base font-medium capitalize'>{reservation.payments[0].method == 'cash' ? 'Pay on arrival' : reservation.payment_method}</TableCell>
                                         <TableCell className='border text-base font-medium '>
                                             <span className={cn({
-                                                'text-red-500': reservation.payment.status == 'Rejected'
-                                            })}>{reservation.payment.status}</span>
-                                            {reservation.payment.status == 'Completed' && (
+                                                'text-red-500': reservation.payments[0].status == 'Rejected'
+                                            })}>{reservation.payments[0].status}</span>
+                                            {reservation.payments[0].status == 'Completed' && (
                                                 <span className='ms-1 text-secondary'>
                                                     - Pending for your confirmation
                                                 </span>
@@ -467,7 +473,7 @@ const ManageReservation = ({ reservation }: Props) => {
                                                         <DialogTitle>Attached proof of payment</DialogTitle>
                                                     </DialogHeader>
                                                     <div className="py-3">
-                                                        <img src={`/files/${reservation.payment.receipt}`} className='object-cover mx-auto h-[60vh]' alt="" />
+                                                        <img src={`/files/${reservation.payments[0].receipt}`} className='object-cover mx-auto h-[60vh]' alt="" />
                                                     </div>
                                                 </DialogContent>
                                             </Dialog>
@@ -475,11 +481,11 @@ const ManageReservation = ({ reservation }: Props) => {
                                     </TableRow>
                                 </TableBody>
                             </Table>
-                            {reservation.payment.status == 'Completed' && (
+                            {reservation.payments[0].status == 'Completed' && (
                                 <div className="mt-8">
                                     <p className='text-base font-medium text-gray-800 mb-2'>Attached proof of payment</p>
                                     <div className="flex gap-4 items-center">
-                                        <img src={`/files/${reservation.payment.receipt}`} className='object-cover w-1/6' alt="" />
+                                        <img src={`/files/${reservation.payments[0].receipt}`} className='object-cover w-1/6' alt="" />
                                         <div className='bg-gray-50 border rounded-lg w-max p-5'>
                                             <p className='text-gray-700 text-sm '>This payment is pending for your confirmation.</p>
                                             <p className="mt-1 font-medium">Please confirm if the payment has been received:</p>
@@ -508,6 +514,11 @@ const ManageReservation = ({ reservation }: Props) => {
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            )}
+                            {reservation.payment_method == 'cash' && reservation.isPaid && (
+                                <div className="mt-3">
+                                    <PrimaryButtonLink className='w-max' href={route('admin.reservation.payments.create',[reservation.id])}>Add Payment</PrimaryButtonLink>
                                 </div>
                             )}
                         </div>

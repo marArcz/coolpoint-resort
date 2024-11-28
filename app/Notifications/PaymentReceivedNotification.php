@@ -51,7 +51,7 @@ class PaymentReceivedNotification extends Notification
         $user = $this->payment->reservation->user;
         return [
             'title' => 'New Payment Received',
-            'description' => $user->name . ' has paid ' . $this->payment->amount . ' as ' . $this->payment->type == 'down' ? 'down payment' : 'full payment' . ' for reservation: ' . $this->payment->reservation->reservation_no,
+            'description' => $user->name . ' has paid ' . $this->payment->amount . ' as ' . $this->payment->type == 'downpayment' ? 'down payment' : 'full payment' . ' for reservation: ' . $this->payment->reservation->reservation_no,
             'payment_id' => $this->payment->id,
             'reservation_id' => $this->payment->reservation_id
         ];

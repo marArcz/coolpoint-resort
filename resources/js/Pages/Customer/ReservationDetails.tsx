@@ -103,12 +103,12 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                     </HeadingTitle>
                 )}
                 {/* display when payment is rejected */}
-                {reservation.status == 'Approved' && reservation.cancellation_request == null && reservation.payment && reservation.payment.status == 'Rejected' && (
+                {reservation.status == 'Approved' && reservation.cancellation_request == null && reservation.payments?.[0] && reservation.payments[0].status == 'Rejected' && (
                     <div className='mb-8  border p-3 '>
                         <p className="bg-red-100 p-4  text-red-600 font-normal text-lg">Oh no! The payment you submitted has been rejected</p>
-                        <img src={`/files/${reservation.payment.receipt}`} className='h-[30vh] mt-4 rounded-md' alt="" />
+                        <img src={`/files/${reservation.payments[0].receipt}`} className='h-[30vh] mt-4 rounded-md' alt="" />
                         <p className='mt-5 mb-2 text-gray-600 text-sm'>Note by owner:</p>
-                        <p className='text-red-500'>{reservation.payment.notes}</p>
+                        <p className='text-red-500'>{reservation.payments[0].notes}</p>
                         <div className="mt-5 text-end">
                             <PrimaryButtonLink className='ms-auto w-max' href={route('reservations.payment.create', [reservation.id])}>Create another payment</PrimaryButtonLink>
                         </div>
@@ -147,7 +147,7 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                                 <p>Your reservation is currently being reviewed.</p>
                             </div>
                         )}
-                        {reservation.status == 'Approved' && reservation.payment == null && (
+                        {reservation.status == 'Approved' && reservation.payments == null && (
                             <div className="bg-amber-800/10 text-amber-800 font-medium rounded-lg px-4 py-4 mb-10 md:text-lg text-base">
                                 <p>Your reservation has been approved. Automatic cancellation will be done if no payment is made before the schedule.</p>
                             </div>
@@ -280,16 +280,16 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                                 {reservation.status == 'Approved' || reservation.status == 'Completed' ? (
                                     <>
                                         {
-                                            reservation.payment ? (
+                                            reservation.payments?.[0] ? (
                                                 <>
                                                     <div className="lg:mt-5 align-middle mt-5 grid lg:grid-cols-4 grid-cols-2 lg:gap-y-0 gap-y-4 relative h-max">
                                                         <div className="">
                                                             <div className='lg:text-base text-sm border px-4 lg:py-3 py-2 font-regular text-gray-500'>Payment No</div>
-                                                            <div className=' text-base lg:text-lg border px-4 py-3 font-medium'>#{reservation.payment.payment_no}</div>
+                                                            <div className=' text-base lg:text-lg border px-4 py-3 font-medium'>#{reservation.payments[0].payment_no}</div>
                                                         </div>
                                                         <div className="">
                                                             <div className='lg:text-base text-sm border px-4 lg:py-3 py-2 font-regular text-gray-500'>Date</div>
-                                                            <div className='text-sm lg:text-lg border px-4 py-3 font-medium capitalize'>{formatDate(new Date(reservation.payment.created_at), "MMMM dd, yyyy")}</div>
+                                                            <div className='text-sm lg:text-lg border px-4 py-3 font-medium capitalize'>{formatDate(new Date(reservation.payments[0].created_at), "MMMM dd, yyyy")}</div>
                                                         </div>
                                                         <div className="">
                                                             <div className='lg:text-base text-sm border px-4 lg:py-3 py-2 font-regular text-gray-500'>Payment Method</div>
@@ -297,7 +297,7 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                                                         </div>
                                                         <div className="">
                                                             <div className='lg:text-base text-sm border px-4 lg:py-3 py-2 font-regular text-gray-500'>Status</div>
-                                                            <div className='text-base lg:text-lg border px-4 py-3 font-medium'>{reservation.payment.status}</div>
+                                                            <div className='text-base lg:text-lg border px-4 py-3 font-medium'>{reservation.payments[0].status}</div>
                                                         </div>
                                                     </div>
                                                     <div className="lg:mt-5 mt-5 grid lg:grid-cols-4 grid-cols-2 lg:gap-y-0 gap-y-4">
@@ -319,7 +319,7 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                                                                             </DialogDescription>
                                                                         </DialogHeader>
                                                                         <div className="py-3">
-                                                                            <img src={`/files/${reservation.payment.receipt}`} className='object-cover mx-auto h-[60vh]' alt="" />
+                                                                            <img src={`/files/${reservation.payments[0].receipt}`} className='object-cover mx-auto h-[60vh]' alt="" />
                                                                         </div>
                                                                     </DialogContent>
                                                                 </Dialog>
@@ -327,7 +327,7 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                                                         </div>
                                                         <div className="">
                                                             <div className='lg:text-base text-sm border px-4 lg:py-3 py-2 font-regular text-gray-500'>Amount</div>
-                                                            <div className='text-base lg:text-lg border px-4 py-3 font-medium'>{formatToCurrency(reservation.payment.amount)}</div>
+                                                            <div className='text-base lg:text-lg border px-4 py-3 font-medium'>{formatToCurrency(reservation.payments[0].amount)}</div>
                                                         </div>
                                                     </div>
                                                 </>

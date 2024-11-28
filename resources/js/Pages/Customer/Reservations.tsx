@@ -78,8 +78,8 @@ const Reservations = ({ reservations }: Props) => {
                                                 </div>
                                                 <div className='px-6 py-4 col-span-2 lg:col-span-1 text-left'>
                                                 <p className='text-primary font-medium mb-2 block lg:hidden text-sm'>Payment Status</p>
-                                                    {reservation.payment ? (
-                                                        <p>{reservation.payment.status}</p>
+                                                    {reservation.payments?.[0] ? (
+                                                        <p>{reservation.payments[0].status}</p>
                                                     ) : (
                                                         <p>None</p>
                                                     )}

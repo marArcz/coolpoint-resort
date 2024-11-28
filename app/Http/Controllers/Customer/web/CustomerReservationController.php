@@ -33,7 +33,7 @@ class CustomerReservationController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         $user = $request->user();
-        $reservations = Reservation::with(['user', 'payment', 'cancellationRequest'])
+        $reservations = Reservation::with(['user', 'payments', 'cancellationRequest'])
             ->where('user_id', '=', $user->id)
             ->orderBy('id', 'desc')
             ->paginate(5);
@@ -125,7 +125,7 @@ class CustomerReservationController extends Controller implements HasMiddleware
      */
     public function show(Reservation $reservation)
     {
-        $reservation->load(['addOns', 'cancellationRequest', 'room', 'payment', 'addOns']);
+        $reservation->load(['addOns', 'cancellationRequest', 'room', 'payments', 'addOns']);
 
         $configuration = ReservationConfiguration::all()[0];
         return Inertia::render("Customer/ReservationDetails", compact('reservation', 'configuration'));

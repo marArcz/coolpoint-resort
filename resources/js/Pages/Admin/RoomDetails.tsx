@@ -71,7 +71,7 @@ const RoomDetails = ({ room }: Props) => {
                         </div>
                     </div>
                     {/* reservations */}
-                    <div className="mt-10">
+                    {/* <div className="mt-10">
                         <HeadingTitle reverse>
                             <h1 className=' text-xl font-medium text-secondary flex items-center gap-2'>
                                 <span className="m-icon filled">book</span>
@@ -86,7 +86,7 @@ const RoomDetails = ({ room }: Props) => {
                                 </li>
                             ))}
                         </ul>
-                    </div>
+                    </div> */}
                 </div>
             </section>
         </AdminLayout>

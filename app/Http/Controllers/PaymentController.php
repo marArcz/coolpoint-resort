@@ -50,7 +50,6 @@ class PaymentController extends Controller
         $is_refundable = $request->boolean('is_refundable');
 
         // update payment method
-        $reservation->payment_method = $method;
         $reservation->save();
 
         // delete existing payments

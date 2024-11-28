@@ -81,9 +81,9 @@ class Reservation extends Model
         return $this->belongsTo(Room::class);
     }
 
-    public function payment(): HasOne
+    public function payments(): HasMany
     {
-        return $this->hasOne(Payment::class);
+        return $this->HasMany(Payment::class);
     }
 
     public function addOns():HasMany
@@ -97,6 +97,6 @@ class Reservation extends Model
 
     public function getIsPaidAttribute():bool
     {
-        return $this->payment()->where('status', '=', 'Confirmed')->exists();
+        return $this->payments()->where('status', '=', 'Confirmed')->exists();
     }
 }

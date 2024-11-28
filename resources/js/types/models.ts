@@ -73,6 +73,7 @@ export const IReservationStatus = {
     DECLINED: 'Declined',
     COMPLETED: 'Completed',
     NO_SHOW: 'No-Show',
+    ON_GOING: 'On-Going',
 }
 
 export interface IReservation {
@@ -90,7 +91,7 @@ export interface IReservation {
     total: number,
     payment_method: 'cash' | 'gcash',
     isPaid:boolean;
-    payment?: IPayment,
+    payments?: IPayment[],
     type: IReservationType,
     add_ons?: IReservationAddOn[],
     cancellation_request?: ICancellationRequest

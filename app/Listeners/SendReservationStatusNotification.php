@@ -33,9 +33,5 @@ class SendReservationStatusNotification
             Notification::sendNow([$user], new ReservationApprovedNotification($event->reservation));
         }
 
-        // todo: send notification to user about payment having been reviewed.
-        if($user && $reservation->payment->wasChanged(['status'])){
-
-        }
     }
 }

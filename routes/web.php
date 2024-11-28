@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminNotificationController;
+use App\Http\Controllers\Admin\AdminPaymentController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\AdminReservationController;
 use App\Http\Controllers\Admin\AdminRoomController;
@@ -80,6 +81,7 @@ Route::middleware(['auth:admin', 'verified'])->prefix('admin')->name('admin.')->
     Route::resource('profile', AdminProfileController::class)->parameters([
         'profile' => 'user'
     ]);
+    Route::resource('reservation.payments', AdminPaymentController::class);
 });
 
 Route::get('/files/{folder}/{file}', FileController::class)->name('file.serve');

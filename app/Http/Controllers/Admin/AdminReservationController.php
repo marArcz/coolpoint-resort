@@ -63,7 +63,7 @@ class AdminReservationController extends Controller
      */
     public function show(Reservation $reservation)
     {
-        $reservation->load(['user', 'cancellationRequest', 'room', 'payment', 'addOns']);
+        $reservation->load(['user', 'cancellationRequest', 'room', 'payments', 'addOns']);
         return Inertia::render('Admin/ManageReservation', compact('reservation'));
     }
 

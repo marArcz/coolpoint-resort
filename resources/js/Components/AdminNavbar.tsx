@@ -111,7 +111,7 @@ const AdminNavbar = ({ navbarTitle = '', navbarIcon = '' }: Props) => {
                                 </div>
                                 <ul className="list-none flex flex-col gap-5 mt-4">
                                     <li>
-                                        <Link className="xl:text-base text-sm font-light" href={route("profile.edit")}>
+                                        <Link className="xl:text-base text-sm font-light" href={route("admin.profile.index")}>
                                             Profile
                                         </Link>
                                     </li>
