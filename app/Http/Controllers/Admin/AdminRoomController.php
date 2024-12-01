@@ -92,7 +92,7 @@ class AdminRoomController extends Controller
      */
     public function edit(Room $room)
     {
-        $room->load(['images']);
+        $room->load(['images','amenities']);
         return Inertia::render('Admin/EditRoom',compact('room'));
     }
 
