@@ -64,7 +64,14 @@ const Welcome = () => {
                                 Lorem ipsum odor amet, consectetuer adipiscing
                                 elit. Arcu etiam libero curae consectetur
                                 efficitur nec eros eros. Dui blandit mi nisl
-                                mollis cursus.
+                                mollis cursus. Sollicitudin leo eget blandit
+                                libero malesuada curabitur. Turpis hendrerit
+                                pretium mi mattis a dui vivamus. Lobortis mattis
+                                malesuada consectetur; leo senectus etiam
+                                maximus. Nisl quis in luctus placerat dapibus
+                                phasellus habitasse etiam pretium. Blandit
+                                lacinia aenean platea proin ultricies
+                                suspendisse sem commodo.
                             </p>
                         </div>
                     </div>
