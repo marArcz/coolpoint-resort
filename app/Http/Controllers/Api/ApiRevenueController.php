@@ -23,7 +23,9 @@ class ApiRevenueController extends Controller
         $revenue = 0;
 
         foreach ($reservations as $key => $reservation) {
-            $revenue += $reservation->payment->amount;
+            foreach($reservation->payments as $payment){
+                $revenue += $payment->amount;
+            }
         }
         $stats = [];
 

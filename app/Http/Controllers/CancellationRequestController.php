@@ -21,7 +21,7 @@ class CancellationRequestController extends Controller
      */
     public function create(Reservation $reservation)
     {
-        $reservation->load(['payment']);
+        $reservation->load(['payments']);
         return Inertia::render("Customer/CreateCancellationRequest",compact('reservation'));
     }
 

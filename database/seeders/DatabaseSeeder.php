@@ -17,12 +17,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Room::factory()
-            ->count(6)
-            ->has(RoomAmenity::factory()->count(4),'amenities')
-            ->has(RoomImage::factory()->count(2),'images')
-            ->create();
-
         // seed reservation configuration
         ReservationConfiguration::create([
             'gcash_qr_code' => '/images/gcash-qr.png',

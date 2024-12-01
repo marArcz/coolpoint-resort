@@ -38,7 +38,7 @@ class ApiReservationController extends Controller
      */
     public function show(Reservation $reservation)
     {
-        $reservation->load(['room','payment','user','addOns','cancellationRequest']);
+        $reservation->load(['room','payments','user','addOns','cancellationRequest']);
         return response()->json($reservation);
     }
 
