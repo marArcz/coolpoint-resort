@@ -147,7 +147,7 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                                 <p>Your reservation is currently being reviewed.</p>
                             </div>
                         )}
-                        {reservation.status == 'Approved' && reservation.payments == null && (
+                        {reservation.status == 'Approved' && (reservation.payments == null || reservation.payments.length == 0) && (
                             <div className="bg-amber-800/10 text-amber-800 font-medium rounded-lg px-4 py-4 mb-10 md:text-lg text-base">
                                 <p>Your reservation has been approved. Automatic cancellation will be done if no payment is made before the schedule.</p>
                             </div>
