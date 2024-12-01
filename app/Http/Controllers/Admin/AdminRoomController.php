@@ -39,7 +39,6 @@ class AdminRoomController extends Controller
             'max_people' => ['required'],
             'beds' => ['required'],
             'price' => ['required'],
-            'additional_photos' => ['required'],
         ]);
 
         $roomData['image'] = '/storage/' . $request->file('main_photo')->store('rooms');
