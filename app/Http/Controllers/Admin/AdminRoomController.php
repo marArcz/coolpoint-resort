@@ -14,9 +14,9 @@ class AdminRoomController extends Controller
      */
     public function index(Request $request)
     {
-        $rows = $request->query('rows',5);
+        $rows = $request->query('rows', 5);
         $rooms = Room::paginate($rows);
-        return Inertia::render('Admin/ViewAllRooms', compact('rooms','rows'));
+        return Inertia::render('Admin/ViewAllRooms', compact('rooms', 'rows'));
     }
 
     /**
@@ -83,7 +83,7 @@ class AdminRoomController extends Controller
      */
     public function show(Room $room)
     {
-        $room->load(['amenities','images','reservations']);
+        $room->load(['amenities', 'images', 'reservations']);
         return Inertia::render('Admin/RoomDetails', compact('room'));
     }
 
@@ -92,8 +92,8 @@ class AdminRoomController extends Controller
      */
     public function edit(Room $room)
     {
-        $room->load(['images','amenities']);
-        return Inertia::render('Admin/EditRoom',compact('room'));
+        $room->load(['images', 'amenities']);
+        return Inertia::render('Admin/EditRoom', compact('room'));
     }
 
     /**
@@ -101,7 +101,7 @@ class AdminRoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
-        if($request->hasFile('photo')){
+        if ($request->hasFile('photo')) {
             $photo = '/storage/' . $request->file('photo')->store('rooms');
             $room->image = $photo;
             $room->save();
@@ -109,7 +109,18 @@ class AdminRoomController extends Controller
 
         $room->update($request->except(['id']));
 
-        return redirect()->back()->with('success','Successfully saved changes!');
+        $room->amenities()->delete();
+
+        if ($request->has('amenities')) {
+            $amenities = $request->input('amenities');
+            foreach ($amenities as $amenity) {
+                $room->amenities()->create([
+                    'name' => $amenity
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Successfully saved changes!');
     }
 
     /**

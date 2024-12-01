@@ -20,7 +20,7 @@ const AddNewRoom = ({ room }: Props) => {
     const additionalPhotosInputRef = useRef<HTMLInputElement | null>(null);
     const [amenity, setAmenity] = useState('')
 
-    const { data, setData, post, errors, processing } = useForm<IEditRoom>({
+    const { data, setData, patch, errors, processing } = useForm<IEditRoom>({
         main_photo: null,
         additional_photos: [],
         name: room.name,
@@ -62,7 +62,7 @@ const AddNewRoom = ({ room }: Props) => {
 
     function handleSubmit(event: FormEvent<HTMLFormElement>): void {
         event.preventDefault();
-        post(route('admin.rooms.update'), { forceFormData: true });
+        patch(route('admin.rooms.update',[room.id]), { forceFormData: true, preserveState:false });
     }
 
 
