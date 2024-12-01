@@ -60,7 +60,7 @@ class PaymentController extends Controller
         ]);
         // create payment
         $receipt = $request->file("receipt")->store('payments');
-        $payment = $reservation->payment()->create([
+        $payment = $reservation->payments()->create([
             'method' => $method,
             'type' => $type,
             'amount' => $amount,
