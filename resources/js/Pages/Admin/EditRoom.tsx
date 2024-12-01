@@ -23,14 +23,14 @@ const AddNewRoom = ({ room }: Props) => {
     const { data, setData, post, errors, processing } = useForm<IEditRoom>({
         main_photo: null,
         additional_photos: [],
-        name: '',
-        min_people: '',
-        max_people: '',
-        price: '',
-        double_decks: '',
-        beds: '',
-        description: '',
-        amenities: [],
+        name: room.name,
+        min_people: room.min_people,
+        max_people:  room.max_people,
+        price:  room.price,
+        double_decks:  room.double_decks,
+        beds: room.beds,
+        description: room.description,
+        amenities: room.amenities.map(a => a.name),
     });
 
     const onClickAddPhotoBtn = (e: MouseEvent) => {
@@ -62,7 +62,7 @@ const AddNewRoom = ({ room }: Props) => {
 
     function handleSubmit(event: FormEvent<HTMLFormElement>): void {
         event.preventDefault();
-        post(route('admin.rooms.store'), { forceFormData: true });
+        post(route('admin.rooms.update'), { forceFormData: true });
     }
 
 

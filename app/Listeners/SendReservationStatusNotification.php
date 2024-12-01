@@ -26,7 +26,7 @@ class SendReservationStatusNotification
     public function handle(ReservationUpdated $event): void
     {
         $reservation = $event->reservation;
-        $reservation->load(['payment']);
+        $reservation->load(['payments']);
 
         $user = User::find($reservation->user_id);
         if($user && $reservation->wasChanged(['status'])){

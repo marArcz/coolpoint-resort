@@ -11,9 +11,9 @@ class ApiRevenueController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $reservations = Reservation::with(['payment'])
+        $reservations = Reservation::with(['payments'])
             ->doesntHave('cancellationRequest')
-            ->has('payment')
+            ->has('payments')
             ->whereIn('status', ['Completed', 'No-Show'])
             ->get()
             ->filter(function ($reservation) {
