@@ -62,7 +62,7 @@ const AddNewRoom = ({ room }: Props) => {
 
     function handleSubmit(event: FormEvent<HTMLFormElement>): void {
         event.preventDefault();
-        patch(route('admin.rooms.update',[room.id]), { forceFormData: true, preserveState:false });
+        patch(route('admin.rooms.update',[room.id]), { preserveState:false });
     }
 
 

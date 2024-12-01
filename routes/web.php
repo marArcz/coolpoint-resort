@@ -66,6 +66,7 @@ Route::middleware(['auth:customer', 'verified'])->group(function () {
 Route::middleware(['auth:admin', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminDashboardController::class)->name('dashboard');
     Route::resource('rooms.room_images', AdminRoomImageController::class)->shallow();
+    Route::put('rooms/update/photo', [AdminRoomController::class,'changePhoto'])->name('rooms.change.photo');
     Route::resource('rooms', AdminRoomController::class);
     Route::get('reservations/calendar', [AdminReservationController::class, 'reservationsCalendar'])->name('reservations.index.calendar');
     Route::resource('reservations', AdminReservationController::class);

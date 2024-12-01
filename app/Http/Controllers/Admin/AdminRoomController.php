@@ -105,22 +105,32 @@ class AdminRoomController extends Controller
             $photo = '/storage/' . $request->file('photo')->store('rooms');
             $room->image = $photo;
             $room->save();
-        }
+        }else{
+            $room->update($request->except(['id']));
 
-        $room->update($request->except(['id']));
+            $room->amenities()->delete();
 
-        $room->amenities()->delete();
-
-        if ($request->has('amenities')) {
-            $amenities = $request->input('amenities');
-            foreach ($amenities as $amenity) {
-                $room->amenities()->create([
-                    'name' => $amenity
-                ]);
+            if ($request->has('amenities')) {
+                $amenities = $request->input('amenities');
+                foreach ($amenities as $amenity) {
+                    $room->amenities()->create([
+                        'name' => $amenity
+                    ]);
+                }
             }
         }
 
         return redirect()->back()->with('success', 'Successfully saved changes!');
+    }
+
+    public function changePhoto(Request $request, Room $room){
+        if ($request->hasFile('photo')) {
+            $photo = '/storage/' . $request->file('photo')->store('rooms');
+            $room->update([
+                'image' => $photo
+            ]);
+        }
+        return redirect()->back()->with('success', 'Successfully changed photo!');
     }
 
     /**
