@@ -20,7 +20,7 @@ type Props = {
     room: IRoom
 }
 const EditRoomAdditionalPhotos = ({ room }: Props) => {
-    const { data, setData,post } = useForm<{ photo: File | null}>({
+    const { data, setData, post } = useForm<{ photo: File | null }>({
         photo: null,
     })
     const onsubmit = (e: FormEvent) => {
@@ -35,7 +35,7 @@ const EditRoomAdditionalPhotos = ({ room }: Props) => {
                 {room.images && room.images.map((image, index) => (
                     <div key={index} className='relative rounded overflow-hidden'>
                         <div className="w-full h-full bg-gray-500/0 top-0 left-0 absolute">
-                            <ConfirmLink href={route('admin.room_images.destroy',[image.id])} method='delete' as='button' type='button' bg='bg-red-800'  className='text-white w-max rounded'>
+                            <ConfirmLink href={route('admin.room_images.destroy', [image.id])} method='delete' as='button' type='button' bg='bg-red-800' className='text-white w-max rounded'>
                                 <span className='m-icon text-sm'>delete</span>
                             </ConfirmLink>
                         </div>
@@ -49,14 +49,16 @@ const EditRoomAdditionalPhotos = ({ room }: Props) => {
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Change Photo</DialogTitle>
+                        <DialogTitle>Add Photo</DialogTitle>
                         <DialogDescription>
-                            Main photo
+                            Additional Photo
                         </DialogDescription>
                     </DialogHeader>
                     <div className="py-3">
                         <form onSubmit={onsubmit}>
-                            <img src={data.photo ? URL.createObjectURL(data.photo) : ''} className='w-full h-[40vh] object-cover object-top rounded' alt="" />
+                            {data.photo && (
+                                <img src={data.photo ? URL.createObjectURL(data.photo) : ''} className='w-full h-[40vh] object-cover object-top rounded' alt="" />
+                            )}
                             <Input required onChange={e => setData('photo', e.target.files?.item(0) ?? null)} type='file' id='mainPhoto' className='mt-3 cursor-pointer' placeholder='Upload Image' />
 
                             <div className="mt-10 flex gap-10 justify-end">
