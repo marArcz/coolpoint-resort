@@ -32,5 +32,6 @@ class DatabaseSeeder extends Seeder
         ]);
         // seed extra amenities
         $this->call(ExtraAmenitySeeder::class);
+        $this->call(AdminSeeder::class);
     }
 }

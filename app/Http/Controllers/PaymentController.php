@@ -53,7 +53,7 @@ class PaymentController extends Controller
         $reservation->save();
 
         // delete existing payments
-        Payment::where('reservation_id', '=', $reservation->id)->delete();
+        Payment::where('reservation_id', '=', $reservation->id)->where('method','=','gcash')->delete();
         // proceed to payment creation
         $request->validate([
             'receipt' => 'required|file',

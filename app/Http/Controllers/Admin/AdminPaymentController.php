@@ -31,7 +31,13 @@ class AdminPaymentController extends Controller
      */
     public function store(Request $request, Reservation $reservation)
     {
-        // $reservation->
+        $reservation->payments()->create([
+            'amount' => $request->input('amount'),
+            'method' => $request->input('method'),
+            'status' => $request->input('status'),
+            'type'=> $request->input('type'),
+            'is_refundable'=> $request->input('is_refundable'),
+        ]);
     }
 
     /**
