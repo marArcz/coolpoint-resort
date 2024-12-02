@@ -61,17 +61,12 @@ const Welcome = () => {
                             </h2>
 
                             <p className="lg:mt-20 mt-10 text-xl font-light">
-                                Lorem ipsum odor amet, consectetuer adipiscing
-                                elit. Arcu etiam libero curae consectetur
-                                efficitur nec eros eros. Dui blandit mi nisl
-                                mollis cursus. Sollicitudin leo eget blandit
-                                libero malesuada curabitur. Turpis hendrerit
-                                pretium mi mattis a dui vivamus. Lobortis mattis
-                                malesuada consectetur; leo senectus etiam
-                                maximus. Nisl quis in luctus placerat dapibus
-                                phasellus habitasse etiam pretium. Blandit
-                                lacinia aenean platea proin ultricies
-                                suspendisse sem commodo.
+                                Cool Point Private Resort is a luxurious destination 
+                                designed for relaxation and recreation, offering various
+                                amenities like comfortable accommodations, we also offer 
+                                a spacious and decent events place. Resort is designed
+                                to accept guests. Resorts in relaxing locations, providing 
+                                everything needed for a relaxing and enjoyable stay.
                             </p>
                         </div>
                     </div>
@@ -83,7 +78,7 @@ const Welcome = () => {
                         Discover Our Rooms
                     </p>
                     <h2 className="section-title mt-3">
-                        Cool Point Resort Rooms
+                        Cool Point Resort Rooms 
                     </h2>
                 </div>
                 {/* rooms */}
@@ -98,13 +93,14 @@ const Welcome = () => {
                         </div>
                         <HeadingTitle className="mt-4">
                             <h2 className="font-serif font-medium text-2xl">
-                                Room #1
+                                Junior Suite
                             </h2>
                         </HeadingTitle>
                         <p className="mt-3">
-                            Lorem ipsum odor amet, consectetuer adipiscing elit.
-                            Arcu etiam libero curae consectetur efficitur nec
-                            eros eros. Dui blandit mi nisl mollis cursus.
+                        Junior Suite is spacious and designed to comfortably accommodate 4 to 6 people. 
+                        It features multiple beds, ensuring ample sleeping space. Guests can also enjoy 
+                        scenic views from the room's windows or balcony. Ideal for families or small groups, 
+                        this room offers both privacy and convenience, providing a relaxing and comfortable stay.
                         </p>
 
                     </div>
@@ -118,14 +114,15 @@ const Welcome = () => {
                         </div>
                         <HeadingTitle className="mt-4">
                             <h2 className="font-serif font-medium text-2xl">
-                                Room #2
+                                Family Suite
                             </h2>
                         </HeadingTitle>
 
                         <p className="mt-3">
-                            Lorem ipsum odor amet, consectetuer adipiscing elit.
-                            Arcu etiam libero curae consectetur efficitur nec
-                            eros eros. Dui blandit mi nisl mollis cursus.
+                        Family Suite is for 16 people is a large, multi-bedroom suite
+                        designed to accommodate groups or large families. 
+                        It features several double deck bedrooms, 
+                        each with comfortable beds and private or single bathrooms. 
                         </p>
                     </div>
                 </div>
