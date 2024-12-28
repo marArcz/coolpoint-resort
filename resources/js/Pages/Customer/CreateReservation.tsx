@@ -173,7 +173,7 @@ const CreateReservation = ({ extraAmenities = [], configuration, dateFrom, dateT
                                                         </div>
                                                         <div className='flex items-center gap-2'>
                                                             <span className='m-icon text-sm'>close</span>
-                                                            <Input min={1} type='number' disabled={!isSelected(addOn.amenity.id)} defaultValue={1} onChange={e => handleAddOnChange(addOn.amenity_id, Number(e.target.value))} className='md:w-28 w-24 disabled:font-light font-bold' />
+                                                            <Input min={1} max={room?.max_people} type='number' disabled={!isSelected(addOn.amenity.id)} defaultValue={1} onChange={e => handleAddOnChange(addOn.amenity_id, Number(e.target.value))} className='md:w-28 w-24 disabled:font-light font-bold' />
                                                         </div>
                                                     </div>
                                                 ) : null}
