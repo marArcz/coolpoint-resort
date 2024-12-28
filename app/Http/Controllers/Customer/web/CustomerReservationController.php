@@ -86,6 +86,10 @@ class CustomerReservationController extends Controller implements HasMiddleware
         } else {
             $total = $nights * $resortRate;
         }
+        // add to total
+        foreach ($addOns as $addOn) {
+            $total += $addOn['amenity']['price'] * $addOn['quantity'] ?? 1;
+        }
 
         $newReservation = new Reservation([
             'adults' => $request->integer('adults'),
@@ -165,6 +169,6 @@ class CustomerReservationController extends Controller implements HasMiddleware
         $reservation->reason = $request->input('reason');
         $reservation->save();
 
-        return redirect()->to(route('reservations.show',[$reservation->id]))->with("success", "Your reservation is successfully cancelled");
+        return redirect()->to(route('reservations.show', [$reservation->id]))->with("success", "Your reservation is successfully cancelled");
     }
 }
