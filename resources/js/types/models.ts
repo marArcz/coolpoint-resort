@@ -90,11 +90,12 @@ export interface IReservation {
     status: string,
     total: number,
     payment_method: 'cash' | 'gcash',
-    isPaid:boolean;
+    isPaid: boolean;
     payments?: IPayment[],
     type: IReservationType,
     add_ons?: IReservationAddOn[],
-    cancellation_request?: ICancellationRequest
+    cancellation_request?: ICancellationRequest,
+    created_at: Date
 }
 export interface ICancellationRequest {
     id: number,
@@ -164,7 +165,7 @@ export interface IPayment {
     type: 'full' | 'downpayment';
     is_refundable: boolean;
     is_refunded: boolean;
-    notes:string;
+    notes: string;
     created_at: string
 }
 export interface IUpdatePayment {
@@ -247,7 +248,7 @@ export interface IEditRoom {
     amenities: string[]
 }
 
-export interface INotification{
+export interface INotification {
     id: string;
     type: string;
     data: unknown;
@@ -263,19 +264,19 @@ export type INotificationData<T extends {}> = T & {
     type?: string;
 
 };
-export interface IRevenueStatisticItem{
-    revenue:number;
-    reservations:number;
-    strMonth:string;
-    month:string;
+export interface IRevenueStatisticItem {
+    revenue: number;
+    reservations: number;
+    strMonth: string;
+    month: string;
 }
-export interface IRevenueData{
-    revenue:number;
-    statistics:IRevenueStatisticItem[]
+export interface IRevenueData {
+    revenue: number;
+    statistics: IRevenueStatisticItem[]
 }
 
-export interface IUpdateProfile{
-    photo:File | null;
-    name:string;
+export interface IUpdateProfile {
+    photo: File | null;
+    name: string;
     // email:string;
 }

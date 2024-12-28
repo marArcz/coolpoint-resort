@@ -19,6 +19,7 @@ const ReservationsTable = ({ reservations }: Props) => {
                     <TableHead>ID</TableHead>
                     <TableHead>Customer</TableHead>
                     <TableHead className='text-nowrap whitespace-nowrap'>Check In - Check Out</TableHead>
+                    <TableHead>Booked At</TableHead>
                     <TableHead>Type</TableHead>
                     <TableHead className='hidden md:flex items-center'>Total</TableHead>
                     <TableHead>Status</TableHead>
@@ -40,6 +41,7 @@ const ReservationsTable = ({ reservations }: Props) => {
                             </div>
                         </TableCell>
                         <TableCell className='capitalize text-base'>{formatDate(reservation.date_from, 'yyyy')}, {formatDate(reservation.date_from, 'MMM dd')} - {formatDate(reservation.date_to, 'MMM dd')}</TableCell>
+                        <TableCell className='capitalize text-base'>{formatDate(reservation.created_at, 'MMM dd, yyyy @hh:mm aa')}</TableCell>
                         <TableCell className='capitalize text-base'>{reservation.type}</TableCell>
                         <TableCell className='hidden md:inline-flex capitalize text-base'>{formatToCurrency(reservation.total)}</TableCell>
                         <TableCell className='capitalize text-base'>
