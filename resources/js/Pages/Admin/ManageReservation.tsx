@@ -312,7 +312,7 @@ const ManageReservation = ({ reservation }: Props) => {
                                         reservation.isPaid ? (
                                             (reservation.payments?.[0]?.type == 'downpayment' ? (
                                                 <>
-                                                    <span>Approved - Payment On Hold</span>
+                                                    <span>Approved - Partial Payment</span>
                                                 </>
                                             ) : (
                                                 <>
@@ -322,7 +322,7 @@ const ManageReservation = ({ reservation }: Props) => {
                                             ))
                                         ) : (
                                             <>
-                                                <span>Approved - Unpaid</span>
+                                                <span>Approved - Slot Reserved</span>
                                             </>
                                         )
                                     ) : (

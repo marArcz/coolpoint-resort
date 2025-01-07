@@ -48,7 +48,7 @@ const ReservationsTable = ({ reservations }: Props) => {
                             {reservation.status != IReservationStatus.CANCELLED && reservation.cancellation_request && reservation.cancellation_request.status == 'Pending' ? (
                                 <span className={`reservation-status-badge pending`}>Cancellation Requested</span>
                             ) : (
-                                <span className={`reservation-status-badge ${reservation.status.toLowerCase()} ${reservation.isPaid ? 'paid' : 'unpaid'}`}>{reservation.status} {reservation.status == 'Approved'? (reservation.isPaid ? '- paid' : '- unpaid'):''}</span>
+                                <span className={`reservation-status-badge ${reservation.status.toLowerCase()} ${reservation.isPaid ? 'paid' : 'unpaid'}`}>{reservation.status} {reservation.status == 'Approved'? (reservation.isPaid ? '- paid' : '- slot reserved'):''}</span>
                             )}
 
                         </TableCell>
