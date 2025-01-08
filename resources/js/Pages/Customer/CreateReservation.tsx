@@ -228,7 +228,7 @@ const CreateReservation = ({ extraAmenities = [], configuration, dateFrom, dateT
                                             <RadioGroupItem className='mt-2' value="cash" id="cash" />
                                             <div className=''>
                                                 <label className='text-lg' htmlFor="cash">Pay on arrival</label>
-                                                <p className='text-secondary font-medium mt-2'>Pay down payment of 30% via GCash and pay the rest on arrival</p>
+                                                <p className='text-secondary font-medium mt-2'>Pay down payment of 50% via GCash and pay the rest on arrival</p>
                                                 <p className='text-gray-800 font-medium mt-2'>* Down payment is non-refundable</p>
                                             </div>
                                         </div>

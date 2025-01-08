@@ -334,7 +334,7 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                                             ) : (
                                                 <>
                                                     {reservation.payment_method == 'cash' ? (
-                                                        <p className='mt-2 text-lg'>To proceed with your reservation, <span className='font-medium text-amber-700'>You need to pay a 30% down payment in advance via GCash and pay the rest on your arrival.</span></p>
+                                                        <p className='mt-2 text-lg'>To proceed with your reservation, <span className='font-medium text-amber-700'>You need to pay 50% down payment in advance via GCash and pay the rest on your arrival.</span></p>
                                                     ) : (
                                                         <p className='mt-2 text-lg'>No payment has been made yet.</p>
                                                     )}

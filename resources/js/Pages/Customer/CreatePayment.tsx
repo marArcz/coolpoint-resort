@@ -62,7 +62,7 @@ const CreatePayment = ({ reservation, configuration }: Props) => {
                             ) : (
                                 <div className=' bg-gray-200 p-4 rounded-lg'>
                                     <HeadingTitle className='mb-2' reverse>
-                                        <p className=' font-medium text-primary'>Pay 30% downpayment via gcash and pay the rest on your arrival.</p>
+                                        <p className=' font-medium text-primary'>Pay 50% downpayment via gcash and pay the rest on your arrival.</p>
                                     </HeadingTitle>
                                     <div className="flex items-center justify-between">
                                         <p className='text-lg font-medium'>Amount to pay:</p>
