@@ -9,7 +9,10 @@ import AppLayout from '@/Layouts/CustomerLayout';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
+        firstname: '',
+        lastname: '',
+        birthdate: '',
+        phone: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -37,23 +40,51 @@ export default function Register() {
                     <p className="mt-3">Please provide the following information to continue</p>
                     <div className="mt-4">
                         <form onSubmit={submit}>
-                            <div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    {/* <InputLabel htmlFor="name" value="Name" /> */}
+                                    <TextInput
+                                        id="firstname"
+                                        name="firstname"
+                                        placeholder='Firstname'
+                                        value={data.firstname}
+                                        className="mt-1 block w-full"
+                                        autoComplete="name"
+                                        isFocused={true}
+                                        onChange={(e) => setData('firstname', e.target.value)}
+                                        required
+                                    />
+                                    <InputError message={errors.firstname} className="mt-2" />
+                                </div>
+                                <div className=''>
+                                    {/* <InputLabel htmlFor="name" value="Name" /> */}
+                                    <TextInput
+                                        id="lastname"
+                                        name="lastname"
+                                        placeholder='Lastname'
+                                        value={data.lastname}
+                                        className="mt-1 block w-full"
+                                        autoComplete="lastname"
+                                        onChange={(e) => setData('lastname', e.target.value)}
+                                        required
+                                    />
+                                    <InputError message={errors.lastname} className="mt-2" />
+                                </div>
+                            </div>
+                            <div className='mt-4'>
                                 {/* <InputLabel htmlFor="name" value="Name" /> */}
                                 <TextInput
-                                    id="name"
-                                    name="name"
-                                    placeholder='Name'
-                                    value={data.name}
+                                    id="phone"
+                                    name="phone"
+                                    placeholder='Phone'
+                                    value={data.phone}
                                     className="mt-1 block w-full"
-                                    autoComplete="name"
-                                    isFocused={true}
-                                    onChange={(e) => setData('name', e.target.value)}
+                                    autoComplete="phone"
+                                    onChange={(e) => setData('phone', e.target.value)}
                                     required
                                 />
-
-                                <InputError message={errors.name} className="mt-2" />
+                                <InputError message={errors.phone} className="mt-2" />
                             </div>
-
                             <div className="mt-4">
                                 {/* <InputLabel htmlFor="email" value="Email" /> */}
                                 <TextInput
