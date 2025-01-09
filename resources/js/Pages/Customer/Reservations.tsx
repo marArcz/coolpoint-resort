@@ -66,10 +66,12 @@ const Reservations = ({ reservations }: Props) => {
                                                     <p className='text-primary font-medium mb-2 block lg:hidden text-sm'>Status</p>
                                                     {reservation.status.toLowerCase() == "pending" ? (
                                                         <p className=''>
-                                                            <span>Pending for confirmation</span>
+                                                            <span>Pending</span>
                                                         </p>
                                                     ) : (
-                                                        <p className={`font-medium ${reservation.status == 'Approved'?'text-green-700':'text-gray-600'}`}>{reservation.status}</p>
+                                                        <p className={`font-medium ${reservation.status == 'Approved' && reservation.isPaid?'text-green-700':'text-gray-600'}`}>
+                                                            {reservation.status == 'Approved' ? (reservation.isPaid?'Approved - Paid':'Slot reserved'):reservation.status}
+                                                        </p>
                                                     )}
                                                 </div>
                                                 <div className='px-6 py-2 lg:py-4 col-span-2 lg:col-span-1 text-lg capitalize'>

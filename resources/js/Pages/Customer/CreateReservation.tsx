@@ -232,14 +232,14 @@ const CreateReservation = ({ extraAmenities = [], configuration, dateFrom, dateT
                                                 <p className='text-gray-800 font-medium mt-2'>* Down payment is non-refundable</p>
                                             </div>
                                         </div>
-                                        <div className="flex mb-3 space-x-4">
+                                        {/* <div className="flex mb-3 space-x-4">
                                             <RadioGroupItem className='mt-2' value="gcash" id="gcash" />
                                             <div>
                                                 <Label className='text-lg' htmlFor="gcash">GCash</Label>
                                                 <p className='text-secondary font-medium mt-2'>Pay full payment via Gcash</p>
                                                 <p className='text-gray-800 font-medium mt-2'>* 100% refundable</p>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </RadioGroup>
                                     <div className="mt-10 flex items-center gap-3">
                                         <Checkbox required id='has-read' />
