@@ -100,7 +100,8 @@ class CustomerReservationController extends Controller implements HasMiddleware
             'date_to' => $request->date('date_to'),
             'user_id' => $user->id,
             'reservation_no' => $reservation_no,
-            'type' => $type
+            'type' => $type,
+            'status'=>'Approved'
         ]);
 
         if ($type == 'room') {
@@ -121,7 +122,7 @@ class CustomerReservationController extends Controller implements HasMiddleware
 
         NewReservationCreated::dispatch($newReservation);
 
-        return redirect()->to(route('reservations.show', [$newReservation->id]))->with('success', 'We successfully received your reservation. Kindly wait as we review your reservation. You will receive an email once your reservation is approved!');
+        return redirect()->to(route('reservations.show', [$newReservation->id]))->with('success', 'We successfully received your reservation. Please process your payment as soon as posible to avoid cancellation!');
     }
 
     /**
