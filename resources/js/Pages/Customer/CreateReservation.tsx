@@ -209,7 +209,7 @@ const CreateReservation = ({ extraAmenities = [], configuration, dateFrom, dateT
                                         </div>
                                         <div className="mb-4 flex items-center flex-wrap">
                                             <p className='text-xl font-serif font-medium me-auto'>Stay</p>
-                                            <p className='text-lg'>{nights} nights</p>
+                                            <p className='text-lg'>{nights} Days</p>
                                         </div>
                                         <hr className="my-4" />
                                         <div className="mb-4 flex items-center flex-wrap">
