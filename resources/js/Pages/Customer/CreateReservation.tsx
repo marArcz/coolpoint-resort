@@ -10,7 +10,7 @@ import { toast } from '@/hooks/use-toast';
 import AppLayout from '@/Layouts/CustomerLayout'
 import { formatToCurrency, getTotalNights } from '@/lib/utils';
 import { IExtraAmenity, INewReservationAddOn, IReservation, IReservationConfiguration, IReservationType, IRoom } from '@/types/models'
-import { Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { differenceInDays, formatDate } from 'date-fns';
 import React, { FormEvent, useState } from 'react'
 
@@ -94,6 +94,7 @@ const CreateReservation = ({ extraAmenities = [], configuration, dateFrom, dateT
 
     return (
         <AppLayout>
+            <Head title='Create Reservation'/>
             <div className="py-12 container-padded">
                 <HeadingTitle reverse>
                     <h1 className='text-2xl lg:text-3xl font-serif font-semibold'>Confirm Reservation</h1>
@@ -141,8 +142,8 @@ const CreateReservation = ({ extraAmenities = [], configuration, dateFrom, dateT
                                         </div>
                                         <div className="mb-3">
                                             <p className="text-lg flex gap-2 items-center">
-                                                <span className='m-icon'>bedtime</span>
-                                                <span>{nights} nights</span>
+                                                <span className='m-icon'>clear_day</span>
+                                                <span>{nights} days</span>
                                             </p>
                                         </div>
                                         <div className="mb-3 flex justify-between">
@@ -188,12 +189,12 @@ const CreateReservation = ({ extraAmenities = [], configuration, dateFrom, dateT
                                 {room ? (
                                     <>
                                         <div className="mb-4 flex items-center flex-wrap">
-                                            <p className='text-xl font-serif font-medium me-auto'>Room's rate per night</p>
+                                            <p className='text-xl font-serif font-medium me-auto'>Room's rate per day</p>
                                             <p className='text-lg'>{formatToCurrency(room.price)}</p>
                                         </div>
                                         <div className="mb-4 flex items-center flex-wrap">
                                             <p className='text-xl font-serif font-medium me-auto'>Stay</p>
-                                            <p className='text-lg'>{nights} nights</p>
+                                            <p className='text-lg'>{nights} days</p>
                                         </div>
                                         <hr className="my-4" />
                                         <div className="mb-4 flex items-center flex-wrap">
@@ -209,7 +210,7 @@ const CreateReservation = ({ extraAmenities = [], configuration, dateFrom, dateT
                                         </div>
                                         <div className="mb-4 flex items-center flex-wrap">
                                             <p className='text-xl font-serif font-medium me-auto'>Stay</p>
-                                            <p className='text-lg'>{nights} nights</p>
+                                            <p className='text-lg'>{nights} Days</p>
                                         </div>
                                         <hr className="my-4" />
                                         <div className="mb-4 flex items-center flex-wrap">
@@ -229,7 +230,7 @@ const CreateReservation = ({ extraAmenities = [], configuration, dateFrom, dateT
                                             <div className=''>
                                                 <label className='text-lg' htmlFor="cash">Pay on arrival</label>
                                                 <p className='text-secondary font-medium mt-2'>Pay down payment of 50% via GCash and pay the rest on arrival</p>
-                                                <p className='text-gray-800 font-medium mt-2'>* Down payment is non-refundable</p>
+                                                {/* <p className='text-gray-800 font-medium mt-2'>* Down payment is non-refundable</p> */}
                                             </div>
                                         </div>
                                         {/* <div className="flex mb-3 space-x-4">

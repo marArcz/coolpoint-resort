@@ -35,6 +35,7 @@ type Props = {
     configuration: IReservationConfiguration
 }
 const ReservationDetails = ({ reservation: data, configuration }: Props) => {
+    console.log('reservation: ', data)
     const [reservation, setReservation] = useState<IReservation>(data)
     const [receipt, setReceipt] = useState<File | null>(null);
     const { flash } = usePage().props
@@ -81,11 +82,7 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
 
     function handleSubmitNewPayment(e: FormEvent<HTMLFormElement>): void {
         e.preventDefault();
-        // if(reservation.payment){
-        //     router.put(route('payments.update',[reservation.payment.id]),{
-        //         ...res
-        //     });
-        // }
+
     }
 
     return (
@@ -149,7 +146,7 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                         )}
                         {reservation.status == 'Approved' && (reservation.payments == null || reservation.payments.length == 0) && (
                             <div className="bg-amber-800/10 text-amber-800 font-medium rounded-lg px-4 py-4 mb-10 md:text-lg text-base">
-                                <p>Your reservation has been approved. Automatic cancellation will be done if no payment is made before the schedule.</p>
+                                <p>Your slot has been reserved. Automatic cancellation will be done if no payment is made within eight (8) hours after booking time.</p>
                             </div>
                         )}
                         {reservation.status == 'Cancelled' && (
@@ -176,7 +173,7 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                         <div className="col-span-1">
                             <p className='text-lg font-light'>Status</p>
                             <p className={` font-medium reservation-status-badge ${reservation.status.toLowerCase()} w-max`}>
-                                {reservation.cancellation_request && reservation.cancellation_request.status == 'Pending' ? "Pending for cancellation" : reservation.status}
+                                {reservation.mStatus}
                             </p>
                         </div>
                         <div className="col-span-1">
