@@ -16,7 +16,7 @@ class Reservation extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $appends = ['isPaid'];
+    protected $appends = ['isPaid','mStatus'];
     protected $fillable = [
         'date_from',
         'date_to',
@@ -98,5 +98,25 @@ class Reservation extends Model
     public function getIsPaidAttribute():bool
     {
         return $this->payments()->where('status', '=', 'Confirmed')->exists();
+    }
+    public function getMStatusAttribute():string
+    {
+        if($this->cancellationRequest()->exists()){
+            $cancellation_request = $this->cancellationRequest()->get()[0];
+            if($cancellation_request->status == 'Approved'){
+                return 'Cancelled';
+            }else{
+                return 'Pending for cancellation';
+            }
+        }
+        if($this->status == 'Approved'){
+            if($this->payments()->where('status', '=', 'Confirmed')->exists()){
+                return 'Approved - Paid';
+            }else{
+                return 'Slot reserved';
+            }
+        }else{
+            return $this->status;
+        }
     }
 }

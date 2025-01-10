@@ -29,7 +29,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'checkRole' => CheckRoleMiddleware::class,
             'redirectUser' => RedirectUserMiddleware::class,
         ]);
-
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
