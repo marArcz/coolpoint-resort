@@ -312,17 +312,17 @@ const ManageReservation = ({ reservation }: Props) => {
                                         reservation.isPaid ? (
                                             (reservation.payments?.[0]?.type == 'downpayment' ? (
                                                 <>
-                                                    <span>Approved - Partial Payment</span>
+                                                    <span>Partial Payment</span>
                                                 </>
                                             ) : (
                                                 <>
-                                                    <span>Approved - Paid</span>
+                                                    <span>Paid</span>
                                                     <span className='m-icon filled text-xs ms-2'>check_circle</span>
                                                 </>
                                             ))
                                         ) : (
                                             <>
-                                                <span>Approved - Slot Reserved</span>
+                                                <span>Slot Reserved</span>
                                             </>
                                         )
                                     ) : (
@@ -403,7 +403,7 @@ const ManageReservation = ({ reservation }: Props) => {
                                     <div className="flex flex-wrap text-center md:justify-start justify-center gap-3 items-center">
                                         <img src={reservation.user.photo ? asset(reservation.user.photo) : '/images/account.jpg'} className='rounded-full object-cover object-top size-10 md:size-14 ' alt="" />
                                         <div>
-                                            <p>{reservation.user.name}</p>
+                                            <p>{reservation.user.firstname} {reservation.user.lastname}</p>
                                         </div>
                                     </div>
                                 </TableCell>

@@ -35,9 +35,9 @@ const Customers = ({ customers }: Props) => {
                                 <TableCell className='text-base'>
                                     <img src={customer.photo || '/images/account.jpg'} className='object-cover rounded-full' width={40} height={40} alt="" />
                                 </TableCell>
-                                <TableCell className='text-base'>{customer.name}</TableCell>
+                                <TableCell className='text-base'>{customer.firstname} {customer.lastname}</TableCell>
                                 <TableCell className='text-base'>{customer.email}</TableCell>
-                                <TableCell className='text-base'>{customer.name ?? ''}</TableCell>
+                                <TableCell className='text-base'>{customer.phone ?? ''}</TableCell>
                                 <TableCell className='text-base'>
                                     <DropdownMenu>
                                         <DropdownMenuTrigger>
@@ -50,7 +50,7 @@ const Customers = ({ customers }: Props) => {
                                             <DropdownMenuLabel>Action</DropdownMenuLabel>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem>
-                                                <Link href={route('admin.reservations.show', [customer.id])}>
+                                                <Link href={route('admin.users.show', [customer.id])}>
                                                     View Details
                                                 </Link>
                                             </DropdownMenuItem>

@@ -56,7 +56,8 @@ class PaymentIsRejectedNotification extends Notification
         return [
             'payment_id' => $this->payment->id,
             'payment_no' => $this->payment->payment_no,
-            'reservation_id' => $this->payment->reservation_id
+            'reservation_id' => $this->payment->reservation_id,
+            'title' => 'Your payment has been rejected',
         ];
     }
 }

@@ -271,7 +271,7 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                         )))}
                     </div>
                     <div className="mt-5">
-                        {reservation.status != 'Cancelled' && (
+                        {reservation.status != 'Cancelled' && !reservation.cancellation_request && (
                             <>
                                 <h4 className='font-serif text-2xl lg:text-2xl text-primary lg:mt-14 mt-10 font-semibold'>Payment Details</h4>
                                 {reservation.status == 'Approved' || reservation.status == 'Completed' ? (

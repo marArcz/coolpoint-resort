@@ -41,7 +41,7 @@ class AdminCustomerController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return Inertia::render('Admin/CustomerDetails',compact('user'));
     }
 
     /**

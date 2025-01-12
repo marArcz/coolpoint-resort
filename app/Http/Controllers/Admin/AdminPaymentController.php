@@ -31,13 +31,17 @@ class AdminPaymentController extends Controller
      */
     public function store(Request $request, Reservation $reservation)
     {
+        $payment_count = $reservation->payments()->count();
         $reservation->payments()->create([
             'amount' => $request->input('amount'),
             'method' => $request->input('method'),
             'status' => $request->input('status'),
             'type'=> $request->input('type'),
             'is_refundable'=> $request->input('is_refundable'),
+            'payment_no' => 'P' .  $payment_count . $reservation->reservation_no
         ]);
+
+        return redirect()->to(route('admin.reservations.show',$reservation->id))->with('Successfully added payment');
     }
 
     /**

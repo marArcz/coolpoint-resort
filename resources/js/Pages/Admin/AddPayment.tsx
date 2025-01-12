@@ -16,7 +16,7 @@ const AddPayment = ({ reservation }: Props) => {
         amount:'',
         method:'cash',
         status:'confirmed',
-        type:'payment',
+        type:'full',
         is_refundable:false,
     })
 
