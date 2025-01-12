@@ -23,6 +23,7 @@ class AdminPaymentController extends Controller
      */
     public function create(Reservation $reservation)
     {
+        $reservation->load(['payments']);
         return Inertia::render('Admin/AddPayment', compact('reservation'));
     }
 

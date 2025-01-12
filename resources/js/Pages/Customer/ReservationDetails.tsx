@@ -186,11 +186,15 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                         </div>
                         <div className="col-span-1">
                             <p className='text-lg font-light'>Total</p>
-                            <p className='text-lg font-medium'>{formatToCurrency(reservation.total)}</p>
+                            <p className='text-base font-medium p-2 rounded-lg bg-primary text-white w-fit'>{formatToCurrency(reservation.total)}</p>
                         </div>
                         <div className="col-span-1">
                             <p className='text-lg font-light'>Payment Method</p>
                             <p className='text-lg font-medium'>{reservation.payment_method == 'cash' ? 'Pay on arrival' : 'GCash'}</p>
+                        </div>
+                        <div className="col-span-1">
+                            <p className='text-lg font-light'>Remaining Balance</p>
+                            <p className='text-lg font-medium text-yellow-600'>{formatToCurrency(reservation.balance)}</p>
                         </div>
                     </div>
                     {/* room details */}

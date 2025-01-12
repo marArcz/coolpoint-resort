@@ -98,6 +98,7 @@ export interface IReservation {
     user_id: number,
     user: IUser,
     status: string,
+    balance:number,
     mStatus: string,
     total: number,
     payment_method: 'cash' | 'gcash',

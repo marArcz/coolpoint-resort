@@ -16,7 +16,7 @@ class Reservation extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $appends = ['isPaid','mStatus'];
+    protected $appends = ['isPaid','mStatus','balance'];
     protected $fillable = [
         'date_from',
         'date_to',
@@ -110,13 +110,26 @@ class Reservation extends Model
             }
         }
         if($this->status == 'Approved'){
-            if($this->payments()->where('status', '=', 'Confirmed')->exists()){
-                return 'Approved - Paid';
-            }else{
+            if($this->payments()->where('status', '=', 'Confirmed')->count() == 1){
+                return 'Partial Payment';
+            }
+            else if($this->payments()->where('status', '=', 'Confirmed')->count() == 2){
+                return 'Paid';
+            }
+            else{
                 return 'Slot reserved';
             }
         }else{
             return $this->status;
         }
+    }
+    public function getBalanceAttribute(){
+        $payments = $this->payments()->get();
+        $amount_paid = 0;
+        foreach($payments as $payment){
+            $amount_paid += $payment->amount;
+        }
+
+        return $this->total - $amount_paid;
     }
 }

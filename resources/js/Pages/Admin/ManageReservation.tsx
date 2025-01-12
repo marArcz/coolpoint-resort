@@ -150,7 +150,7 @@ const ManageReservation = ({ reservation }: Props) => {
                 ) : (
                     <>
                         {reservation.status != IReservationStatus.PENDING && (
-                            <ReservationStatusMessage status={reservation.status} className='mt-2' />
+                            <ReservationStatusMessage status={reservation.mStatus} className='mt-2' />
                         )}
                     </>
                 )}
@@ -310,7 +310,7 @@ const ManageReservation = ({ reservation }: Props) => {
                                 <div className={`reservation-status-badge ${reservation.status.toLowerCase()} ${reservation.isPaid && reservation.payments?.[0]?.type == 'full' ? 'paid' : ''}`}>
                                     {reservation.status == IReservationStatus.APPROVED ? (
                                         reservation.isPaid ? (
-                                            (reservation.payments?.[0]?.type == 'downpayment' ? (
+                                            (reservation.payments?.length == 1 ? (
                                                 <>
                                                     <span>Partial Payment</span>
                                                 </>
@@ -516,7 +516,7 @@ const ManageReservation = ({ reservation }: Props) => {
                                     </div>
                                 </div>
                             )}
-                            {reservation.payment_method == 'cash' && reservation.isPaid && (
+                            {reservation.payment_method == 'cash' && reservation.isPaid && reservation.balance > 0 && (
                                 <div className="mt-3">
                                     <PrimaryButtonLink className='w-max' href={route('admin.reservation.payments.create',[reservation.id])}>Add Payment</PrimaryButtonLink>
                                 </div>
