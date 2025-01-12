@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\Admin\AdminCancellationRequestController;
 use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\Admin\AdminHomeController;
@@ -34,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['verifyWhenAuth'])->group(function () {
     Route::get('/', [CustomerHomeController::class, 'index'])->name('home');
+    Route::get('/about-us', AboutUsController::class)->name('about');
     Route::resource('rooms', CustomerRoomController::class);
     Route::get('availability/search', [AvailabilityController::class, 'search'])->name('availability.search');
     Route::resource('availability', AvailabilityController::class);

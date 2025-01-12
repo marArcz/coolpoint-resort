@@ -19,7 +19,7 @@ const RoomBookingCard = () => {
                     <HeadingTitle width="w-12" className='me-auto'>
                         <p className='uppercase text-2xl font-medium font-serif'>Family Room #1</p>
                     </HeadingTitle>
-                    <p className="font-serif font-medium text-2xl">Php 900.00 / night</p>
+                    <p className="font-serif font-medium text-2xl">Php 900.00 / day</p>
                 </div>
                 <div className="mt-4">
                     <ul className="flex flex-wrap gap-6">

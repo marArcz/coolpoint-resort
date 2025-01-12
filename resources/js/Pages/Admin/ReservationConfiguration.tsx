@@ -83,7 +83,7 @@ const ReservationConfiguration = ({ reservationConfiguration }: Props) => {
                     <form onSubmit={handleRateFormSubmit}>
                         <div className="mb-3">
                             <Label className='text-base'>Resort reservation rate:</Label>
-                            <Input required  type='number' value={rateFormData.resort_rate} onChange={e => setRateFormData('resort_rate',e.target.value)} className='mt-1' placeholder='Rate per night' />
+                            <Input required  type='number' value={rateFormData.resort_rate} onChange={e => setRateFormData('resort_rate',e.target.value)} className='mt-1' placeholder='Rate per day' />
                         </div>
                         <div className="mt-8 flex justify-end gap-3">
                             <PrimaryButton bg='bg-gray-500' type='reset' className='rounded-lg text-gray-700 text-sm'>Reset</PrimaryButton>

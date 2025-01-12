@@ -41,6 +41,13 @@ export interface IAddReservation {
     children: number,
     type?: string
 }
+export interface IUpdateReservation {
+    date_from: Date | undefined,
+    date_to: Date | undefined,
+    // adults: number,
+    // children: number,
+    // type?: string
+}
 export interface ISearchAvailability {
     date_from: Date | undefined,
     date_to: Date | undefined,

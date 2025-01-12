@@ -138,7 +138,7 @@ const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Pro
                     </div>
                     <div>
                         <HeadingTitle reverse>
-                            <p className="text-xl lg:text-2xl text-black">{formatToCurrency(room.price)} / night</p>
+                            <p className="text-xl lg:text-2xl text-black">{formatToCurrency(room.price)} / day</p>
                         </HeadingTitle>
                     </div>
                 </div>
@@ -235,7 +235,7 @@ const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Pro
                                     {data.date_from && data.date_to && (
                                         <div className="flex items-center">
                                             <input type="text" value={nights} className='w-full text-end border-0 pointer-events-none bg-transparent' readOnly />
-                                            <span>{nights > 1 ? "Nights" : "Night"}</span>
+                                            <span>{nights > 1 ? "Days" : "Day"}</span>
                                         </div>
                                     )}
                                 </div>
@@ -243,7 +243,7 @@ const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Pro
                             <div className="mb-4">
                                 <div className="border bg-gray-50 px-5 py-4 flex w-full items-center justify-between">
                                     <label className=' pointer-events-none flex'>
-                                        <span>Rate / night</span>
+                                        <span>Rate / day</span>
                                     </label>
                                     <div className="flex items-center gap-2 flex-col">
                                         <div className="flex gap-2">

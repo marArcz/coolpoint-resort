@@ -44,7 +44,7 @@ const Reservation = ({ room }: { room: IRoom }) => {
                     </div>
                     <div>
                         <HeadingTitle reverse>
-                            <p className="text-xl lg:text-2xl text-black">{formatToCurrency(room.price)} / night</p>
+                            <p className="text-xl lg:text-2xl text-black">{formatToCurrency(room.price)} / day</p>
                         </HeadingTitle>
                     </div>
                 </div>

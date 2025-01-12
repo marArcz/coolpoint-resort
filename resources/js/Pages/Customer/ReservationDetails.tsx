@@ -346,13 +346,13 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                                             reservation.cancellation_request == null && reservation.status != 'Completed' && (
                                                 <div className='mt-20 flex flex-col md:flex-row gap-2 items-center'>
                                                     <Link href={route('reservations.cancellation_requests.create', [reservation.id])} className='border md:w-max w-full text-center border-red-200 py-5 px-7 hover:bg-red-100 bg-transparent transition-all text-lg text-red-700'>Cancel Reservation</Link>
-                                                    <Link href={route('reservations.edit', [reservation.id])} className='border md:w-max w-full text-center border-gray-300 py-5  px-7 hover:bg-gray-200 bg-transparent transition-all text-lg text-gray-700'>Request for reschedule</Link>
+                                                    <Link href={route('reservations.edit', [reservation.id])} className='border md:w-max w-full text-center border-gray-300 py-5  px-7 hover:bg-gray-200 bg-transparent transition-all text-lg text-gray-700'>Reschedule</Link>
                                                 </div>
                                             )
                                         }
                                     </>
                                 ) : (
-                                    <p className='mt-3 text-gray-500 text-lg'>You can processed payment once your reservation is approved.</p>
+                                    <p className='mt-3 text-gray-500 text-lg'>You can process payment once your reservation is approved.</p>
                                 )}
                             </>
                         )}

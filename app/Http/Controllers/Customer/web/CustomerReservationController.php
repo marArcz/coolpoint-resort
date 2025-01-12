@@ -139,17 +139,29 @@ class CustomerReservationController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Reservation $reservation)
     {
-        //
+        $reservation->load(['room']);
+        return Inertia::render('Customer/Reschedule',compact('reservation'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Reservation $reservation)
     {
-        //
+        $request->validate([
+            'date_from' => ['required'],
+            'date_to' => ['required'],
+        ]);
+
+        $reservation->update([
+            'date_from' => $request->date('date_from'),
+            'date_to' => $request->date('date_to'),
+        ]);
+
+        // $reservation->save();
+        return redirect()->to(route('reservations.show',$reservation->id))->with('success','Successfully rescheduled!');
     }
 
 

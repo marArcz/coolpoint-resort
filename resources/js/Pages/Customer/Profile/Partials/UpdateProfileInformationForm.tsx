@@ -8,10 +8,15 @@ import { FormEventHandler } from 'react';
 import { PageProps } from '@/types';
 
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }: { mustVerifyEmail: boolean, status?: string, className?: string }) {
-    const user = usePage<PageProps>().props.auth.user;
-
+    const { user } = usePage().props.auth;
+    if (!user) {
+        return;
+    }
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-        name: user.name,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        birthdate: user.birthdate,
+        phone: user.phone,
         email: user.email,
     });
 
@@ -30,22 +35,69 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     Update your account's profile information and email address.
                 </p>
             </header>
-
+            <Transition
+                show={recentlySuccessful}
+                enter="transition ease-in-out"
+                enterFrom="opacity-0"
+                leave="transition ease-in-out"
+                leaveTo="opacity-0"
+            >
+                <p className="text-sm w-full bg-green-600 rounded-md p-3 mt-4 text-white">Successfully updated profile.</p>
+            </Transition>
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="firstname" value="Firstname" />
 
                     <TextInput
-                        id="name"
+                        id="firstname"
                         className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
+                        value={data.firstname}
+                        onChange={(e) => setData('firstname', e.target.value)}
                         required
                         isFocused
                         autoComplete="name"
                     />
 
-                    <InputError className="mt-2" message={errors.name} />
+                    <InputError className="mt-2" message={errors.firstname} />
+                </div>
+                <div>
+                    <InputLabel htmlFor="lastname" value="Lastname" />
+
+                    <TextInput
+                        id="lastname"
+                        className="mt-1 block w-full"
+                        value={data.lastname}
+                        onChange={(e) => setData('lastname', e.target.value)}
+                        required
+                    />
+
+                    <InputError className="mt-2" message={errors.lastname} />
+                </div>
+                <div>
+                    <InputLabel htmlFor="birthdate" value="Birthdate" />
+                    <TextInput
+                        type='date'
+                        id="birthdate"
+                        className="mt-1 block w-full"
+                        value={data.birthdate}
+                        onChange={(e) => setData('birthdate', e.target.value)}
+                        required
+                    />
+
+                    <InputError className="mt-2" message={errors.birthdate} />
+                </div>
+                <div>
+                    <InputLabel htmlFor="phone" value="Phone" />
+                    <TextInput
+                        type='number'
+                        id="phone"
+                        className="mt-1 block w-full"
+                        value={data.phone}
+                        onChange={(e) => setData('phone', e.target.value)}
+                        required
+                    />
+
+                    <InputError className="mt-2" message={errors.phone} />
                 </div>
 
                 <div>
@@ -88,16 +140,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>Save</PrimaryButton>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
                 </div>
             </form>
         </section>

@@ -25,7 +25,7 @@ const RoomInfoCard = ({ room,href }: Props) => {
                     <HeadingTitle reverse width="w-12" className='me-auto'>
                         <p className='uppercase text-2xl font-medium font-serif'>{room.name}</p>
                     </HeadingTitle>
-                    <p className="font-sans font-medium lg:text-xl text-lg">{formatToCurrency(room.price)} / night</p>
+                    <p className="font-sans font-medium lg:text-xl text-lg">{formatToCurrency(room.price)} / day</p>
                 </div>
                 <div className="mt-4">
                     <ul className="flex flex-wrap gap-6">

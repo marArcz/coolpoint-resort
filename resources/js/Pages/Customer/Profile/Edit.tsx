@@ -11,6 +11,7 @@ export default function Edit({ auth, mustVerifyEmail, status }: PageProps<{ must
         <AppLayout>
             <Head title="Profile" />
             <div className="py-1">
+
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                         <UpdateProfileInformationForm

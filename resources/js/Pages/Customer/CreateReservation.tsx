@@ -149,7 +149,7 @@ const CreateReservation = ({ extraAmenities = [], configuration, dateFrom, dateT
                                         <div className="mb-3 flex justify-between">
                                             <p className="text-lg flex gap-2 items-center">
                                                 <span className='m-icon'>attach_money</span>
-                                                <span>Rate per night</span>
+                                                <span>Rate per day</span>
                                             </p>
                                             <p className="text-lg capitalize">{formatToCurrency(room.price)}</p>
                                         </div>

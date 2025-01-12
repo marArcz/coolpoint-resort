@@ -136,14 +136,14 @@ const ConfirmReservation = ({ reservation, extraAmenities = [], configuration }:
                                         </div>
                                         <div className="mb-3">
                                             <p className="text-lg flex gap-2 items-center">
-                                                <span className='m-icon'>bedtime</span>
-                                                <span>{nights} nights</span>
+                                                <span className='m-icon'>clear_day</span>
+                                                <span>{nights} days</span>
                                             </p>
                                         </div>
                                         <div className="mb-3 flex justify-between">
                                             <p className="text-lg flex gap-2 items-center">
                                                 <span className='m-icon'>attach_money</span>
-                                                <span>Rate per night</span>
+                                                <span>Rate per day</span>
                                             </p>
                                             <p className="text-lg capitalize">{formatToCurrency(reservation.room.price)}</p>
                                         </div>
@@ -184,12 +184,12 @@ const ConfirmReservation = ({ reservation, extraAmenities = [], configuration }:
                                 {reservation.room ? (
                                     <>
                                         <div className="mb-4 flex items-center flex-wrap">
-                                            <p className='text-xl font-serif font-medium me-auto'>Room's rate per night</p>
+                                            <p className='text-xl font-serif font-medium me-auto'>Room's rate per day</p>
                                             <p className='text-lg'>{formatToCurrency(reservation.room.price)}</p>
                                         </div>
                                         <div className="mb-4 flex items-center flex-wrap">
                                             <p className='text-xl font-serif font-medium me-auto'>Stay</p>
-                                            <p className='text-lg'>{nights} nights</p>
+                                            <p className='text-lg'>{nights} days</p>
                                         </div>
                                         <hr className="my-4" />
                                         <div className="mb-4 flex items-center flex-wrap">

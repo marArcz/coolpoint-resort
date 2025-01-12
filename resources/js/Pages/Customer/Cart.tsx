@@ -51,7 +51,7 @@ const Cart = ({ cart, rooms }: { cart: ICart, rooms: IRoom[] }) => {
                                                 textTruncateChild={<a href="#">more</a>}
                                             />
                                             <div className="flex items-center mt-4 text-lg justify-between">
-                                                <span>Rate/night</span>
+                                                <span>Rate/day</span>
                                                 <span>{formatToCurrency(room.price)}</span>
                                             </div>
                                             <OutlineButtonLink className='w-max px-4 mt-3' href={route("cart.cart_items.store",[cart.id])} data={{ room_id: room.id }} method='post'>
