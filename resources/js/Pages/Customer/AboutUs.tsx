@@ -17,9 +17,7 @@ const AboutUs = () => {
                     <h1 className="mt-3 text-center xl:text-[5.563rem] lg:text-7xl text-5xl font-serif italic font-bold">
                         About Us
                     </h1>
-                    <p className="text-center italic font-light text-lg mt-7">
-                        COOLPOINT RESORT
-                    </p>
+
                 </div>
                 <img src="/images/image-overlay.png" className="absolute bottom-0 w-full" alt="" />
             </section>
@@ -27,7 +25,7 @@ const AboutUs = () => {
             {/* about section */}
             <section className="about-section bg-[#F3FCFF]">
                 <div className="container-padded py-3">
-                    <div className="flex lg:flex-row flex-col w-full items-center gap-x-10 gap-y-16">
+                    <div className="flex lg:flex-row flex-col w-full items-center gap-x-10 gap-y-16 mt-24">
                         <div className="lg:w-1/2">
                             <img
                                 src="/images/home-images/about-image.png"
@@ -50,101 +48,34 @@ const AboutUs = () => {
                             </p>
                         </div>
                     </div>
-                </div>
-            </section>
-            <section className="lg:py-36 py-20 container-padded">
-                <div className="text-center">
-                    <p className="text-xl font-light uppercase">
-                        Discover Our Rooms
-                    </p>
-                    <h2 className="section-title mt-3">
-                        Cool Point Resort Rooms
-                    </h2>
-                </div>
-                {/* rooms */}
-                <div className=" mt-32 lg:grid-cols-2 grid-cols-1 gap-32 grid place-content-center">
-                    <div className="room-card">
-                        <div className="room-image">
-                            <img
-                                src="/images/rooms/room-1.jpg"
-                                className=" object-cover"
-                                alt=""
-                            />
-                        </div>
-                        <HeadingTitle className="mt-4">
-                            <h2 className="font-serif font-medium text-2xl">
-                                Junior Suite
-                            </h2>
-                        </HeadingTitle>
-                        <p className="mt-3">
-                        Junior Suite is spacious and designed to comfortably accommodate 4 to 6 people.
-                        It features multiple beds, ensuring ample sleeping space. Guests can also enjoy
-                        scenic views from the room's windows or balcony. Ideal for families or small groups,
-                        this room offers both privacy and convenience, providing a relaxing and comfortable stay.
+                    <div className=" mt-20 mb-20 w-full mx-auto lg:max-w-5xl text-center">
+                        {/* <h3 className="text-2xl font-bold text-center mb-5">Cool Point Private Resort</h3> */}
+                        <p className="text-xl font-light">
+                            Situated along NIA Road, Paliparan 1, Dasmariñas City, Cavite, 4114, and conveniently located beside Terra Alta Homes, Cool Point Private Resort is your ideal destination for relaxation, fun, and unforgettable memories.
+
+                            Founded on March 20, 2015, by Edmundo R. Sarimos, our resort was created with the vision of providing a serene haven for guests seeking a break from the hustle and bustle of everyday life. Since then, Cool Point Private Resort has been a go-to spot for families, friends, and groups looking to unwind and enjoy quality time together.
+
+                            Our Mission
+                            At Cool Point Private Resort, our mission is to provide an enjoyable and relaxing experience for every guest. We strive to create a space where you can celebrate life’s moments, enjoy the company of loved ones, and feel completely at ease. With clean facilities, attentive staff, and a welcoming atmosphere, we aim to make your stay unforgettable.
+
+                            Core Values
+
+                            Impeccable Cleanliness: We are committed to maintaining a spotless environment to ensure your comfort and safety.
+                            Outstanding Service: Our friendly and accommodating staff go the extra mile to make your stay stress-free and enjoyable.
+                            Guest Satisfaction: Your happiness is our priority, and we work hard to exceed your expectations every time.
+                            Why Choose Cool Point Private Resort?
+
+                            Clean and Well-Maintained Facilities: From our sparkling pool to our cozy accommodations, every corner of our resort is designed with your comfort in mind.
+                            Friendly and Helpful Staff: We take pride in providing personalized service that makes you feel right at home.
+                            Prime Location: Conveniently located beside Terra Alta Homes, our resort offers the perfect balance of tranquility and accessibility.
+                            Our Promise to You
+                            We promise to deliver exceptional service, clean facilities, and a welcoming environment where you can truly relax and enjoy. Whether it’s a casual weekend getaway, a special celebration, or a much-needed retreat, Cool Point Private Resort is here to make it happen.
+
+                            Plan Your Visit Today!
+                            Discover why guests love coming back to Cool Point Private Resort. Let us help you create memories that last a lifetime with our best offers and personalized service. Book your stay now and experience the perfect blend of relaxation and fun.
+
+                            Your next unforgettable getaway starts at Cool Point Private Resort—where comfort and exceptional service meet.
                         </p>
-
-                    </div>
-                    <div className="room-card">
-                        <div className="room-image">
-                            <img
-                                src="/images/rooms/room-2.jpg"
-                                className=" object-cover"
-                                alt=""
-                            />
-                        </div>
-                        <HeadingTitle className="mt-4">
-                            <h2 className="font-serif font-medium text-2xl">
-                                Family Suite
-                            </h2>
-                        </HeadingTitle>
-
-                        <p className="mt-3">
-                        Family Suite is for 16 people is a large, multi-bedroom suite
-                        designed to accommodate groups or large families.
-                        It features several double deck bedrooms,
-                        each with comfortable beds and private or single bathrooms.
-                        </p>
-                    </div>
-                </div>
-                <div className="mt-20 text-center">
-                    <Link href={route('rooms.index')} className=' btn px-12 hover:text-white duration-200 ease-linear text-gray-500 text-lg border hover:bg-primary'>
-                        See all
-                    </Link>
-                </div>
-            </section>
-            <section className="gallery-section lg:py-36 py-20 container-padded">
-                <div className="text-center">
-                    <p className="uppercase text-xl font-light">Explore</p>
-                    <h2 className="mt-3 section-title">
-                        Our Gallery
-                    </h2>
-
-                    <div className="mt-20 grid md:grid-cols-2 grid-cols-1 gap-10">
-                        <GalleryImage image="/images/gallery/gallery-1.jpg" />
-                        <GalleryImage image="/images/gallery/kitchen.jpg" />
-                        <GalleryImage image="/images/gallery/sink.jpg" />
-                        <GalleryImage image="/images/gallery/front.jpg" />
-                    </div>
-                </div>
-            </section>
-            <section className="contact-section">
-                <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
-                    <div className="lg:order-1 order-2">
-                        <iframe className="w-full lg:h-[60vh] h-[30vh]" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3864.195473908791!2d120.92132521052034!3d14.415892381514306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d3298b3ac857%3A0x3d85965208f6a86!2sCool%20Point%20Private%20Resort!5e0!3m2!1sen!2sph!4v1726366457487!5m2!1sen!2sph" allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                    <div className="py-14 lg:px-14 px-5 order-1 lg:order-2">
-                        <p>Information</p>
-                        <h2 className="section-title">Contact Us</h2>
-
-                        <div className="mt-10">
-                            <p className="font-sans text-2xl text-gray-600">Dasmariñas Cavite</p>
-                            <p className="font-sans text-gray-500 text-xl ">Sittio Niyugan, N.I.A. Rd, Dasmariñas, 4114 Cavite</p>
-                        </div>
-
-                        <div className="mt-10">
-                            <p>Call us directly</p>
-                            <p className="font-sans font-medium text-xl">+639123456789</p>
-                        </div>
                     </div>
                 </div>
             </section>
