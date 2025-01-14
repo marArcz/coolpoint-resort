@@ -69,7 +69,7 @@ const CreateCancellationRequest = ({ reservation }: Props) => {
 
                     <div className="mt-3 p-4 border bg-gray-200">
                         <p className='text-primary font-medium'>Payment Refund:</p>
-                        {reservation.payment && reservation.isPaid ? (
+                        {reservation.payments?.[0] && reservation.isPaid ? (
                             <>
                                 <div className="mt-4 flex justify-between">
                                     <div>
@@ -77,7 +77,7 @@ const CreateCancellationRequest = ({ reservation }: Props) => {
                                         <p className='text-gray-500'>Type</p>
                                     </div>
                                     <div>
-                                        <p>{formatToCurrency(reservation.payment.amount)}</p>
+                                        <p>{formatToCurrency(reservation.payments[0].amount)}</p>
                                         <p className='text-gray-500'>Amount</p>
                                     </div>
                                     <div className={clsx("h-100 py-3 px-4 flex font-medium justify-center items-center border border-dashed uppercase", {

@@ -39,6 +39,8 @@ class AdminRoomController extends Controller
             'max_people' => ['required'],
             'beds' => ['required'],
             'price' => ['required'],
+            'time_in' => ['required'],
+            'time_out' => ['required'],
         ]);
 
         $roomData['image'] = '/storage/' . $request->file('main_photo')->store('rooms');
@@ -48,6 +50,8 @@ class AdminRoomController extends Controller
         $roomData['description'] = $request->input('description');
         $roomData['beds'] = $request->integer('beds');
         $roomData['price'] = $request->integer('price');
+        $roomData['time_in'] = $request->input('time_in');
+        $roomData['time_out'] = $request->input('time_out');
 
         $newRoom = new Room($roomData);
         $newRoom->save();

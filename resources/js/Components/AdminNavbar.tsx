@@ -38,10 +38,10 @@ const AdminNavbar = ({ navbarTitle = '', navbarIcon = '' }: Props) => {
                     )}
                 </div>
                 {/* search */}
-                <div className='relative xl:w-1/3 md:w-2/6 w-2/4 hidden md:block'>
+                {/* <div className='relative xl:w-1/3 md:w-2/6 w-2/4 hidden md:block'>
                     <span className='m-icon text-lg text-gray-400 absolute start-3 translate-y-[-50%] top-[50%]'>search</span>
                     <input type="text" placeholder='Search' className=' w-full ps-10 border-gray-300 rounded-3xl' />
-                </div>
+                </div> */}
                 <Dialog>
                     <DialogTrigger className='md:hidden flex'>
                         <span className="m-icon text-2xl text-primary">menu</span>

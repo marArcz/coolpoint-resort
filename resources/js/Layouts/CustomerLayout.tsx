@@ -7,7 +7,7 @@ import { useToast } from '@/hooks/use-toast'
 import { useCustomerNotificationsStore } from '@/lib/stores'
 import { echo } from '@/echo'
 import { INotification } from '@/types/models'
-import { ToastAction } from '@/components/ui/toast'
+import { ToastAction } from '@/Components/ui/toast'
 
 const AppLayout = ({ children }: PropsWithChildren) => {
     const { flash, auth } = usePage().props;

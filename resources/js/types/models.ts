@@ -16,6 +16,8 @@ export interface IRoom {
     double_decks: number,
     beds: number,
     price: number,
+    time_in: string,
+    time_out: string,
     amenities: IRoomAmenity[],
     image: string,
     images: IRoomImage[],
@@ -240,7 +242,9 @@ export interface IAddRoom {
     additional_photos: File[]
     name: string
     min_people: number | string
-    max_people: number | string
+    max_people: number | string,
+    time_in:string,
+    time_out:string,
     price: number | string
     double_decks: number | string
     beds: number | string

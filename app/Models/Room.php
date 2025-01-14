@@ -21,7 +21,9 @@ class Room extends Model
         'double_decks',
         'beds',
         'price',
-        'image'
+        'image',
+        'time_in',
+        'time_out'
     ];
 
 

@@ -16,7 +16,7 @@ import {
 import { echo } from "@/echo";
 import { useAdminNotificationsStore, usePendingReservationsStore } from "@/lib/stores";
 import { INotification, INotificationData, IReservation } from "@/types/models";
-import { ToastAction } from "@/components/ui/toast";
+import { ToastAction } from "@/Components/ui/toast";
 import { adminMenu } from "@/lib/constants";
 import { asset, cn, isINavLink } from "@/lib/utils";
 import NavLinkMenu from "@/Components/NavLinkMenu";

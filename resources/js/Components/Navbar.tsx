@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { echo } from "@/echo";
 import { INotification, INotificationData, IReservation } from "@/types/models";
-import { ToastAction } from "@/components/ui/toast";
+import { ToastAction } from "@/Components/ui/toast";
 import { useCustomerNotificationsStore } from "@/lib/stores";
 import { useToast } from "@/hooks/use-toast";
 import { asset } from "@/lib/utils";

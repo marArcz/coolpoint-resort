@@ -37,7 +37,7 @@ const ReservationsTable = ({ reservations }: Props) => {
                         <TableCell className='capitalize text-base'>
                             <div className="flex gap-2 items-center flex-wrap lg:justify-start justify-center text-center">
                                 <img src={reservation.user?.photo ?? '/images/account.jpg'} className='rounded-full' alt="" width={40} height={40} />
-                                <p className='text-sm whitespace-nowrap'>{reservation.user?.name ?? 'unknown'}</p>
+                                <p className='text-sm whitespace-nowrap'>{(reservation.user?.firstname + ' ' + reservation.user.lastname) || 'unknown'}</p>
                             </div>
                         </TableCell>
                         <TableCell className='capitalize text-base'>{formatDate(reservation.date_from, 'yyyy')}, {formatDate(reservation.date_from, 'MMM dd')} - {formatDate(reservation.date_to, 'MMM dd')}</TableCell>
