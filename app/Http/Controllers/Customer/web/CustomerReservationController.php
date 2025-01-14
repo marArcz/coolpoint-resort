@@ -155,9 +155,20 @@ class CustomerReservationController extends Controller implements HasMiddleware
             'date_to' => ['required'],
         ]);
 
+        $resortRate = ReservationConfiguration::first()->resort_rate;
+
+        $nights = Carbon::parse($request->date('date_from'))->diffInDays($request->date('date_to'));
+        if ($reservation['type'] == 'room') {
+            $room = Room::find($request->input('room_id'));
+            $total = $room->price * $nights;
+        } else {
+            $total = $nights * $resortRate;
+        }
+
         $reservation->update([
             'date_from' => $request->date('date_from'),
             'date_to' => $request->date('date_to'),
+            'total' => $total,
         ]);
 
         // $reservation->save();
