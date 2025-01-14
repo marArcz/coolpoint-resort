@@ -25,28 +25,12 @@ const AboutUs = () => {
             {/* about section */}
             <section className="about-section bg-[#F3FCFF]">
                 <div className="container-padded py-3">
-                    <div className="flex lg:flex-row flex-col w-full items-center gap-x-10 gap-y-16 mt-24">
-                        <div className="lg:w-1/2">
-                            <img
-                                src="/images/home-images/about-image.png"
-                                className="w-full"
-                                alt=""
-                            />
-                        </div>
-                        <div className="flex-1">
-                            <h2 className="xl:text-7xl lg:text-7xl text-5xl text-gray-800 font-bold font-serif mt-3">
-                                The best place to enjoy your life
-                            </h2>
-
-                            <p className="lg:mt-20 mt-10 text-xl font-light">
-                                Cool Point Private Resort is a luxurious destination
-                                designed for relaxation and recreation, offering various
-                                amenities like comfortable accommodations, we also offer
-                                a spacious and decent events place. Resort is designed
-                                to accept guests. Resorts in relaxing locations, providing
-                                everything needed for a relaxing and enjoyable stay.
-                            </p>
-                        </div>
+                    <div className="lg:w-1/2 mx-auto">
+                        <img
+                            src="/images/home-images/about-image.png"
+                            className="w-full"
+                            alt=""
+                        />
                     </div>
                     <div className=" mt-20 mb-20 w-full mx-auto lg:max-w-5xl text-center">
                         {/* <h3 className="text-2xl font-bold text-center mb-5">Cool Point Private Resort</h3> */}

@@ -5,7 +5,7 @@ import AppLayout from '@/Layouts/CustomerLayout'
 import { asset, formatToCurrency, getTotalNights } from '@/lib/utils'
 import { IReservation, IReservationConfiguration } from '@/types/models'
 import { Head, Link, router, usePage } from '@inertiajs/react'
-import { formatDate } from 'date-fns'
+import { format, formatDate } from 'date-fns'
 import {
     Dialog,
     DialogClose,
@@ -191,6 +191,10 @@ const ReservationDetails = ({ reservation: data, configuration }: Props) => {
                         <div className="col-span-1">
                             <p className='text-lg font-light'>Payment Method</p>
                             <p className='text-lg font-medium'>{reservation.payment_method == 'cash' ? 'Pay on arrival' : 'GCash'}</p>
+                        </div>
+                        <div className="col-span-1">
+                            <p className='text-lg font-light'>Reserved on</p>
+                            <p className='text-lg font-medium'>{format(reservation.created_at, 'MMM dd, yyyy')} @{format(reservation.created_at, 'hh:ii a')}</p>
                         </div>
                         <div className="col-span-1">
                             <p className='text-lg font-light'>Remaining Balance</p>

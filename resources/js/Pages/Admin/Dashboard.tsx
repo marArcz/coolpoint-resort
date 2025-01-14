@@ -55,7 +55,7 @@ const Dashboard = () => {
                                 {pendingReservations && pendingReservations.map((reservation) => (
                                     <TableRow key={reservation.id}>
                                         <TableCell>{reservation.reservation_no}</TableCell>
-                                        <TableCell>{reservation.user.name}</TableCell>
+                                        <TableCell>{reservation.user.firstname }{reservation.user.lastname}</TableCell>
                                         <TableCell>{reservation.type}</TableCell>
                                         <TableCell>{formatDate(reservation.date_from,'MMM d, yyyy')}</TableCell>
                                         <TableCell>{formatDate(reservation.date_to,'MMM d, yyyy')}</TableCell>

@@ -46,13 +46,13 @@ const DashboardCards = () => {
                         value={fetchingCancellationRequests ? '...' : cancellationRequests.length ?? 0}
                     />
                 </Link>
-                <Link href={"#"}>
+                <div>
                     <DashboardCard
                         icon="attach_money"
                         label='Total Revenue'
                         value={revenueData ? formatToCurrency(revenueData.revenue) : 0}
                     />
-                </Link>
+                </div>
             </div>
             <div className="mt-10">
                 <p>Revenue Statistics</p>

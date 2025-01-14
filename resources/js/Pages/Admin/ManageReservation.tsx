@@ -3,7 +3,7 @@ import AdminLayout from '@/Layouts/AdminLayout'
 import { asset, cn, fetchFile, formatToCurrency } from '@/lib/utils'
 import { IReservation, IReservationStatus, IRoom } from '@/types/models'
 import { Head, Link, router, useForm } from '@inertiajs/react'
-import { formatDate } from 'date-fns'
+import { format, formatDate } from 'date-fns'
 import { FormEvent, useEffect, useState } from 'react'
 import {
     Dialog,
@@ -387,6 +387,14 @@ const ManageReservation = ({ reservation }: Props) => {
                         <p className=' text-sm'>Payment method</p>
                         <p className='text- mt-1 font-medium uppercase'>{reservation.payment_method == 'cash' ? 'Pay on arrival' : 'GCash'}</p>
                     </div>
+                    <div className=" col-span-1">
+                        <p className=' text-sm'>Balance</p>
+                        <p className='text- mt-1 font-medium uppercase'>{formatToCurrency(reservation.balance)}</p>
+                    </div>
+                    <div className=" col-span-1">
+                        <p className=' text-sm'>Reserved on</p>
+                        <p className='text- mt-1 font-medium uppercase'>{format(reservation.created_at, 'MMM dd, yyyy')} @{format(reservation.created_at, 'hh:ii a')}</p>
+                    </div>
                 </div>
                 <div className="mt-12">
                     <p className='text-base font-medium text-gray-800'>Customer Details</p>
@@ -518,7 +526,7 @@ const ManageReservation = ({ reservation }: Props) => {
                             )}
                             {reservation.payment_method == 'cash' && reservation.isPaid && reservation.balance > 0 && (
                                 <div className="mt-3">
-                                    <PrimaryButtonLink className='w-max' href={route('admin.reservation.payments.create',[reservation.id])}>Add Payment</PrimaryButtonLink>
+                                    <PrimaryButtonLink className='w-max' href={route('admin.reservation.payments.create', [reservation.id])}>Add Payment</PrimaryButtonLink>
                                 </div>
                             )}
                         </div>
