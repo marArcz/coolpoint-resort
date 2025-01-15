@@ -306,7 +306,7 @@ const ManageReservation = ({ reservation }: Props) => {
                     <div className="">
                         <p className='mb-1 text-sm'>Status</p>
                         <Dialog>
-                            <DialogTrigger>
+                            <DialogTrigger disabled={reservation.isPaid}>
                                 <div className={`reservation-status-badge ${reservation.status.toLowerCase()} ${reservation.isPaid && reservation.payments?.[0]?.type == 'full' ? 'paid' : ''}`}>
                                     {reservation.status == IReservationStatus.APPROVED ? (
                                         reservation.isPaid ? (
@@ -328,7 +328,9 @@ const ManageReservation = ({ reservation }: Props) => {
                                     ) : (
                                         <span>{reservation.status}</span>
                                     )}
-                                    <span className='m-icon filled text-xs ms-2'>keyboard_arrow_down</span>
+                                    {!reservation.isPaid && (
+                                        <span className='m-icon filled text-xs ms-2'>keyboard_arrow_down</span>
+                                    )}
                                 </div>
                             </DialogTrigger>
                             <DialogContent>
