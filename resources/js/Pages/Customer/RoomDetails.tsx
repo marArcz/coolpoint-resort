@@ -171,12 +171,8 @@ const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Pro
                     )
                 }
                 <div className='mt-14'>
-                    <h2 className='font-serif font-medium text-3xl lg:text-4xl'>About Accommodation</h2>
-                    <p className='mt-10'>At Cool Point Private Resort, we offer a variety of accommodations tailored to meet the needs of every guest. Whether you're looking for a cozy room for two or a spacious suite for the entire family, our options are designed to provide maximum comfort and relaxation.
-
-Our suites are equipped with modern amenities, clean facilities, and a touch of luxury to ensure your stay is nothing short of amazing. From air-conditioned rooms to private bathrooms and additional comforts like extra pillows and entertainment features, we’ve got everything you need for an enjoyable stay.
-
-Each room is thoughtfully designed to offer a balance of style, functionality, and relaxation, making your visit to Cool Point Private Resort a truly memorable experience.</p>
+                    <h2 className='font-serif font-medium text-3xl lg:text-4xl'>About Room</h2>
+                    <p className='mt-10'>{room.description}</p>
                     <hr className='my-10' />
                     <h2 className='font-serif font-medium text-3xl lg:text-4xl'>Room Amenities</h2>
                     <div className="mt-3">
