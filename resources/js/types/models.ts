@@ -261,6 +261,8 @@ export interface IEditRoom {
     double_decks: number | string
     beds: number | string
     description: string
+    time_in: string
+    time_out: string
     amenities: string[]
 }
 

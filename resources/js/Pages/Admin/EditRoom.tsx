@@ -31,6 +31,8 @@ const AddNewRoom = ({ room }: Props) => {
         beds: room.beds,
         description: room.description,
         amenities: room.amenities?.map((a) => a.name) ?? [],
+        time_in: room.time_in,
+        time_out: room.time_out
     });
 
     const onClickAddPhotoBtn = (e: MouseEvent) => {
@@ -62,7 +64,7 @@ const AddNewRoom = ({ room }: Props) => {
 
     function handleSubmit(event: FormEvent<HTMLFormElement>): void {
         event.preventDefault();
-        patch(route('admin.rooms.update',[room.id]), { preserveState:false });
+        patch(route('admin.rooms.update', [room.id]), { preserveState: false });
     }
 
 
@@ -110,11 +112,20 @@ const AddNewRoom = ({ room }: Props) => {
                             </div>
                             <div className="flex mt-7 flex-col md:flex-row gap-5">
                                 <div className="flex-1">
-                                    <TextInput required type='number' className='w-full' floatingLabel value={data.price} onChange={e => setData('price', e.target.value)} placeholder='Price / Rate Per Night' />
+                                    <TextInput required type='number' className='w-full' floatingLabel value={data.price} onChange={e => setData('price', e.target.value)} placeholder='Price / Rate' />
                                 </div>
                                 <div className="flex-1 grid grid-cols-1 gap-3">
                                     {/* <TextInput min={0} required type='number' className='w-full' floatingLabel value={data.double_decks} onChange={e => setData('double_decks', e.target.value)} placeholder='No. of double decks' /> */}
                                     <TextInput min={0} required type='number' className='w-full' floatingLabel value={data.beds} onChange={e => setData('beds', e.target.value)} placeholder='No. of beds' />
+                                </div>
+                            </div>
+                            <div className="flex mt-5 flex-col md:flex-row gap-5">
+                                <div className="flex-1">
+                                    <TextInput required type='time' className='w-full' floatingLabel value={data.time_in} onChange={e => setData('time_in', e.target.value)} placeholder='Time in' />
+                                </div>
+                                <div className="flex-1 grid grid-cols-1 gap-3">
+                                    {/* <TextInput min={0} required type='number' className='w-full' floatingLabel value={data.double_decks} onChange={e => setData('double_decks', e.target.value)} placeholder='No. of double decks' /> */}
+                                    <TextInput required type='time' className='w-full' floatingLabel value={data.time_out} onChange={e => setData('time_out', e.target.value)} placeholder='Time out' />
                                 </div>
                             </div>
                             <div className="mt-5">

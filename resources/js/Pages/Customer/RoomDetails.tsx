@@ -6,7 +6,7 @@ import PrimaryButton from '@/Components/shared/PrimaryButton'
 import TextInput from '@/Components/shared/TextInput'
 import { Calendar } from '@/Components/ui/calendar'
 import AppLayout from '@/Layouts/CustomerLayout'
-import { asset, formatToCurrency, getTotalNights } from '@/lib/utils'
+import { asset, formatTo12HourTime, formatToCurrency, getTotalNights } from '@/lib/utils'
 import { PageProps } from '@/types'
 import { IAddReservation, IReservationStatus, IRoom, IRoomWithReservations } from '@/types/models'
 import { router, useForm, usePage } from '@inertiajs/react'
@@ -194,6 +194,16 @@ const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Pro
                             }
                         </ul>
                     </div>
+                </div>
+                <div className="mt-8 flex gap-10">
+                    <p className='text-xl'>
+                        <span className='font-serif text-2xl'>Time In:</span>
+                        <span className="ms-3">{room.time_in ? formatTo12HourTime(room.time_in):'None'}</span>
+                    </p>
+                    <p className='text-xl'>
+                        <span className='font-serif text-2xl'>Time Out:</span>
+                        <span className="ms-3">{room.time_out ? formatTo12HourTime(room.time_out):'None'}</span>
+                    </p>
                 </div>
                 <hr className='my-10' />
                 <div className="">

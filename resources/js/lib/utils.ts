@@ -45,3 +45,17 @@ export function getTotalNights(from: Date | undefined, to: Date | undefined): nu
 export function isINavLink(item: any): item is INavLink {
     return item && typeof item.label === 'string' && typeof item.icon == 'string' && typeof item.href == 'string';
 }
+
+export function formatTo12HourTime(time24:string) {
+    // Split the time string into hours and minutes
+    const [hour, minute] = time24.split(":").map(Number);
+
+    // Determine AM or PM
+    const period = hour >= 12 ? "PM" : "AM";
+
+    // Convert hour to 12-hour format
+    const hour12 = hour % 12 || 12; // Converts 0 to 12 for midnight
+
+    // Format the time string in 12-hour format
+    return `${hour12}:${minute.toString().padStart(2, "0")} ${period}`;
+  }
