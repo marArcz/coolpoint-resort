@@ -154,7 +154,7 @@ const CreateResortReservation = ({ reservations = [], dateFrom, dateTo, adults =
                                 {data.date_from && data.date_to && (
                                     <div className="flex items-center">
                                         <input type="text" value={nights} className='w-full text-end border-0 pointer-events-none' readOnly />
-                                        <span>{nights > 1 ? "Nights" : "Night"}</span>
+                                        <span>{nights > 1 ? "Days" : "Day"}</span>
                                     </div>
                                 )}
                             </div>
