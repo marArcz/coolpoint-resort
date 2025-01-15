@@ -65,7 +65,7 @@ class PaymentController extends Controller
             'type' => $type,
             'amount' => $amount,
             'payment_no' => "P" . $reservation->reservation_no,
-            'status' => 'Completed',
+            'status' => 'Pending',
             'receipt' => $receipt,
             'is_refundable' => $is_refundable,
         ]);
@@ -75,7 +75,7 @@ class PaymentController extends Controller
         Notification::sendNow($admins, new PaymentReceivedNotification($payment));
 
         if ($method == 'gcash') {
-            return redirect()->to(route('reservations.show', [$reservation->id]))->with('success', 'Thank you for your payment. Your transaction has been completed.');
+            return redirect()->to(route('reservations.show', [$reservation->id]))->with('success', 'Thank you. Please wait while we verify your payment');
         } else {
             return redirect()->to(route('reservations.show', [$reservation->id]))->with('success', 'Thank you. The remaining balance will be put on hold and will be processed on your arrival.');
         }

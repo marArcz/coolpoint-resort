@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
 use App\Models\Reservation;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -13,20 +15,22 @@ class ApiRevenueController extends Controller
     {
         $reservations = Reservation::with(['payments'])
             ->doesntHave('cancellationRequest')
-            ->has('payments')
-            ->whereIn('status', ['Completed', 'No-Show'])
+            ->whereHas('payments',function(Builder $query) {
+                $query->where('status','=','Confirmed');
+            })
             ->get()
             ->filter(function ($reservation) {
                 return $reservation->isPaid;
             });
 
+        $payments = Payment::where('status','=','confirmed')
+                    ->get();
         $revenue = 0;
 
-        foreach ($reservations as $key => $reservation) {
-            foreach($reservation->payments as $payment){
-                $revenue += $payment->amount;
-            }
+        foreach($payments as $payment){
+            $revenue += $payment->amount;
         }
+
         $stats = [];
 
         for ($month = 1; $month <= 12; $month++) {
