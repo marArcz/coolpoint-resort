@@ -139,7 +139,7 @@ const Navbar = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link className=" xl:text-base text-sm font-light" href="">
+                                        <Link className=" xl:text-base text-sm font-light" href={route('about')}>
                                             ABOUT US
                                         </Link>
                                     </li>
