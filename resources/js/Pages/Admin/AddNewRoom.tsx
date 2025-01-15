@@ -118,7 +118,7 @@ const AddNewRoom = () => {
                             </div>
                             <div className="mt-5">
                                 <label className='text-gray-600 text-sm'>Room Description</label>
-                                <Textarea rows={4} value={data.description} onChange={e => setData('description', e.target.value)} className='mt-1' placeholder='Describe room...' />
+                                <Textarea required rows={4} value={data.description} onChange={e => setData('description', e.target.value)} className='mt-1' placeholder='Describe room...' />
                             </div>
                             <div className="mt-3 border-2 border-dashed border-gray-200 p-4">
                                 <p className="text-gray-600">Addtional Photos</p>
