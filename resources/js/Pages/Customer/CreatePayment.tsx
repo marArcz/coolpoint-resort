@@ -18,8 +18,8 @@ const CreatePayment = ({ reservation, configuration }: Props) => {
     const downPayment = 0.5
     const { data, setData, post } = useForm<{ method: string,type: string, receipt: File | null, amount: number, is_refundable:boolean }>({
         method: 'gcash',
-        type: reservation.payment_method == 'cash' ? 'downpayment':'full',
-        is_refundable: reservation.payment_method == 'gcash',
+        type: 'downpayment',
+        is_refundable: true,
         receipt: null,
         amount: reservation.payment_method == 'cash' ? reservation.total * downPayment : reservation.total
     })

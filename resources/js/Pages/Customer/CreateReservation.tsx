@@ -244,7 +244,7 @@ const CreateReservation = ({ extraAmenities = [], configuration, dateFrom, dateT
                                     </RadioGroup>
                                     <div className="mt-10 flex items-center gap-3">
                                         <Checkbox required id='has-read' />
-                                        <Label className='text-base' htmlFor="has-read">I've read and accept the <Link href="#" className='text-secondary'>terms and conditions.</Link></Label>
+                                    <Label className='text-base' htmlFor="has-read">I've read and accept the <Link href={route('terms_and_conditions.index')} className='text-secondary'>terms and conditions.</Link></Label>
                                     </div>
                                     <div className="mt-10 flex flex-wrap gap-5 items-center">
                                         <PrimaryButton type='submit'>Confirm reservation</PrimaryButton>
