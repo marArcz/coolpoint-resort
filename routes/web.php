@@ -25,6 +25,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationCancellationRequestController;
 use App\Http\Controllers\ResortReservationController;
+use App\Http\Controllers\TermsAndConditionsController;
 use App\Http\Controllers\Web\CartItemController;
 use App\Mail\ReservationApprovedMailable;
 use App\Mail\ReservationStatusUpdatedMailable;
@@ -56,6 +57,8 @@ Route::middleware(['auth:customer', 'verified'])->group(function () {
     Route::get('resort/reservation', ResortReservationController::class)->name('resort_reservation');
     Route::put('notifications/read_all', [NotificationController::class, 'readAll'])->name('notifications.read_all');
     Route::resource('notifications', NotificationController::class);
+    Route::resource('terms_and_conditions', TermsAndConditionsController::class);
+
 });
 
 Route::middleware(['auth:customer', 'verified'])->group(function () {
