@@ -124,7 +124,8 @@ class Reservation extends Model
         }
     }
     public function getBalanceAttribute(){
-        $payments = $this->payments()->get();
+        $payments = $this->payments()->where('status','=','Confirmed')
+                    ->get();
         $amount_paid = 0;
         foreach($payments as $payment){
             $amount_paid += $payment->amount;

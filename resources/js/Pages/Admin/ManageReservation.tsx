@@ -95,7 +95,7 @@ const ManageReservation = ({ reservation }: Props) => {
                     <span className="m-icon">arrow_back</span>
                     <span>Reservations</span>
                 </button>
-                {reservation.status != IReservationStatus.CANCELLED && reservation.payments?.[0] && reservation.payments[0].status == 'Completed' ? (
+                {reservation.status != IReservationStatus.CANCELLED && reservation.payments?.[0] && reservation.payments[0].status == 'Pending' ? (
                     <>
                         <div className={`bg-amber-700/20 px-4 py-3 rounded-lg mt-2`}>
                             <p className="font-medium text-amber-700 flex items-center gap-2 md:text-base text-sm">
@@ -106,7 +106,7 @@ const ManageReservation = ({ reservation }: Props) => {
                         <div className="flex mt-3 p-6 bg-gray-100 rounded-lg items-center gap-3">
                             <div>
                                 <p>Attached proof of payment</p>
-                                <ImageDialog imageUrl={`/files/${reservation.payments[0].receipt}`} className='mt-4'>
+                                <ImageDialog dialogTitle='Attached Receipt' imageUrl={`/files/${reservation.payments[0].receipt}`} className='mt-4'>
                                     <img src={`/files/${reservation.payments[0].receipt}`} className='object-cover h-[250px] rounded-md' alt="" />
                                 </ImageDialog>
                             </div>
@@ -386,16 +386,12 @@ const ManageReservation = ({ reservation }: Props) => {
                         </div>
                     </div>
                     <div className=" col-span-1">
-                        <p className=' text-sm'>Payment method</p>
-                        <p className='text- mt-1 font-medium uppercase'>{reservation.payment_method == 'cash' ? 'Pay on arrival' : 'GCash'}</p>
-                    </div>
-                    <div className=" col-span-1">
-                        <p className=' text-sm'>Balance</p>
-                        <p className='text- mt-1 font-medium uppercase'>{formatToCurrency(reservation.balance)}</p>
-                    </div>
-                    <div className=" col-span-1">
                         <p className=' text-sm'>Reserved on</p>
                         <p className='text- mt-1 font-medium uppercase'>{format(reservation.created_at, 'MMM dd, yyyy')} @{format(reservation.created_at, 'hh:ii a')}</p>
+                    </div>
+                    <div className=" col-span-1">
+                        <p className=' text-sm'>Remaining Balance</p>
+                        <p className='text- mt-1 font-medium uppercase'>{formatToCurrency(reservation.balance)}</p>
                     </div>
                 </div>
                 <div className="mt-12">
@@ -464,7 +460,7 @@ const ManageReservation = ({ reservation }: Props) => {
                                 <TableBody>
                                     <TableRow>
                                         <TableCell className='border text-base font-medium'>#{reservation.reservation_no}</TableCell>
-                                        <TableCell className='border text-base font-medium capitalize'>{reservation.payments[0].method == 'cash' ? 'Pay on arrival' : reservation.payment_method}</TableCell>
+                                        <TableCell className='border text-base font-medium capitalize'>{reservation.payments[0].method}</TableCell>
                                         <TableCell className='border text-base font-medium '>
                                             <span className={cn({
                                                 'text-red-500': reservation.payments[0].status == 'Rejected'

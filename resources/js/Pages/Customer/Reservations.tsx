@@ -70,7 +70,7 @@ const Reservations = ({ reservations }: Props) => {
                                                         </p>
                                                     ) : (
                                                         <p className={`font-medium ${reservation.status == 'Approved' && reservation.isPaid?'text-green-700':'text-gray-600'}`}>
-                                                            {reservation.status == 'Approved' ? (reservation.isPaid?'Approved - Paid':'Slot reserved'):reservation.status}
+                                                            {reservation.mStatus}
                                                         </p>
                                                     )}
                                                 </div>
