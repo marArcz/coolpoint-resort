@@ -20,7 +20,7 @@ const Welcome = () => {
     return (
         <AppLayout>
             <Head title="Home" />
-            <section
+            <section    
                 className="hero-section relative flex justify-center items-center">
                 <div className=" z-30 text-white container-padded">
                     <HeadingTitle dark>
