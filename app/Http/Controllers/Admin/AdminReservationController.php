@@ -17,19 +17,18 @@ class AdminReservationController extends Controller
      */
     public function index(Request $request)
     {
-        $year = $request->query('year', '');
-        $month = $request->query('month', '');
-        $type = $request->query('type', '');
-        $status = $request->query('status', '');
+        $year = $request->query('year','');
+        $month = $request->query('month','');
+        $type = $request->query('type','');
+        $status = $request->query('status','');
 
         $years = Reservation::select(DB::raw('YEAR(date_from) as year'))
             ->groupBy(DB::raw('YEAR(date_from)'))->get()->map(fn($y) => $y->year);
 
         $reservations = Reservation::with(['user', 'cancellationRequest'])
-            ->whereYear('date_from', $year == '' ? '!=' : '=', $year)
-            ->whereMonth('date_from', $month == '' ? '!=' : '=', $month)
-            ->where('type', $type == '' ? '!=' : '=', $type)
-            ->where('status', $status == '' ? '!=' : '=', $status)
+            ->whereDateFrom($request)
+            ->when($request->has('type'), fn($query) => $query->where('type',$request->query('type')))
+            ->when($request->has('status'), fn($query) => $query->where('status',$request->query('status')))
             ->orderByDesc('id')
             ->paginate(10)->withQueryString();
 

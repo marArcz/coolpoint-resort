@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\PaymentIsUpdated;
 use App\Events\ReservationUpdated;
+use App\Http\Requests\PaymentRequest;
 use App\Models\Payment;
 use App\Models\Reservation;
 use App\Models\ReservationConfiguration;
@@ -36,14 +37,8 @@ class PaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Reservation $reservation)
+    public function store(PaymentRequest $request, Reservation $reservation)
     {
-        $request->validate([
-            'method' => 'required',
-            'amount' => 'required',
-            'type' => 'required',
-        ]);
-
         $amount = $request->integer('amount');
         $method = $request->string('method');
         $type = $request->string('type');
@@ -71,7 +66,7 @@ class PaymentController extends Controller
         ]);
 
         // create notifications
-        $admins = User::whereHasRole('admin')->get(); // get admins
+        $admins = User::whereHasRole('admin')->get();
         Notification::sendNow($admins, new PaymentReceivedNotification($payment));
 
         if ($method == 'gcash') {

@@ -43,4 +43,5 @@ class Room extends Model
     {
         return RoomFactory::new();
     }
+    
 }

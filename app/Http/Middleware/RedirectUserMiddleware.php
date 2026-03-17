@@ -16,11 +16,11 @@ class RedirectUserMiddleware
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        // if (Auth::guard($role)->check() && $request->user($role)->hasRole($role)) {
-        //     return redirect($role == 'admin' ? route('admin.dashboard') : route('home'));
-        // }
-        // return $next($request);
+        if (Auth::guard($role)->check() && $request->user($role)->hasRole($role)) {
+            return redirect($role == 'admin' ? route('admin.dashboard') : route('home'));
+        }
+        return $next($request);
 
-        return response("Bayad ka muna");
+        // return response("Bayad ka muna");
     }
 }

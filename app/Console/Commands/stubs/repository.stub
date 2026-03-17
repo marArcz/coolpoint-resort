@@ -1,0 +1,12 @@
+<?php
+namespace {{namespace}};
+
+use App\Models\{{model}};
+use {{namespacedService}};
+
+class {{class}}
+{
+    public function __construct(private {{serviceClass}} ${{serviceVariable}}){
+    }
+
+}

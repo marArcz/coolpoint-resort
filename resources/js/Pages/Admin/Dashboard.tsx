@@ -18,12 +18,12 @@ import axios from 'axios'
 import { useToast } from '@/hooks/use-toast'
 import { echo } from '@/echo'
 import { PusherEvent } from 'pusher-js/types/src/core/connection/protocol/message-types'
-import { usePendingReservationsStore } from '@/lib/stores'
+import { useApprovedReservationsStore, usePendingReservationsStore } from '@/lib/stores'
 import { formatDate } from 'date-fns'
 import DashboardCards from '@/Components/DashboardCards'
 
 const Dashboard = () => {
-    const { data: pendingReservations, fetching: fetchingReservations, fetchAll: fetchReservations } = usePendingReservationsStore();
+    const { data: approvedReservations, fetching: fetchingReservations, fetchAll: fetchReservations } = useApprovedReservationsStore();
     const [newPayments, setNewPayments] = useState<IPayment[]>([]);
     const { toast } = useToast();
     const { user } = usePage().props.auth;
@@ -52,11 +52,11 @@ const Dashboard = () => {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {pendingReservations && pendingReservations.map((reservation) => (
+                                {approvedReservations && approvedReservations.map((reservation) => (
                                     <TableRow key={reservation.id}>
                                         <TableCell>{reservation.reservation_no}</TableCell>
-                                        <TableCell>{reservation.user.firstname }{reservation.user.lastname}</TableCell>
-                                        <TableCell>{reservation.type}</TableCell>
+                                        <TableCell>{reservation.user.firstname } {reservation.user.lastname}</TableCell>
+                                        <TableCell>{reservation.type_description}</TableCell>
                                         <TableCell>{formatDate(reservation.date_from,'MMM d, yyyy')}</TableCell>
                                         <TableCell>{formatDate(reservation.date_to,'MMM d, yyyy')}</TableCell>
                                         <TableCell>{reservation.status}</TableCell>

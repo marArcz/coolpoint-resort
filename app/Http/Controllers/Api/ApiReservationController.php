@@ -13,14 +13,11 @@ class ApiReservationController extends Controller
      */
     public function index(Request $request)
     {
-        $month = $request->query('month', '');
-        $type = $request->query('type', '');
-        $status = $request->query('status', '');
 
         $reservations = Reservation::with(['user'])
-            ->whereMonth('date_from', $month == '' ? '!=' : '=', $month)
-            ->where('type', $type == '' ? '!=' : '=', $type)
-            ->where('status', $status == '' ? '!=' : '=', $status)
+            ->whereDateFrom($request)
+            ->when($request->has('type'), fn($query) => $query->where('type',$request->query('type')))
+            ->when($request->has('status'), fn($query) => $query->where('status',$request->query('status')))
             ->orderBy('date_from')
             ->get();
         return response()->json($reservations);

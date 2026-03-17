@@ -1,4 +1,5 @@
 import { Link, usePage } from '@inertiajs/react'
+import { PhilippinePeso } from 'lucide-react';
 import React from 'react'
 
 const Footer = () => {
@@ -42,10 +43,12 @@ const Footer = () => {
             <hr className='mt-6' />
             <div className="flex m-0 items-end mt-6 gap-4">
                 <h2 className='lg:text-4xl  text-3xl my-0 p-0 font-semibold font-serif'>Cool Point</h2>
-                <p className='text-sm font-light '>COPYRIGHT 2024</p>
+                <p className='text-sm font-light '>COPYRIGHT {new Date().getFullYear()}</p>
             </div>
         </footer>
     )
 }
+
+
 
 export default Footer

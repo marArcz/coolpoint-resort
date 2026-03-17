@@ -2,6 +2,7 @@ import HeadingTitle from '@/Components/shared/HeadingTitle'
 import AdminLayout from '@/Layouts/AdminLayout'
 import { asset } from '@/lib/utils'
 import { IRoom } from '@/types/models'
+import { Link } from '@inertiajs/react'
 import clsx from 'clsx'
 import React, { useState } from 'react'
 
@@ -17,7 +18,13 @@ const RoomDetails = ({ room }: Props) => {
             navbarTitle="Room Details"
         >
             <section className='py-5'>
-                <p>Room Details</p>
+                <Link href={route('admin.rooms.index')}>
+                <button className='flex items-center gap-2 text-secondary font-medium'>
+                    <span className="m-icon">arrow_back</span>
+                    <span>Rooms</span>
+                </button>
+                </Link>
+                <p className='mt-4'>Room Details</p>
                 <img src={asset(mainImage)} alt="" className='w-full h-[60vh] object-cover mt-3 rounded-lg' />
                 <div className="mt-3 flex gap-2">
                     <img

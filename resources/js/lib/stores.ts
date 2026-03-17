@@ -28,6 +28,25 @@ export const usePendingReservationsStore = create<IDataStoreState<IReservation>>
     },
 }))
 
+export const useApprovedReservationsStore = create<IDataStoreState<IReservation>>()((set) => ({
+    data: [],
+    fetching: false,
+    async fetchAll() {
+        try {
+            set((state) => ({ ...state, fetching: true }))
+            const res = await axios.get<IReservation[]>(route('api.reservations.index', { status: 'Approved' }));
+            set((state) => ({ ...state, data: res.data }))
+        } catch (error: unknown) {
+            set((state) => ({ ...state, error }))
+        } finally {
+            set((state) => ({ ...state, fetching: false }))
+        }
+    },
+    add(item) {
+        set(state => ({ ...state, data: [...state.data, item] }))
+    },
+}))
+
 export const useCancellationRequestsStore = create<IDataStoreState<ICancellationRequest>>()((set) => ({
     data: [],
     fetching: false,

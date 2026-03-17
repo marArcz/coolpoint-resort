@@ -32,6 +32,7 @@ class AdminRoomController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
             'main_photo' => ['required', 'file'],
             'name' => ['required'],

@@ -4,19 +4,21 @@ namespace App\Models;
 
 use App\Events\NewReservationCreated;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 
 class Reservation extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $appends = ['isPaid','mStatus','balance'];
+    protected $appends = ['isPaid','mStatus','balance','type_description'];
     protected $fillable = [
         'date_from',
         'date_to',
@@ -94,7 +96,9 @@ class Reservation extends Model
     public function cancellationRequest(): HasOne{
         return $this->hasOne(CancellationRequest::class);
     }
-
+    public function getTypeDescriptionAttribute(){
+        return $this->type == 'room'?'Room Reservation':'Resort Reservation';
+    }
     public function getIsPaidAttribute():bool
     {
         return $this->payments()->where('status', '=', 'Confirmed')->exists();
@@ -133,4 +137,11 @@ class Reservation extends Model
 
         return $this->total - $amount_paid;
     }
+
+    public function scopeWhereDateFrom(Builder $query, Request $req):Builder
+    {
+        return $query->when($req->has('year'), fn(Builder $query) => $query->whereYear('date_from',$req->query('year')))
+            ->when($req->has('month'), fn(Builder $query) => $query->whereMonth('date_from', $req->query('month')));
+    }
+
 }

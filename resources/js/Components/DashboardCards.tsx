@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react'
 import DashboardCard from './DashboardCard';
-import { useCancellationRequestsStore, usePendingReservationsStore } from '@/lib/stores';
+import { useApprovedReservationsStore, useCancellationRequestsStore, usePendingReservationsStore } from '@/lib/stores';
 import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import { formatToCurrency } from '@/lib/utils';
@@ -9,14 +9,16 @@ import { IRevenueData } from '@/types/models';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 
 const DashboardCards = () => {
-    const { data: pendingReservations, fetching: fetchingReservations, fetchAll: fetchReservations } = usePendingReservationsStore();
+    const { data: approvedReservations, fetching: fetchingReservations, fetchAll: fetchReservations } = useApprovedReservationsStore();
     const { data: cancellationRequests, fetching: fetchingCancellationRequests, fetchAll: fetchCancellationRequests } = useCancellationRequestsStore();
     const [revenueData, setRevenueData] = useState<IRevenueData | null>(null);
     const toast = useToast();
 
     const getRevenue = async () => {
         try {
-            const res = await axios.get<IRevenueData>(route('api.revenue.index'));
+            const res = await axios.get<IRevenueData>(route('api.revenue.index'),{
+                withCredentials:true
+            });
             console.log(res)
             setRevenueData(res.data)
         } catch (error) {
@@ -32,11 +34,11 @@ const DashboardCards = () => {
     return (
         <>
             <div className="mt-3 grid gap-3 md:grid-cols-3 grid-cols-1">
-                <Link href={route('admin.reservations.index', { status: 'Pending' })}>
+                <Link href={route('admin.reservations.index')}>
                     <DashboardCard
                         icon="book"
-                        label='Pending Reservations'
-                        value={fetchingReservations ? '...' : (pendingReservations.length ?? 0)}
+                        label='Approved Reservations'
+                        value={fetchingReservations ? '...' : (approvedReservations.length ?? 0)}
                     />
                 </Link>
                 <Link href={"#"}>

@@ -21,7 +21,7 @@ export interface IRoom {
     amenities: IRoomAmenity[],
     image: string,
     images: IRoomImage[],
-    reservations: IReservation[] | null
+    reservations: IReservation[] | null,
 }
 
 export interface IRoomWithReservations extends IRoom {
@@ -107,6 +107,7 @@ export interface IReservation {
     isPaid: boolean;
     payments?: IPayment[],
     type: IReservationType,
+    type_description: string,
     add_ons?: IReservationAddOn[],
     cancellation_request?: ICancellationRequest,
     created_at: Date

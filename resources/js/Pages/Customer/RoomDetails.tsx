@@ -122,6 +122,7 @@ const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Pro
         <AppLayout>
             <HeroSection title='Room Details' image={asset(room.image)} />
             <section className="py-16 container-padded bg-gray-50">
+             
                 <div className="flex flex-col lg:flex-row gap-9 lg:justify-between lg:items-center">
                     <div>
                         <h1 className='font-serif font-medium text-5xl'>{room.name}</h1>
@@ -198,11 +199,11 @@ const Reservation = ({ room, date_from, date_to, adults = 1, children = 0 }: Pro
                 <div className="mt-8 flex gap-10">
                     <p className='text-xl'>
                         <span className='font-serif text-2xl'>Time In:</span>
-                        <span className="ms-3">{room.time_in ? formatTo12HourTime(room.time_in):'None'}</span>
+                        <span className="ms-3">{room.time_in ? formatTo12HourTime(room.time_in) : 'None'}</span>
                     </p>
                     <p className='text-xl'>
                         <span className='font-serif text-2xl'>Time Out:</span>
-                        <span className="ms-3">{room.time_out ? formatTo12HourTime(room.time_out):'None'}</span>
+                        <span className="ms-3">{room.time_out ? formatTo12HourTime(room.time_out) : 'None'}</span>
                     </p>
                 </div>
                 <hr className='my-10' />
