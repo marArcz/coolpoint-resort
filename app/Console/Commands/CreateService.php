@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-
+use Illuminate\Support\Facades\Log;
 class CreateService extends Command
 {
     /**
@@ -41,11 +41,12 @@ class CreateService extends Command
             array_values($this->replaces()),
             $stub
         );
-        $fileName = 'app/Services/' . $this->argument('service').'.php';
-        $file = fopen($fileName,'w');
+        $fileName = 'app/Services/' . $this->argument('service') . '.php';
+        $file = fopen($fileName, 'w');
         fwrite($file, $stub);
         fclose($file);
-
-        return Command::SUCCESS;
+        $this->newLine();
+        $this->info('Service ' . "[app/Services/$fileName]" . ' created successfully.');
+        $this->newLine();
     }
 }

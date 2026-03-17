@@ -35,8 +35,8 @@ class CustomMakeModelCommand extends ModelMakeCommand
     {
         parent::handle();
         if ($this->option('all')) {
-                $this->createService();
-                $this->createRepository();
+            $this->createService();
+            $this->createRepository();
         } else {
             if ($this->option('service')) {
                 $this->createService();
@@ -69,7 +69,7 @@ class CustomMakeModelCommand extends ModelMakeCommand
     protected function getOptions()
     {
         return [
-            ...parent::getOptions(),
+            ...self::getOptions(),
             ['service', 'sr', InputOption::VALUE_NONE, 'Create a new service for the model'],
             ['repository', 'rp', InputOption::VALUE_NONE, 'Create a new repository for the model'],
         ];
