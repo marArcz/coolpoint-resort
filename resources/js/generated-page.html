@@ -1,0 +1,507 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Haven Resort</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,500;1,600&amp;display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; cursor: default; }
+        h1, h2, h3, h4, .font-serif { font-family: 'Playfair Display', serif; }
+        
+        /* Smooth Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Stagger delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+
+        /* Iconify Solar Duotone Styling */
+        iconify-icon {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Glass Utility */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .glass-dark {
+            background: rgba(26, 46, 53, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+    </style>
+<link id="all-fonts-link-font-geist" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist">.font-geist { font-family: 'Geist', sans-serif !important; }</style><link id="all-fonts-link-font-roboto" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-roboto">.font-roboto { font-family: 'Roboto', sans-serif !important; }</style><link id="all-fonts-link-font-montserrat" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-montserrat">.font-montserrat { font-family: 'Montserrat', sans-serif !important; }</style><link id="all-fonts-link-font-poppins" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-poppins">.font-poppins { font-family: 'Poppins', sans-serif !important; }</style><link id="all-fonts-link-font-playfair" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&amp;display=swap"><style id="all-fonts-style-font-playfair">.font-playfair { font-family: 'Playfair Display', serif !important; }</style><link id="all-fonts-link-font-instrument-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-instrument-serif">.font-instrument-serif { font-family: 'Instrument Serif', serif !important; }</style><link id="all-fonts-link-font-merriweather" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;display=swap"><style id="all-fonts-style-font-merriweather">.font-merriweather { font-family: 'Merriweather', serif !important; }</style><link id="all-fonts-link-font-bricolage" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-bricolage">.font-bricolage { font-family: 'Bricolage Grotesque', sans-serif !important; }</style><link id="all-fonts-link-font-jakarta" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-jakarta">.font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif !important; }</style><link id="all-fonts-link-font-manrope" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-manrope">.font-manrope { font-family: 'Manrope', sans-serif !important; }</style><link id="all-fonts-link-font-space-grotesk" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-space-grotesk">.font-space-grotesk { font-family: 'Space Grotesk', sans-serif !important; }</style><link id="all-fonts-link-font-work-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-work-sans">.font-work-sans { font-family: 'Work Sans', sans-serif !important; }</style><link id="all-fonts-link-font-pt-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&amp;display=swap"><style id="all-fonts-style-font-pt-serif">.font-pt-serif { font-family: 'PT Serif', serif !important; }</style><link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }</style><link id="all-fonts-link-font-space-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap"><style id="all-fonts-style-font-space-mono">.font-space-mono { font-family: 'Space Mono', monospace !important; }</style><link id="all-fonts-link-font-quicksand" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-quicksand">.font-quicksand { font-family: 'Quicksand', sans-serif !important; }</style><link id="all-fonts-link-font-nunito" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-nunito">.font-nunito { font-family: 'Nunito', sans-serif !important; }</style></head>
+<body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
+
+    <!-- Glass Navigation Header -->
+    <header id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b border-white/10 bg-white/5 backdrop-blur-sm [&amp;.scrolled]:bg-white/90 [&amp;.scrolled]:backdrop-blur-md [&amp;.scrolled]:border-slate-200 [&amp;.scrolled]:shadow-sm">
+        <div class="md:px-12 flex h-24 max-w-[1400px] mx-auto px-6 items-center justify-between reveal active">
+            
+            <!-- Left Nav -->
+            <nav class="hidden md:flex gap-8 text-xs font-medium tracking-widest text-white/90 uppercase text-shadow-sm [&amp;.scrolled]:text-slate-900">
+                <a href="#" class="hover:text-white transition-colors [&amp;.scrolled]:hover:text-black">Home</a>
+                <a href="#" class="hover:text-white transition-colors [&amp;.scrolled]:hover:text-black">About Us</a>
+                <a href="#" class="hover:text-white transition-colors [&amp;.scrolled]:hover:text-black">Our Rooms</a>
+            </nav>
+
+            <!-- Logo -->
+            <div class="text-center relative group">
+                <div class="absolute inset-0 bg-white/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                <a href="#" class="block relative opacity-90 hover:opacity-100 transition-opacity">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" class="text-white drop-shadow-lg transition-colors duration-300 [&amp;.scrolled]:text-[#1a2e35]" data-icon-set="solar" data-solar="sun-fog-bold-duotone"><path fill="currentColor" fill-rule="evenodd" d="M7.25 22a.75.75 0 0 1 .75-.75h8a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75M12 1.25a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0V2a.75.75 0 0 1 .75-.75M1.25 12a.75.75 0 0 1 .75-.75h1a.75.75 0 0 1 0 1.5H2a.75.75 0 0 1-.75-.75m19 0a.75.75 0 0 1 .75-.75h1a.75.75 0 0 1 0 1.5h-1a.75.75 0 0 1-.75-.75M6.083 15.25H2a.75.75 0 0 0 0 1.5h20a.75.75 0 0 0 0-1.5z" clip-rule="evenodd"></path><path fill="currentColor" d="M4.25 19a.75.75 0 0 1 .75-.75h14a.75.75 0 0 1 0 1.5H5a.75.75 0 0 1-.75-.75m.148-14.602a.75.75 0 0 1 1.061 0l.393.393a.75.75 0 0 1-1.06 1.06l-.394-.392a.75.75 0 0 1 0-1.06m15.202 0a.75.75 0 0 1 0 1.06l-.392.393a.75.75 0 0 1-1.06-1.06l.392-.393a.75.75 0 0 1 1.06 0M5.25 12c0 1.178.302 2.286.833 3.25h11.834A6.75 6.75 0 1 0 5.25 12" opacity=".5" class=""></path></svg>
+                </a>
+            </div>
+
+            <!-- Right Nav -->
+            <div class="flex items-center gap-8">
+                <nav class="hidden md:flex gap-8 text-xs font-medium tracking-widest text-white/90 uppercase items-center text-shadow-sm [&amp;.scrolled]:text-slate-900">
+                    <a href="#" class="hover:text-white transition-colors [&amp;.scrolled]:hover:text-black">Contact</a>
+                    <a href="#" class="hover:text-white transition-colors [&amp;.scrolled]:hover:text-black">My Account</a>
+                </nav>
+                <a href="#" class="hidden md:inline-flex items-center gap-2 border border-white/20 px-6 py-3 text-xs tracking-widest uppercase text-white hover:bg-white/20 hover:border-white/40 hover:text-white transition-all backdrop-blur-md bg-white/10 rounded-sm shadow-lg [&amp;.scrolled]:border-slate-800 [&amp;.scrolled]:text-slate-900 [&amp;.scrolled]:bg-transparent [&amp;.scrolled]:hover:bg-slate-900 [&amp;.scrolled]:hover:text-white">
+                    Reservation
+                </a>
+                <button class="md:hidden text-white [&amp;.scrolled]:text-slate-900">
+                    <iconify-icon icon="solar:hamburger-menu-bold-duotone" width="28"></iconify-icon>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="w-full relative">
+        
+        <!-- Image Container -->
+        <div class="relative w-full h-[100vh] md:h-[850px] overflow-hidden">
+            <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/44698af8-4509-40b4-880a-49753e235952_3840w.webp" alt="Resort Pool" class="absolute inset-0 w-full h-full object-cover reveal active duration-1000 scale-105" style="transform-origin: center center;">
+            <div class="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/10 to-slate-900/50"></div>
+            
+            <div class="flex flex-col text-white h-full z-10 pr-4 pb-32 pl-4 relative items-center justify-center">
+                <div class="glass px-6 py-2 rounded-full mb-8 flex items-center gap-4 reveal delay-100 border border-white/30 bg-white/10 backdrop-blur-md active">
+                    <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-white shadow-sm">Sanctuary &amp; Spa</span>
+                </div>
+                <h2 class="font-serif italic text-5xl md:text-7xl lg:text-8xl tracking-tight text-center leading-[1.1] mb-8 reveal delay-200 drop-shadow-xl text-white active">
+                    Escape to <br class="md:hidden">paradise today
+                </h2>
+                <p class="md:text-lg reveal delay-300 leading-relaxed text-sm font-light text-white/90 tracking-wide text-center max-w-lg drop-shadow-md active">
+                    Experience the unforgettable at Azure Haven. Where luxury meets the raw beauty of nature.
+                </p>
+                <div class="absolute bottom-12 animate-bounce reveal delay-500 active">
+                    <div class="w-12 h-12 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                        <iconify-icon icon="solar:mouse-circle-bold-duotone" width="24" class="text-white"></iconify-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Glass Booking Widget -->
+        <div class="relative z-20 -mt-24 px-4 md:px-12 max-w-[1400px] mx-auto reveal delay-300 active">
+            <div class="glass shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] flex flex-col md:flex-row w-full rounded-sm overflow-hidden bg-white/70 backdrop-blur-xl border border-white/40 supports-[backdrop-filter]:bg-white/60">
+                <!-- Check In -->
+                <div class="flex-1 p-6 md:p-8 border-b md:border-b-0 md:border-r border-slate-400/20 group cursor-pointer glass-hover transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Check In</span>
+                        <iconify-icon icon="solar:calendar-date-bold-duotone" class="text-slate-400 group-hover:text-[#1a2e35] transition-colors" width="20"></iconify-icon>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="font-serif text-3xl text-slate-800">24</span>
+                        <div class="flex items-center gap-1">
+                            <span class="text-xs font-medium text-slate-600 uppercase tracking-wider">Oct</span>
+                            <iconify-icon icon="solar:alt-arrow-down-bold-duotone" class="text-slate-500" width="12"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <!-- Check Out -->
+                <div class="flex-1 p-6 md:p-8 border-b md:border-b-0 md:border-r border-slate-400/20 group cursor-pointer glass-hover transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Check Out</span>
+                        <iconify-icon icon="solar:calendar-date-bold-duotone" class="text-slate-400 group-hover:text-[#1a2e35] transition-colors" width="20"></iconify-icon>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="font-serif text-3xl text-slate-800">28</span>
+                        <div class="flex items-center gap-1">
+                            <span class="text-xs font-medium text-slate-600 uppercase tracking-wider">Oct</span>
+                            <iconify-icon icon="solar:alt-arrow-down-bold-duotone" class="text-slate-500" width="12"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <!-- Guests -->
+                <div class="flex-1 md:p-8 md:border-b-0 md:border-r group cursor-pointer glass-hover transition-all duration-300 border-slate-400/20 border-b pt-6 pr-6 pb-6 pl-6">
+                    <div class="flex mb-3 items-center justify-between">
+                        <span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Guests</span>
+                        <iconify-icon icon="solar:users-group-two-rounded-bold-duotone" class="text-slate-400 group-hover:text-[#1a2e35] transition-colors" width="20"></iconify-icon>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="font-serif text-3xl text-slate-800">03</span>
+                        <div class="flex items-center gap-1">
+                            <span class="text-xs font-medium text-slate-600 uppercase tracking-wider">Person</span>
+                            <iconify-icon icon="solar:alt-arrow-down-bold-duotone" class="text-slate-500" width="12"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <!-- Promo -->
+                <div class="hidden lg:flex flex-1 p-6 md:p-8 border-r border-slate-400/20 group cursor-pointer glass-hover transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3 w-full">
+                        <span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Promo</span>
+                        <iconify-icon icon="solar:ticket-sale-bold-duotone" class="text-slate-400 group-hover:text-[#1a2e35] transition-colors" width="20"></iconify-icon>
+                    </div>
+                    <div class="flex items-center w-full h-full">
+                        <span class="text-sm text-slate-500 font-medium border-b border-dashed border-slate-400/50 w-full pb-1">Add Code</span>
+                    </div>
+                </div>
+                <!-- Button -->
+                <div class="w-full md:w-auto md:min-w-[200px] glass-dark hover:bg-[#1a2e35] transition-colors flex items-center justify-center p-6 md:p-0 cursor-pointer group">
+                    <button class="text-white text-xs font-bold tracking-widest uppercase flex items-center gap-3">
+                        Search
+                        <iconify-icon icon="solar:arrow-right-bold-duotone" width="18" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Intro Content Spacer -->
+        <div class="text-center max-w-5xl mr-auto ml-auto pt-32 pr-6 pb-20 pl-6">
+            <div class="flex reveal mb-8 justify-center">
+                <div class="w-16 h-16 rounded-full bg-slate-100/50 backdrop-blur-sm flex items-center justify-center border border-white/60">
+                    <iconify-icon icon="solar:leaf-bold-duotone" class="text-[#1a2e35] opacity-70" width="32"></iconify-icon>
+                </div>
+            </div>
+            <h3 class="md:text-5xl reveal delay-100 text-4xl text-slate-800 tracking-tight font-serif mb-8">
+                A sanctuary for the senses
+            </h3>
+            <p class="text-slate-500 font-light leading-loose text-lg max-w-2xl mx-auto reveal delay-200">
+                Immerse yourself in the tranquility of nature. From our crystal-clear pools to our meticulously designed suites, every detail is crafted for your absolute relaxation.
+            </p>
+        </div>
+
+    </main>
+
+    <!-- NEW SECTION: About Us -->
+    <section class="relative py-20 md:py-32 overflow-hidden bg-white">
+        <!-- Decor Blob -->
+        <div class="absolute top-20 left-0 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl -z-10"></div>
+        
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row gap-16 lg:gap-24 items-center">
+                
+                <!-- Collage Images -->
+                <div class="w-full md:w-1/2 relative reveal">
+                    <!-- Main Vertical Image -->
+                    <div class="w-[80%] relative z-10 group">
+                        <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&amp;w=2070&amp;auto=format&amp;fit=crop" alt="Resort Exterior" class="w-full h-[550px] object-cover shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] rounded-sm grayscale-[10%] group-hover:grayscale-0 transition-all duration-700">
+                    </div>
+                    <!-- Overlapping Horizontal Image -->
+                    <div class="absolute -bottom-12 -right-4 w-[65%] z-20">
+                        <div class="bg-white/30 backdrop-blur-md p-2 rounded-sm border border-white/50 shadow-2xl">
+                            <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/b0f57a37-07ef-4d32-b0ff-9e2fd9875050_1600w.webp" alt="Pool Detail" class="w-full h-[260px] object-cover rounded-[2px]">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Content -->
+                <div class="w-full md:w-1/2 md:pl-8 mt-16 md:mt-0 reveal delay-200">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-8 h-[1px] bg-slate-400"></div>
+                        <span class="text-xs font-medium tracking-[0.2em] uppercase text-slate-500">About Us</span>
+                    </div>
+                    <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl text-slate-800 leading-[1.15] tracking-tight mb-8">
+                        The best place to  enjoy your life
+                    </h2>
+                    <p class="text-slate-500 leading-loose font-light mb-10 max-w-lg">
+                        Lorem ipsum odor amet, consectetuer adipiscing elit. Arcu etiam libero curae consectetur efficitur nec eros eros. Dui blandit mi nisl mollis cursus. Sollicitudin leo eget blandit libero malesuada curabitur. Turpis hendrerit pretium mi mattis a dui vivamus.
+                    </p>
+                    <div class="flex gap-6 opacity-90">
+                         <!-- Glass Icons -->
+                         <div class="flex flex-col items-center gap-2 group cursor-pointer">
+                             <div class="w-14 h-14 rounded-full bg-slate-50/50 border border-slate-200 backdrop-blur-sm flex items-center justify-center text-[#1a2e35] group-hover:bg-[#1a2e35] group-hover:text-white transition-all duration-300 shadow-sm">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="waves" class="lucide lucide-waves w-5 h-5"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path></svg>
+                             </div>
+                             <span class="text-[10px] uppercase tracking-wider font-medium text-slate-400 group-hover:text-[#1a2e35] transition-colors">Pool</span>
+                         </div>
+                         <div class="flex flex-col items-center gap-2 group cursor-pointer">
+                             <div class="w-14 h-14 rounded-full bg-slate-50/50 border border-slate-200 backdrop-blur-sm flex items-center justify-center text-[#1a2e35] group-hover:bg-[#1a2e35] group-hover:text-white transition-all duration-300 shadow-sm">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="utensils" class="lucide lucide-utensils w-5 h-5"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path></svg>
+                             </div>
+                             <span class="text-[10px] uppercase tracking-wider font-medium text-slate-400 group-hover:text-[#1a2e35] transition-colors">Dining</span>
+                         </div>
+                         <div class="flex flex-col items-center gap-2 group cursor-pointer">
+                             <div class="w-14 h-14 rounded-full bg-slate-50/50 border border-slate-200 backdrop-blur-sm flex items-center justify-center text-[#1a2e35] group-hover:bg-[#1a2e35] group-hover:text-white transition-all duration-300 shadow-sm">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="sun" class="lucide lucide-sun w-5 h-5"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                             </div>
+                             <span class="text-[10px] uppercase tracking-wider font-medium text-slate-400 group-hover:text-[#1a2e35] transition-colors">Relax</span>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Rooms -->
+    <section class="py-24 md:py-32 bg-slate-50/50 relative">
+        <div class="absolute inset-0 bg-white/40 backdrop-blur-3xl -z-10"></div>
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+            
+            <div class="text-center mb-20 reveal">
+                <span class="text-xs font-medium tracking-[0.2em] uppercase text-slate-400 mb-4 block">Discover Our Rooms</span>
+                <h2 class="font-serif text-4xl md:text-5xl text-slate-800 tracking-tight">Azure Haven Rooms</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
+                <!-- Room Card 1 -->
+                <div class="group reveal delay-100 flex flex-col h-full">
+                    <div class="relative overflow-hidden rounded-sm mb-8 bg-slate-200 aspect-[4/3]">
+                        <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/73ecfa52-af92-4e86-a055-485059887add_1600w.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Room Interior">
+                        <!-- Glass Overlay on Hover -->
+                        <div class="absolute inset-0 bg-white/10 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        
+                        <div class="absolute top-6 left-6 z-20">
+                             <div class="w-full h-full border border-white/30 absolute top-2 left-2 pointer-events-none"></div>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex flex-col">
+                        <h3 class="font-serif text-3xl text-slate-800 mb-4">Deluxe Room</h3>
+                        <p class="text-slate-500 font-light leading-relaxed mb-8 line-clamp-3 flex-1">
+                            Lorem ipsum odor amet, consectetuer adipiscing elit. Arcu etiam libero curae consectetur efficitur nec eros eros. Dui blandit mi nisl mollis cursus.
+                        </p>
+                        <button class="w-full py-5 border border-slate-300 bg-white/50 backdrop-blur-sm text-xs font-bold tracking-[0.2em] uppercase hover:bg-white hover:border-slate-400 transition-all text-slate-700">
+                            Check Availability
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Room Card 2 -->
+                <div class="group reveal delay-200 flex flex-col h-full">
+                    <div class="relative overflow-hidden rounded-sm mb-8 bg-slate-200 aspect-[4/3]">
+                        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&amp;w=2074&amp;auto=format&amp;fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Dorm Room">
+                         <div class="absolute inset-0 bg-white/10 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    </div>
+                    <div class="flex-1 flex flex-col">
+                        <h3 class="font-serif text-3xl text-slate-800 mb-4">Family Suite</h3>
+                        <p class="text-slate-500 font-light leading-relaxed mb-8 line-clamp-3 flex-1">
+                            Lorem ipsum odor amet, consectetuer adipiscing elit. Arcu etiam libero curae consectetur efficitur nec eros eros. Dui blandit mi nisl mollis cursus.
+                        </p>
+                        <button class="w-full py-5 glass-dark text-white text-xs font-bold tracking-[0.2em] uppercase hover:bg-[#112228] transition-all shadow-lg shadow-slate-900/10">
+                            Check Availability
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Gallery -->
+    <section class="py-24 md:py-32 bg-white">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+            <div class="text-center mb-20 reveal">
+                <span class="text-xs font-medium tracking-[0.2em] uppercase text-slate-400 mb-4 block">Explore</span>
+                <h2 class="font-serif text-4xl md:text-5xl text-slate-800 tracking-tight">Our Gallery</h2>
+            </div>
+
+            <!-- Grid 2x2 Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Image 1 -->
+                <div class="aspect-[4/3] overflow-hidden rounded-sm relative group reveal delay-100">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&amp;w=2070&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 border border-white/20 pointer-events-none m-4 glass bg-transparent"></div>
+                </div>
+                <!-- Image 2 -->
+                <div class="aspect-[4/3] overflow-hidden rounded-sm relative group reveal delay-200">
+                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&amp;w=2070&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                     <div class="absolute inset-0 border border-white/20 pointer-events-none m-4 glass bg-transparent"></div>
+                </div>
+                <!-- Image 3 -->
+                <div class="aspect-[4/3] overflow-hidden rounded-sm relative group reveal delay-300">
+                    <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/c543a9e1-f226-4ced-80b0-feb8445a75b9_1600w.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                     <div class="absolute inset-0 border border-white/20 pointer-events-none m-4 glass bg-transparent"></div>
+                </div>
+                <!-- Image 4 -->
+                <div class="aspect-[4/3] overflow-hidden rounded-sm relative group reveal delay-400">
+                    <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/5bab247f-35d9-400d-a82b-fd87cfe913d2_1600w.webp" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                     <div class="absolute inset-0 border border-white/20 pointer-events-none m-4 glass bg-transparent"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Contact / Map -->
+    <section class="flex flex-col md:flex-row min-h-[600px] border-t border-slate-100">
+        <!-- Map Side -->
+        <div class="w-full md:w-1/2 bg-slate-100 relative grayscale contrast-[0.95]">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3864.872688756917!2d120.9497!3d14.3784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d39670000001%3A0x1234567890abcdef!2sDasmari%C3%B1as%2C%20Cavite!5e0!3m2!1sen!2sph!4v1620000000000!5m2!1sen!2sph" width="100%" height="100%" style="border:0; min-height: 400px;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+
+        <!-- Info Side -->
+        <div class="w-full md:w-1/2 bg-white p-12 lg:p-24 flex flex-col justify-center reveal">
+            <span class="text-xs font-medium tracking-[0.2em] uppercase text-slate-400 mb-6">Information</span>
+            <h2 class="font-serif text-4xl md:text-5xl text-slate-800 tracking-tight mb-12">Contact Us</h2>
+
+            <div class="space-y-12">
+                <div>
+                    <h4 class="font-serif text-xl text-slate-800 mb-2 font-medium">Dasmariñas Cavite</h4>
+                    <p class="text-slate-500 font-light text-sm md:text-base leading-relaxed">
+                        Sittio Niyugan, N.I.A. Rd,  Dasmariñas, 4114 Cavite
+                    </p>
+                </div>
+
+                <div>
+                    <span class="text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-2 block">Call Us Directly</span>
+                    <p class="font-serif text-2xl text-slate-800 tracking-tight">+63 912 345 6789</p>
+                </div>
+
+                <div class="pt-4">
+                    <a href="#" class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-slate-800 border-b border-slate-300 pb-1 hover:text-[#1a2e35] hover:border-[#1a2e35] transition-colors">
+                        Get Directions
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-4 h-4"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Footer -->
+    <footer class="bg-[#111111] text-white pt-24 pb-10">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-8 mb-24">
+                <!-- Col 1 -->
+                <div>
+                    <h4 class="text-xs font-bold tracking-widest uppercase text-white/30 mb-8">About us</h4>
+                    <ul class="space-y-4 text-xs font-medium text-white/60 tracking-wide">
+                        <li><a href="#" class="hover:text-white transition-colors">Our Story</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
+                    </ul>
+                </div>
+                <!-- Col 2 -->
+                <div>
+                    <h4 class="text-xs font-bold tracking-widest uppercase text-white/30 mb-8">FAQs</h4>
+                    <ul class="space-y-4 text-xs font-medium text-white/60 tracking-wide">
+                        <li><a href="#" class="hover:text-white transition-colors">Support</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms and Conditions</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <!-- Col 3 -->
+                <div>
+                    <h4 class="text-xs font-bold tracking-widest uppercase text-white/30 mb-8">Create Account</h4>
+                    <ul class="space-y-4 text-xs font-medium text-white/60 tracking-wide">
+                        <li><a href="#" class="hover:text-white transition-colors">Login</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Register</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Billing</a></li>
+                    </ul>
+                </div>
+                <!-- Col 4 -->
+                <div>
+                    <h4 class="text-xs font-bold tracking-widest uppercase text-white/30 mb-8">Location</h4>
+                    <ul class="space-y-4 text-xs font-medium text-white/60 tracking-wide">
+                        <li><a href="#" class="hover:text-white transition-colors">Dasmariñas</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Manila</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-white/5">
+                <h3 class="font-serif text-2xl text-white mb-4 md:mb-0 tracking-tight">Azure Haven</h3>
+                <span class="text-[10px] font-bold text-white/20 tracking-widest uppercase">Copyright 2024</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Floating Cursor -->
+    <div id="cursor-dot" class="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference hidden md:block" style="transform: translate(-50%, -50%);"></div>
+    <div id="cursor-outline" class="fixed top-0 left-0 w-10 h-10 border border-white/50 rounded-full pointer-events-none z-[9999] mix-blend-difference hidden md:block" style="transform: translate(-50%, -50%);"></div>
+
+    <!-- Animation & Icon Scripts -->
+    <script>
+        // Lucide Icons Initialization
+        lucide.createIcons();
+
+        // Reveal Animation Observer
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            const elements = document.querySelectorAll('.reveal');
+            elements.forEach(el => observer.observe(el));
+
+            // Navbar Scroll Effect
+            const nav = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            });
+
+            // Floating Cursor Logic
+            const cursorDot = document.getElementById('cursor-dot');
+            const cursorOutline = document.getElementById('cursor-outline');
+            
+            if (cursorDot && cursorOutline) {
+                let mouseX = 0;
+                let mouseY = 0;
+                let outlineX = 0;
+                let outlineY = 0;
+
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    
+                    // Instant tracking for inner dot
+                    cursorDot.style.left = mouseX + 'px';
+                    cursorDot.style.top = mouseY + 'px';
+                });
+
+                function animateCursor() {
+                    // Smooth trailing for outer circle
+                    let dx = mouseX - outlineX;
+                    let dy = mouseY - outlineY;
+                    
+                    outlineX += dx * 0.15;
+                    outlineY += dy * 0.15;
+                    
+                    cursorOutline.style.left = outlineX + 'px';
+                    cursorOutline.style.top = outlineY + 'px';
+                    
+                    requestAnimationFrame(animateCursor);
+                }
+                animateCursor();
+            }
+        });
+    </script>
+
+
+</body></html>

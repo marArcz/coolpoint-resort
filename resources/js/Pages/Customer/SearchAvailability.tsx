@@ -30,8 +30,8 @@ const SearchAvailability = ({ rooms, dateFrom = new Date(), dateTo = addDays(new
     }
 
     return (
-        <AppLayout>
-            <section className='py-12 container-padded'>
+        <AppLayout filledNavbar>
+            <section className='pt-48 pb-12 container-padded'>
                 <HeadingTitle reverse>
                     <h3 className='lg:text-4xl md:text-3xl text-2xl font-serif font-semibold'>
                         <span className='m-icon md:text-3xl text-2xl me-3'>search</span>
@@ -56,7 +56,7 @@ const SearchAvailability = ({ rooms, dateFrom = new Date(), dateTo = addDays(new
                         Resort reservation availability ({formatDate(dateFrom, "MMM. dd, yyyy")} - {formatDate(dateTo, "MMM. dd, yyyy")}): <span className='text-primary font-semibold'>{isResortAvailable ? 'Available' : 'Not available'}</span>
                     </p>
                     {isResortAvailable ? (
-                        <Link href={route('resort_reservation',{dateFrom,dateTo,adults,children})} className='underline text-lg block font-medium mt-5'>Click here to book entire resort</Link>
+                        <Link href={route('resort_reservation', { dateFrom, dateTo, adults, children })} className='underline text-lg block font-medium mt-5'>Click here to book entire resort</Link>
                     ) : (
                         <Link href={route('resort_reservation')} className='underline text-lg block mt-5'>See available dates</Link>
                     )}
@@ -73,14 +73,14 @@ const SearchAvailability = ({ rooms, dateFrom = new Date(), dateTo = addDays(new
                                         <RoomInfoCard
                                             href={route('rooms.show', {
                                                 room: room.id,
-                                                date_from:dateFrom,
-                                                date_to:dateTo,
+                                                date_from: dateFrom,
+                                                date_to: dateTo,
                                                 adults,
                                                 children
                                             })}
                                             room={room}
                                             key={room.id}
-                                            />
+                                        />
                                     ))
                                 }
                             </div>

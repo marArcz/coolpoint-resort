@@ -1,31 +1,40 @@
 import React, { useState } from "react";
-import PrimaryButton from "./PrimaryButton";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/Components/ui/popover";
 import { Calendar } from "@/Components/ui/calendar";
-import { DateRange } from "react-day-picker";
 import { addDays, format } from "date-fns";
+import { CalendarDays, ChevronDown, Search, Users } from "lucide-react";
+import { DateRange } from "react-day-picker";
 
 type Props = {
     onSubmit?: (
         selectedDate: DateRange,
         adults: number,
         children: number,
-    ) => void,
-    defaultDate?: DateRange,
-    defaultAdults?:number
-    defaultChildren?:number,
-    submitButtonText?:string
-}
-const AvailabilityCheckCard = ({ onSubmit, defaultDate,defaultAdults,defaultChildren,submitButtonText='Search Availability'}: Props) => {
+    ) => void;
+    defaultDate?: DateRange;
+    defaultAdults?: number;
+    defaultChildren?: number;
+    submitButtonText?: string;
+};
+
+const AvailabilityCheckCard = ({
+    onSubmit,
+    defaultDate,
+    defaultAdults,
+    defaultChildren,
+    submitButtonText = "Search Availability",
+}: Props) => {
     const defaultSelectedDate = {
         from: new Date(),
         to: addDays(new Date(), 5),
-    }
-    const [date, setDate] = React.useState<DateRange | undefined>(defaultDate ?? defaultSelectedDate);
+    };
+    const [date, setDate] = React.useState<DateRange | undefined>(
+        defaultDate ?? defaultSelectedDate,
+    );
     const [adults, setAdults] = useState(defaultAdults ?? 2);
     const [children, setChildren] = useState(defaultChildren ?? 1);
 
@@ -33,189 +42,169 @@ const AvailabilityCheckCard = ({ onSubmit, defaultDate,defaultAdults,defaultChil
         if (onSubmit) {
             onSubmit(date ?? defaultSelectedDate, adults, children);
         }
-    }
+    };
+
+    const isDisabled = !(
+        (adults > 0 || children > 0) &&
+        date?.from !== undefined &&
+        date?.to !== undefined
+    );
 
     return (
-        <>
-            <div className="card bg-[#E1EEED] w-full shadow  h-max flex justify-around items-center flex-wrap">
-                <div className="flex flex-wrap  bg-white py-14 gap-y-10 items-center justify-center flex-1">
-                    <div className="flex-1 px-9">
-                        <p className="lg:text-base text-sm uppercase">Check In - Check Out</p>
-                        <div className="flex mt-5 lg:justify-start justify-between lg:items-end items-center">
-                            <div className="flex flex-col gap-y-6 lg:flex-row lg:items-end items-start lg:min-w-[28vw] ">
-                                <div className="flex items-end">
-                                    <h2 className="xl:text-5xl md:text-3xl text-2xl me-2 font-medium">
-                                        {date?.from &&
-                                            format(date.from ?? "", "dd")}
-                                    </h2>
-                                    <h4 className="lg:text-2xl md:text-xl text-lg font-serif font-medium text-nowrap">
-                                        /
-                                        {date?.from &&
-                                            format(date.from ?? "", "MMMM")}
-                                    </h4>
-                                </div>
-                                <div className="lg:mx-4 mx-1 lg:block hidden">
-                                    <span className="m-icon text-primary">
-                                        remove
-                                    </span>
-                                </div>
-                                <div className="flex items-end">
-                                    <h2 className="xl:text-5xl md:text-3xl text-2xl me-2 font-medium">
-                                        {date?.to &&
-                                            format(date.to ?? "", "dd")}
-                                    </h2>
-                                    <h4 className="lg:text-2xl md:text-xl text-lg font-serif font-medium text-nowrap">
-                                        /
-                                        {date?.to &&
-                                            format(date.to ?? "", "MMMM")}
-                                    </h4>
-                                </div>
+        <div className="customer-panel overflow-hidden border border-white/50 bg-white/78">
+            <div className="grid lg:grid-cols-[1.2fr_1.2fr_1fr_auto]">
+                <Popover>
+                    <PopoverTrigger className="group flex w-full items-center justify-between border-b border-slate-200/80 px-6 py-6 text-left transition hover:bg-white/70 lg:border-b-0 lg:border-r">
+                        <div>
+                            <div className="flex items-center gap-3">
+                                <span className="customer-eyebrow">Check In</span>
+                                <CalendarDays className="h-4 w-4 text-slate-400 transition group-hover:text-slate-700" />
                             </div>
-                            <Popover>
-                                <PopoverTrigger className="flex items-center justify-center rounded-full transition-all size-9 hover:bg-primary/20 outline-none ring-0 ms-3">
-                                    <span className="m-icon">
-                                        keyboard_arrow_down
-                                    </span>
-                                </PopoverTrigger>
-                                <PopoverContent
-                                    className="w-auto p-0"
-                                    align="center"
-                                >
-                                    <Calendar
-                                        initialFocus
-                                        fromDate={new Date()}
-                                        mode="range"
-                                        defaultMonth={date?.from}
-                                        selected={date}
-                                        onSelect={setDate}
-                                        numberOfMonths={1}
-                                    />
-                                </PopoverContent>
-                            </Popover>
+                            <div className="mt-4 flex items-end gap-3">
+                                <span className="customer-display text-4xl text-slate-900 md:text-5xl">
+                                    {date?.from ? format(date.from, "dd") : "--"}
+                                </span>
+                                <span className="pb-2 text-sm uppercase tracking-[0.24em] text-slate-500">
+                                    {date?.from ? format(date.from, "MMM") : ""}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex-1 flex xl:px-9 md:px-7 px-7">
-                        <div className="flex-1">
-                            <p className="lg:text-base text-sm uppercase">Adults</p>
-                            <div className="flex mt-5 items-center">
-                                <h2 className="xl:text-5xl md:text-3xl text-2xl text-center me-2 font-medium w-14 overflow-hidden">
-                                    {adults}
-                                </h2>
+                        <ChevronDown className="h-4 w-4 text-slate-500" />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto border border-slate-200/80 bg-white p-0">
+                        <Calendar
+                            initialFocus
+                            fromDate={new Date()}
+                            mode="range"
+                            defaultMonth={date?.from}
+                            selected={date}
+                            onSelect={setDate}
+                            numberOfMonths={1}
+                        />
+                    </PopoverContent>
+                </Popover>
 
-                                <Popover>
-                                    <PopoverTrigger className="flex items-center justify-center rounded-full transition-all size-9 hover:bg-primary/20 outline-none ring-0 ms-3">
-                                        <span className="m-icon">
-                                            keyboard_arrow_down
-                                        </span>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="">
-                                        <div className="flex items-center justify-between">
-                                            <p className=" text-lg">Adults</p>
-                                            <div className="flex gap-3 items-center">
-                                                <button
-                                                    className="rounded-full hover:bg-primary/20 size-8"
-                                                    type="button"
-                                                    onClick={() =>
-                                                        setAdults((v) =>
-                                                            v > 1 ? v - 1 : v
-                                                        )
-                                                    }
-                                                >
-                                                    <span className="m-icon text-base">
-                                                        remove
-                                                    </span>
-                                                </button>
-                                                <p className="text-xl m-0">
-                                                    {adults}
-                                                </p>
-                                                <button
-                                                    className="rounded-full hover:bg-primary/20 size-8"
-                                                    type="button"
-                                                    onClick={() =>
-                                                        setAdults((v) => v + 1)
-                                                    }
-                                                >
-                                                    <span className="m-icon text-base">
-                                                        add
-                                                    </span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </PopoverContent>
-                                </Popover>
+                <Popover>
+                    <PopoverTrigger className="group flex w-full items-center justify-between border-b border-slate-200/80 px-6 py-6 text-left transition hover:bg-white/70 lg:border-b-0 lg:border-r">
+                        <div>
+                            <div className="flex items-center gap-3">
+                                <span className="customer-eyebrow">Check Out</span>
+                                <CalendarDays className="h-4 w-4 text-slate-400 transition group-hover:text-slate-700" />
+                            </div>
+                            <div className="mt-4 flex items-end gap-3">
+                                <span className="customer-display text-4xl text-slate-900 md:text-5xl">
+                                    {date?.to ? format(date.to, "dd") : "--"}
+                                </span>
+                                <span className="pb-2 text-sm uppercase tracking-[0.24em] text-slate-500">
+                                    {date?.to ? format(date.to, "MMM") : ""}
+                                </span>
                             </div>
                         </div>
-                        <div className="flex-1">
-                            <p className="lg:text-base text-sm uppercase">Children</p>
-                            <div className="flex mt-5 items-center">
-                                <h2 className="xl:text-5xl md:text-3xl text-2xl me-2 text-center font-medium w-14 overflow-hidden">
-                                    {children}
-                                </h2>
+                        <ChevronDown className="h-4 w-4 text-slate-500" />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto border border-slate-200/80 bg-white p-0">
+                        <Calendar
+                            initialFocus
+                            fromDate={new Date()}
+                            mode="range"
+                            defaultMonth={date?.from}
+                            selected={date}
+                            onSelect={setDate}
+                            numberOfMonths={1}
+                        />
+                    </PopoverContent>
+                </Popover>
 
-                                <Popover>
-                                    <PopoverTrigger className="flex items-center justify-center rounded-full transition-all size-9 hover:bg-primary/20 outline-none ring-0 ms-3">
-                                        <span className="m-icon">
-                                            keyboard_arrow_down
-                                        </span>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="">
-                                        <div className="flex items-center justify-between">
-                                            <p className=" text-lg">Children</p>
-                                            <div className="flex gap-3 items-center">
-                                                <button
-                                                    className="rounded-full hover:bg-primary/20 size-8"
-                                                    type="button"
-                                                    onClick={() =>
-                                                        setChildren((v) =>
-                                                            v > 0 ? v - 1 : v
-                                                        )
-                                                    }
-                                                >
-                                                    <span className="m-icon text-base">
-                                                        remove
-                                                    </span>
-                                                </button>
-                                                <p className="text-xl m-0">
-                                                    {children}
-                                                </p>
-                                                <button
-                                                    className="rounded-full hover:bg-primary/20 size-8"
-                                                    type="button"
-                                                    onClick={() =>
-                                                        setChildren(
-                                                            (v) => v + 1
-                                                        )
-                                                    }
-                                                >
-                                                    <span className="m-icon text-base">
-                                                        add
-                                                    </span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </PopoverContent>
-                                </Popover>
+                <Popover>
+                    <PopoverTrigger className="group flex w-full items-center justify-between border-b border-slate-200/80 px-6 py-6 text-left transition hover:bg-white/70 lg:border-b-0 lg:border-r">
+                        <div>
+                            <div className="flex items-center gap-3">
+                                <span className="customer-eyebrow">Guests</span>
+                                <Users className="h-4 w-4 text-slate-400 transition group-hover:text-slate-700" />
+                            </div>
+                            <div className="mt-4">
+                                <p className="customer-display text-3xl text-slate-900 md:text-4xl">
+                                    {adults + children}
+                                </p>
+                                <p className="mt-2 text-sm text-slate-500">
+                                    {adults} adults, {children} children
+                                </p>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div className=" h-full flex justify-center items-center px-12 py-5 lg:w-max w-full">
-                    <PrimaryButton
+                        <ChevronDown className="h-4 w-4 text-slate-500" />
+                    </PopoverTrigger>
+                    <PopoverContent
+                        align="center"
+                        className="customer-panel w-72 border border-slate-200/80 bg-[#fbf7f1] p-4"
+                    >
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between rounded-2xl bg-white/80 px-4 py-3">
+                                <div>
+                                    <p className="font-medium text-slate-800">Adults</p>
+                                    <p className="text-sm text-slate-500">Ages 13 and above</p>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <button
+                                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-700 transition hover:border-slate-400"
+                                        type="button"
+                                        onClick={() => setAdults((value) => (value > 1 ? value - 1 : value))}
+                                    >
+                                        -
+                                    </button>
+                                    <span className="w-4 text-center text-sm font-semibold text-slate-900">
+                                        {adults}
+                                    </span>
+                                    <button
+                                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-700 transition hover:border-slate-400"
+                                        type="button"
+                                        onClick={() => setAdults((value) => value + 1)}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between rounded-2xl bg-white/80 px-4 py-3">
+                                <div>
+                                    <p className="font-medium text-slate-800">Children</p>
+                                    <p className="text-sm text-slate-500">Ages 12 and below</p>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <button
+                                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-700 transition hover:border-slate-400"
+                                        type="button"
+                                        onClick={() => setChildren((value) => (value > 0 ? value - 1 : value))}
+                                    >
+                                        -
+                                    </button>
+                                    <span className="w-4 text-center text-sm font-semibold text-slate-900">
+                                        {children}
+                                    </span>
+                                    <button
+                                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-700 transition hover:border-slate-400"
+                                        type="button"
+                                        onClick={() => setChildren((value) => value + 1)}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
+
+                <div className="bg-[#18323a] p-3">
+                    <button
                         onClick={handleSubmit}
-                        className=""
-                        disabled={
-                            !(
-                                (adults > 0 || children > 0) &&
-                                date?.from != undefined &&
-                                date?.to != undefined
-                            )
-                        }
+                        className="inline-flex h-full min-h-[96px] w-full items-center justify-center gap-3 rounded-[22px] border border-white/10 bg-[#18323a] px-6 text-xs font-semibold uppercase tracking-[0.28em] text-white transition hover:bg-[#10262d] disabled:cursor-not-allowed disabled:opacity-35"
+                        disabled={isDisabled}
                     >
                         {submitButtonText}
-                    </PrimaryButton>
+                        <Search className="h-4 w-4" />
+                    </button>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
