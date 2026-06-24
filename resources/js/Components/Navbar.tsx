@@ -9,7 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Bell, ChevronRight, Menu, User, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-const NavbarLogo = ({ scrolled = false }: { scrolled?: boolean }) => (
+const NavbarLogo = ({ dark = false }: { dark?: boolean }) => (
     <div className="group relative">
         <div className="absolute inset-0 rounded-full bg-white/20 blur-xl opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
         <div className="relative opacity-90 transition-opacity group-hover:opacity-100">
@@ -20,7 +20,7 @@ const NavbarLogo = ({ scrolled = false }: { scrolled?: boolean }) => (
                 viewBox="0 0 24 24"
                 className={cn(
                     "drop-shadow-lg transition-colors duration-300",
-                    scrolled ? "text-[#1a2e35]" : "text-white",
+                    dark ? "text-[#1a2e35]" : "text-white",
                 )}
             >
                 <path
@@ -40,10 +40,10 @@ const NavbarLogo = ({ scrolled = false }: { scrolled?: boolean }) => (
 );
 
 type Props = {
-    filled?: boolean
-}
+    variant?: "transparent" | "default";
+};
 
-const Navbar = ({ filled }: Props) => {
+const Navbar = ({ variant = "default" }: Props) => {
     const page = usePage();
     const { auth } = page.props as {
         auth: { user?: { name?: string } };
@@ -73,29 +73,29 @@ const Navbar = ({ filled }: Props) => {
         { label: "Contact", href: `${route("home")}#contact` },
     ];
 
+    const isSolid = variant === "default" || isScrolled;
+    const topStateTextClass = isSolid
+        ? "text-slate-700/90 hover:text-slate-900"
+        : "text-white/90 hover:text-white";
+    const activeLinkClass = isSolid ? "text-slate-950" : "text-white";
+
     const desktopLinkClass = (active = false) =>
         cn(
             "text-[11px] font-medium uppercase tracking-[0.24em] transition-colors",
-            isScrolled
-                ? active
-                    ? "text-white"
-                    : "text-white/80 hover:text-white"
-                : active
-                    ? "text-white"
-                    : "text-white/90 hover:text-white",
+            active ? activeLinkClass : topStateTextClass,
         );
 
     const headerClass = cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        filled || isScrolled
-            ? "border-b border-white/10 bg-[#102027]/78 shadow-[0_18px_45px_-28px_rgba(0,0,0,0.6)] backdrop-blur-xl"
+        isSolid
+            ? "border-b border-slate-200/80 bg-white/95 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.28)] backdrop-blur-xl"
             : "border-b border-transparent bg-transparent backdrop-blur-0",
     );
 
     const reservationClass = cn(
         "hidden md:inline-flex items-center gap-2 border px-6 py-3 text-[11px] uppercase tracking-[0.24em] transition-all rounded-sm shadow-lg",
-        isScrolled
-            ? "border-white/15 bg-white/10 text-white hover:border-white/30 hover:bg-white/16"
+        isSolid
+            ? "border-slate-300 bg-white text-slate-900 shadow-[0_12px_30px_-24px_rgba(15,23,42,0.4)] hover:border-slate-400 hover:bg-slate-50"
             : "border-white/20 bg-white/8 text-white hover:border-white/35 hover:bg-white/14 backdrop-blur-md",
     );
 
@@ -110,8 +110,8 @@ const Navbar = ({ filled }: Props) => {
                         onClick={() => setShowMobileMenu(true)}
                         className={cn(
                             "inline-flex h-11 w-11 items-center justify-center rounded-full transition lg:hidden",
-                            isScrolled
-                                ? "border border-white/10 bg-white/10 text-white"
+                            isSolid
+                                ? "border border-slate-300 bg-white text-slate-900 shadow-sm"
                                 : "border border-white/10 bg-white/5 text-white",
                         )}
                         aria-label="Open navigation menu"
@@ -128,7 +128,7 @@ const Navbar = ({ filled }: Props) => {
                     </nav>
 
                     <Link href={route("home")} className="block">
-                        <NavbarLogo scrolled={isScrolled} />
+                        <NavbarLogo dark={isSolid} />
                     </Link>
 
                     <div className="hidden items-center gap-8 md:flex">
@@ -143,15 +143,13 @@ const Navbar = ({ filled }: Props) => {
                                 <Popover>
                                     <PopoverTrigger className={cn(
                                         "relative text-[11px] font-medium uppercase tracking-[0.24em] transition-colors",
-                                        isScrolled
-                                            ? "text-white/80 hover:text-white"
-                                            : "text-white/90 hover:text-white",
+                                        topStateTextClass,
                                     )}>
                                         My Account
                                         {notifications.length > 0 && (
                                             <span className={cn(
                                                 "absolute -right-3 -top-1 inline-flex h-2.5 w-2.5 rounded-full",
-                                                "bg-white",
+                                                isSolid ? "bg-slate-900" : "bg-white",
                                             )} />
                                         )}
                                     </PopoverTrigger>
@@ -227,8 +225,8 @@ const Navbar = ({ filled }: Props) => {
                             href={auth.user ? route("profile.edit") : route("login")}
                             className={cn(
                                 "inline-flex h-11 w-11 items-center justify-center rounded-full transition",
-                                isScrolled
-                                    ? "border border-white/10 bg-white/10 text-white"
+                                isSolid
+                                    ? "border border-slate-300 bg-white text-slate-900 shadow-sm"
                                     : "border border-white/10 bg-white/5 text-white",
                             )}
                             aria-label="Open account"

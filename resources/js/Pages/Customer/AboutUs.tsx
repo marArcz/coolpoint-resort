@@ -26,7 +26,7 @@ const values = [
 
 const AboutUs = () => {
     return (
-        <AppLayout>
+        <AppLayout navbarVariant="transparent">
             <Head title="About Us" />
 
             <HeroSection

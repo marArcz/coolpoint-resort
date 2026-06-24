@@ -89,7 +89,7 @@ const Welcome = () => {
     };
 
     return (
-        <AppLayout>
+        <AppLayout navbarVariant="transparent">
             <Head title="Home" />
             <section className="customer-hero-section">
                 <div className="relative min-h-[85vh] overflow-hidden">

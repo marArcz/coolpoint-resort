@@ -30,7 +30,7 @@ const SearchAvailability = ({ rooms, dateFrom = new Date(), dateTo = addDays(new
     }
 
     return (
-        <AppLayout filledNavbar>
+        <AppLayout navbarVariant="default">
             <section className='pt-48 pb-12 container-padded'>
                 <HeadingTitle reverse>
                     <h3 className='lg:text-4xl md:text-3xl text-2xl font-serif font-semibold'>

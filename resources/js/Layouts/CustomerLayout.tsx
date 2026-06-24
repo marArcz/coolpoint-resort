@@ -10,7 +10,11 @@ import { echo } from "@/echo";
 import { INotification } from "@/types/models";
 import { ToastAction } from "@/Components/ui/toast";
 
-const AppLayout = ({ children }: PropsWithChildren) => {
+type Props = PropsWithChildren<{
+    navbarVariant?: "transparent" | "default";
+}>;
+
+const AppLayout = ({ children, navbarVariant = "default" }: Props) => {
     const { flash, auth } = usePage().props;
     const { toast } = useToast();
     const { fetchAll: fetchNotifications, add: addNotification } =
@@ -82,7 +86,7 @@ const AppLayout = ({ children }: PropsWithChildren) => {
     return (
         <div className="customer-shell min-h-screen">
             <CustomerCursor />
-            <Navbar />
+            <Navbar variant={navbarVariant} />
             <main className="min-h-[50vh] bg-transparent">{children}</main>
             <Footer />
             <Toaster />

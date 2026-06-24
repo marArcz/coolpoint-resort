@@ -1,13 +1,17 @@
 import CustomerCursor from "@/Components/CustomerCursor";
 import Footer from "@/Components/ui/Footer";
 import Navbar from "@/Components/Navbar";
-import React, { PropsWithChildren, ReactNode } from "react";
+import React, { PropsWithChildren } from "react";
 
-const GuestLayout = ({ children }: PropsWithChildren) => {
+type Props = PropsWithChildren<{
+    navbarVariant?: "transparent" | "default";
+}>;
+
+const GuestLayout = ({ children, navbarVariant = "default" }: Props) => {
     return (
         <div className="customer-shell min-h-screen">
             <CustomerCursor />
-            <Navbar />
+            <Navbar variant={navbarVariant} />
             <main className="pt-28">{children}</main>
             <Footer/>
         </div>
