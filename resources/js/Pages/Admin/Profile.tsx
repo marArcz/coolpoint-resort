@@ -64,7 +64,6 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className="mt-5 w-2/5">
-                    {/* <TextInput placeholder='Name' value={data.name} onChange={e => setData('name', e.target.value)} className='w-full rounded-lg mb-3' floatingLabel /> */}
                     <ul className='flex flex-col gap-0'>
                         <li className=''>
                             <Dialog>

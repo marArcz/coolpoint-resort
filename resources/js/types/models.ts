@@ -294,6 +294,8 @@ export interface IRevenueData {
     statistics: IRevenueStatisticItem[]
 }
 
+export type ReservationStatusCounts = Record<string, number>;
+
 export interface IUpdateProfile {
     photo: File | null;
     name: string;

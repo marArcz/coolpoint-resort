@@ -86,10 +86,12 @@ const Navbar = ({ variant = "default" }: Props) => {
         );
 
     const headerClass = cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        isSolid
-            ? "border-b border-slate-200/80 bg-white/95 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.28)] backdrop-blur-xl"
-            : "border-b border-transparent bg-transparent backdrop-blur-0",
+        " inset-x-0 top-0 z-50 transition-all duration-300",
+        {
+            "border-b border-slate-200/80 bg-white/95 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.28)] backdrop-blur-xl": isSolid,
+            "border-b border-transparent bg-transparent backdrop-blur-0": !isSolid,
+            "fixed": variant === "transparent"
+        }
     );
 
     const reservationClass = cn(
@@ -102,7 +104,7 @@ const Navbar = ({ variant = "default" }: Props) => {
     const reserveHref = auth.user ? route("reservations.index") : route("availability.index");
 
     return (
-        <>
+        <div>
             <header className={headerClass}>
                 <div className="mx-auto flex h-24 max-w-[1400px] items-center justify-between px-6 md:px-12">
                     <button
@@ -343,7 +345,7 @@ const Navbar = ({ variant = "default" }: Props) => {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </>
+        </div>
     );
 };
 

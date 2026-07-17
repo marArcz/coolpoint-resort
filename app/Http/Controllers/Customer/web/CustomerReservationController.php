@@ -33,12 +33,28 @@ class CustomerReservationController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         $user = $request->user();
-        $reservations = Reservation::with(['user', 'payments', 'cancellationRequest'])
-            ->where('user_id', '=', $user->id)
-            ->orderBy('id', 'desc')
-            ->paginate(5);
+        $status = $request->query('status');
 
-        return Inertia::render('Customer/Reservations', compact('reservations'));
+        $query = Reservation::with(['user', 'payments', 'cancellationRequest'])
+            ->where('user_id', '=', $user->id)
+            ->orderBy('id', 'desc');
+
+        if ($status && $status !== 'all') {
+            $query->where('status', ucfirst($status));
+        }
+
+        $reservations = $query->paginate(5);
+
+        $statusCounts = Reservation::where('user_id', '=', $user->id)
+            ->selectRaw("LOWER(status) as status, COUNT(*) as count")
+            ->groupByRaw("LOWER(status)")
+            ->pluck('count', 'status')
+            ->toArray();
+
+        return Inertia::render('Customer/Reservations', [
+            'reservations' => $reservations,
+            'statusCounts' => $statusCounts,
+        ]);
     }
 
     /**
